@@ -1,0 +1,66 @@
+.App {
+  text-align: center;
+  padding-bottom: 4rem;
+  font-family: 'Montserrat';
+}
+
+.App-header {
+  margin: 1rem auto;
+}
+
+main {
+  position: relative;
+  width: 100%;
+}
+
+header h1 {
+  color: white;
+}
+
+.main-table {
+  margin: auto;
+  width: 100%;
+}
+
+table {
+  border-collapse: separate;
+}
+
+h4 {
+  font-size: 1rem;
+}
+
+.row {
+  margin: auto;
+}
+
+td, th {
+  border-radius: 5px;
+}
+
+h2 {
+  color: white;
+}
+
+.add-event-button {
+  width: 7rem;
+  height: 2.7rem;
+  margin-top: 0.3rem;
+  border: none;
+  outline: none;
+  background-color: #a1e070;
+  color: black;
+}
+
+.btn-primary.focus, .btn-primary:focus {
+  box-shadow: none;
+}
+
+.btn-primary:not(:disabled):not(.disabled).active:focus, .btn-primary:not(:disabled):not(.disabled):active:focus, .show>.btn-primary.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.2);
+}
+
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+  color: #fff;
+  background-color: #a1e070;;
+}

@@ -1,0 +1,25 @@
+.table-day td {
+  height: 2rem;
+  text-align: left;
+  margin: 0;
+  width: 90%;
+}
+
+.table-day td h4 {
+  margin-top: 0rem;
+  margin-bottom: 2rem;
+  margin-left: 0.2rem;
+}
+
+.table-day tr td:first-child {
+  width: 10%;
+}
+
+.table-day {
+  width: 100%;
+  border-spacing: 0.15rem
+}
+
+.table-day {
+  width: 100%;
+}

@@ -1,0 +1,23 @@
+.table-month td {
+  height: 7rem;
+  border: 1px solid black;
+  text-align: left;
+}
+
+.table-month th:first-child {
+  color: #ea0000;
+}
+
+.table-month tr td:first-child {
+  color: #ea0000;
+}
+
+.table-month td h4 {
+  margin-top: 0rem;
+  margin-bottom: 5rem;
+  margin-left: 0.2rem;
+}
+
+.table-month {
+  border-spacing: 0.08rem;
+}

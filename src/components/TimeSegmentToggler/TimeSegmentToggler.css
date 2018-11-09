@@ -1,0 +1,20 @@
+.form-control {
+  color: black;
+  user-select: none;
+  outline: 0;
+  margin-top: 0.3rem;
+  width: 7rem;
+  display: inline-block;
+  height: 2.7rem;
+}
+
+.form-control:focus {
+  color: black;
+  border-color: white;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+}
+
+.custom-radio .custom-control-input:checked~.custom-control-label::before {
+  background-color: #5dd004;
+}
