@@ -7,6 +7,8 @@ import TimeSegmentToggler from './components/TimeSegmentToggler/TimeSegmentToggl
 import PeriodToggler from './components/PeriodToggler/PeriodToggler';
 import AddEventField from './components/AddEventField/AddEventField';
 
+import { connect } from 'react-redux';
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -24,7 +26,7 @@ class App extends Component {
   getCurrentMonth = () => this.state.curPeriod.getMonth();
 
   shouldComponentUpdate = (nextProps, nextState) => {
-    if(this.state.curTable == nextState.curTable && this.state.curPeriod == nextState.curPeriod && this.state.isActive == nextState.isActive) {
+    if(this.state.curTable === nextState.curTable && this.state.curPeriod === nextState.curPeriod && this.state.isActive === nextState.isActive) {
       return false;
     }
     return true
@@ -38,20 +40,20 @@ class App extends Component {
     let curYear = this.state.curPeriod.getFullYear();
     let curMonth = this.state.curPeriod.getMonth();
     let curDate = this.state.curPeriod.getDate();
-    if(e.target.id == 'left-button') {
-      if(this.state.curTable == 'Month')
+    if(e.target.id === 'left-button') {
+      if(this.props.period === 'Month')
         this.setState({ curPeriod: new Date(curYear, curMonth - 1) });
-      if(this.state.curTable == 'Week')
+      if(this.state.curTable === 'Week')
         this.setState({ curPeriod: new Date(curYear, curMonth, curDate - 7) });
-      if(this.state.curTable == 'Day')
+      if(this.state.curTable === 'Day')
         this.setState({ curPeriod: new Date(curYear, curMonth, curDate - 1) });
     }
-    if(e.target.id == 'right-button') {
-      if(this.state.curTable == 'Month')
+    if(e.target.id === 'right-button') {
+      if(this.state.curTable === 'Month')
         this.setState({ curPeriod: new Date(curYear, curMonth + 1) });
-      if(this.state.curTable == 'Week')
+      if(this.state.curTable === 'Week')
         this.setState({ curPeriod: new Date(curYear, curMonth, curDate + 7) });
-      if(this.state.curTable == 'Day')
+      if(this.state.curTable === 'Day')
         this.setState({ curPeriod: new Date(curYear, curMonth, curDate + 1) });
     }
   }
@@ -61,6 +63,7 @@ class App extends Component {
   }
 
   render() {
+    const { period } = this.props;
     return (
       <div className="App">
         <div className="container">
@@ -88,8 +91,8 @@ class App extends Component {
             {this.state.isActive ? <AddEventField isActive={this.state.isActive} /> : null}
             <div className="main-table">
               {
-                this.state.curTable == 'Month' ? <TableMonthContainer curPeriod={this.state.curPeriod} /> :
-                (this.state.curTable == 'Week' ? <TableWeekContainer curPeriod={this.state.curPeriod} /> : <TableDayContainer curPeriod={this.state.curPeriod} />)
+                period === 'Month' ? <TableMonthContainer curPeriod={this.state.curPeriod} /> :
+                (this.state.curTable === 'Week' ? <TableWeekContainer curPeriod={this.state.curPeriod} /> : <TableDayContainer curPeriod={this.state.curPeriod} />)
               }
             </div>
           </main>
@@ -99,4 +102,11 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = store => {
+  console.log(store);
+  return {
+    period: store.calendar.period
+  }
+}
+
+export default connect(mapStateToProps)(App);
