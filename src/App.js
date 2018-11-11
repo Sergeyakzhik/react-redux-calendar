@@ -3,67 +3,70 @@ import './App.css';
 import TableMonthContainer from './containers/TableMonthContainer.js';
 import TableWeekContainer from './containers/TableWeekContainer.js';
 import TableDayContainer from './containers/TableDayContainer.js';
+import AddEventFieldContainer from './containers/AddEventFieldContainer.js';
 import TimeSegmentToggler from './components/TimeSegmentToggler/TimeSegmentToggler';
 import PeriodToggler from './components/PeriodToggler/PeriodToggler';
-import AddEventField from './components/AddEventField/AddEventField';
 
 import { connect } from 'react-redux';
+import { toggleTimeSegment } from './store/actions/timeSegmentActions';
+import { changeTimePeriod } from './store/actions/changePeriodAction';
+import { toggleAddEventField } from './store/actions/addEventFieldAction';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      curTable: 'Month',
-      curPeriod: this.setCurrentPeriod(),
-    }
-  }
 
   setCurrentPeriod = () => new Date();
 
-  getCurrentYear = () => this.state.curPeriod.getFullYear();
+  getCurrentYear = () => this.props.period.getFullYear();
 
-  getCurrentMonth = () => this.state.curPeriod.getMonth();
+  getCurrentMonth = () => this.props.period.getMonth();
 
   shouldComponentUpdate = (nextProps, nextState) => {
-    if(this.state.curTable === nextState.curTable && this.state.curPeriod === nextState.curPeriod && this.state.isActive === nextState.isActive) {
+    if(
+      this.props.table === nextProps.table && this.props.period === nextProps.period
+      && this.props.isActive === nextProps.isActive
+    ){
       return false;
     }
     return true
   }
 
   handlePeriodChange = (e) => {
-    this.setState({ curTable: e.target.value });
+    this.props.toggleTimeSegment(e.target.value);
   }
 
   handlePeriodTogglerClick = (e) => {
-    let curYear = this.state.curPeriod.getFullYear();
-    let curMonth = this.state.curPeriod.getMonth();
-    let curDate = this.state.curPeriod.getDate();
+    const { table, period, changeTimePeriod } = this.props;
+    let curYear = period.getFullYear();
+    let curMonth = period.getMonth();
+    let curDate = period.getDate();
+
     if(e.target.id === 'left-button') {
-      if(this.props.period === 'Month')
-        this.setState({ curPeriod: new Date(curYear, curMonth - 1) });
-      if(this.state.curTable === 'Week')
-        this.setState({ curPeriod: new Date(curYear, curMonth, curDate - 7) });
-      if(this.state.curTable === 'Day')
-        this.setState({ curPeriod: new Date(curYear, curMonth, curDate - 1) });
+      if(table === 'Month')
+        changeTimePeriod(new Date(curYear, curMonth - 1));
+      if(table === 'Week')
+        changeTimePeriod(new Date(curYear, curMonth, curDate - 7));
+      if(table === 'Day')
+        changeTimePeriod(new Date(curYear, curMonth, curDate - 1));
     }
     if(e.target.id === 'right-button') {
-      if(this.state.curTable === 'Month')
-        this.setState({ curPeriod: new Date(curYear, curMonth + 1) });
-      if(this.state.curTable === 'Week')
-        this.setState({ curPeriod: new Date(curYear, curMonth, curDate + 7) });
-      if(this.state.curTable === 'Day')
-        this.setState({ curPeriod: new Date(curYear, curMonth, curDate + 1) });
+      if(table === 'Month')
+        changeTimePeriod(new Date(curYear, curMonth + 1));
+      if(table === 'Week')
+        changeTimePeriod(new Date(curYear, curMonth, curDate + 7));
+      if(table === 'Day')
+        changeTimePeriod(new Date(curYear, curMonth, curDate + 1));
     }
   }
 
   openAddEventField = (e) => {
-    this.setState({ isActive: true });
+    if(this.props.isActive === true)
+      return this.props.toggleAddEventField(false);
+    else
+      return this.props.toggleAddEventField(true);
   }
 
   render() {
-    const { period } = this.props;
+    const { table, period, isActive } = this.props;
     return (
       <div className="App">
         <div className="container">
@@ -88,11 +91,11 @@ class App extends Component {
             </div>
           </header>
           <main>
-            {this.state.isActive ? <AddEventField isActive={this.state.isActive} /> : null}
+            {isActive ? <AddEventFieldContainer isActive={isActive} /> : null}
             <div className="main-table">
               {
-                period === 'Month' ? <TableMonthContainer curPeriod={this.state.curPeriod} /> :
-                (this.state.curTable === 'Week' ? <TableWeekContainer curPeriod={this.state.curPeriod} /> : <TableDayContainer curPeriod={this.state.curPeriod} />)
+                table === 'Month' ? <TableMonthContainer period={period} /> :
+                (table === 'Week' ? <TableWeekContainer period={period} /> : <TableDayContainer period={period} />)
               }
             </div>
           </main>
@@ -102,11 +105,19 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = store => {
-  console.log(store);
-  return {
-    period: store.calendar.period
-  }
-}
+const mapStateToProps = store => ({
+  table: store.calendar.table,
+  period: store.calendar.period,
+  isActive: store.eventField.isActive
+});
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = dispatch => ({
+  toggleTimeSegment: table => dispatch(toggleTimeSegment(table)),
+  changeTimePeriod: period => dispatch(changeTimePeriod(period)),
+  toggleAddEventField: isActive => dispatch(toggleAddEventField(isActive))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

@@ -6,8 +6,8 @@ let AddEventField = props => {
   return (
     <div className="input-form">
       <h1>New event</h1>
-      <div className="close-button">
-        <i class="fas fa-times"></i>
+      <div className="close-button" onClick={props.onEndButtonClick}>
+        <i className="fas fa-times"></i>
       </div>
       <form>
         <div className="form-row">

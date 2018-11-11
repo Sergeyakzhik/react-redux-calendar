@@ -10,11 +10,12 @@ const dayHours = ['12am', '1am', '2am', '3am', '4am', '5am',
 
 class TableDayContainer extends React.Component {
   createRows = () => {
+    const { period } = this.props;
     let tbody = [];
-    let curHour = new Date().getHours();
     let date = new Date();
+    let curHour = date.getHours();
     let realDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    let curDate = new Date(this.props.curPeriod.getFullYear(), this.props.curPeriod.getMonth(), this.props.curPeriod.getDate());
+    let curDate = new Date(period.getFullYear(), period.getMonth(), period.getDate());
     let isCurrentDay = JSON.stringify(realDate) == JSON.stringify(curDate);
 
     for (let i = 0; i < 24; i++) {
@@ -28,8 +29,9 @@ class TableDayContainer extends React.Component {
   }
 
   render() {
+    const { period } = this.props;
     return (
-      <TableDay date={`${this.props.curPeriod.getMonth() + 1}/${this.props.curPeriod.getDate()}/${this.props.curPeriod.getFullYear()}`}
+      <TableDay date={`${period.getMonth() + 1}/${period.getDate()}/${period.getFullYear()}`}
         tableRows={this.createRows()}
       />
     );

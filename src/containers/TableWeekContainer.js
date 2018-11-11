@@ -23,7 +23,7 @@ class TableWeekContainer extends React.Component {
   }
 
   createWeekdaysArray = () => {
-    let curDate = this.props.curPeriod;
+    let curDate = this.props.period;
     let curMonth = curDate.getMonth();
     let curYear = curDate.getFullYear();
     let weekdaysArray = [];
@@ -72,7 +72,7 @@ class TableWeekContainer extends React.Component {
   getDaysInPrevMonth = () => 32 - new Date(new Date().getFullYear(), new Date().getMonth() - 1, 32).getDate();
 
   calculateTimeRange = () => {
-    let curDate = this.props.curPeriod;
+    let curDate = this.props.period;
     let curMonth = curDate.getMonth();
     let curYear = curDate.getFullYear();
     let emptyCellsNum = this.countEmptyCells(curYear, curMonth);
@@ -95,13 +95,14 @@ class TableWeekContainer extends React.Component {
   }
 
   createRows = () => {
+    const { period } = this.props;
     let tbody = [];
     let weekdaysArray = this.createWeekdaysArray();
     let weekdaysArrayInd = 0;
     let curDay = new Date().getDay();
     let date = new Date();
     let realDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    let curDate = new Date(this.props.curPeriod.getFullYear(), this.props.curPeriod.getMonth(), this.props.curPeriod.getDate());
+    let curDate = new Date(period.getFullYear(), period.getMonth(), period.getDate());
     let isCurrentDay = JSON.stringify(realDate) == JSON.stringify(curDate);
 
     for (let i = 0; i < 24; i++) {
@@ -120,9 +121,7 @@ class TableWeekContainer extends React.Component {
 
   setHeaderFirstMonth = () => {
     let firstMonth;
-    let curMonth = this.props.curPeriod.getMonth();
-
-    console.log(curMonth)
+    let curMonth = this.props.period.getMonth();
 
     if(this.calculateTimeRange()[0] < 1) {
       if(curMonth == 0)
@@ -138,7 +137,7 @@ class TableWeekContainer extends React.Component {
 
   setHeaderSecondMonth = () => {
     let secondMonth;
-    let curMonth = this.props.curPeriod.getMonth();
+    let curMonth = this.props.period.getMonth();
 
     if(this.calculateTimeRange()[1] > this.getDaysInCurMonth())
       secondMonth = curMonth + 2;
@@ -149,9 +148,10 @@ class TableWeekContainer extends React.Component {
   }
 
   render() {
+    const { period } = this.props;
     return (
-      <TableWeek date={`${this.setHeaderFirstMonth()}/${this.fillWeekdaysArray(this.calculateTimeRange())[0]}/${this.props.curPeriod.getFullYear()} -
-        ${this.setHeaderSecondMonth()}/${this.fillWeekdaysArray(this.calculateTimeRange())[6]}/${this.props.curPeriod.getFullYear()}`}
+      <TableWeek date={`${this.setHeaderFirstMonth()}/${this.fillWeekdaysArray(this.calculateTimeRange())[0]}/${period.getFullYear()} -
+        ${this.setHeaderSecondMonth()}/${this.fillWeekdaysArray(this.calculateTimeRange())[6]}/${period.getFullYear()}`}
         tableHeader={this.createTableHeader()} tableRows={this.createRows()}
       />
     );

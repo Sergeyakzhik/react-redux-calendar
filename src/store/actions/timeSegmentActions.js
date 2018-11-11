@@ -1,6 +1,6 @@
-import * as types from '../../constants/action-types'
+import { TOGGLE_TIME_SEGMENT } from '../../constants/action-types';
 
-export let toggleTimeSegment = () => ({
+export let toggleTimeSegment = table => ({
   type: TOGGLE_TIME_SEGMENT,
-  payload: period
+  payload: table
 });

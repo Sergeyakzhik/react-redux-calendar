@@ -16,7 +16,7 @@ class TableMonthContainer extends React.Component {
   }
 
   createDaysArray = () => {
-    let curDate = this.props.curPeriod;
+    let curDate = this.props.period;
     let curMonth = curDate.getMonth();
     let curYear = curDate.getFullYear();
     let curDay = curDate.getDate();
@@ -41,12 +41,13 @@ class TableMonthContainer extends React.Component {
   }
 
   createRows = () => {
+    const { period } = this.props;
     let tbody = [];
     let daysArray = this.createDaysArray();
     let daysArrayInd = 0;
     let date = new Date();
     let realDate = new Date(date.getFullYear(), date.getMonth());
-    let curDate = new Date(this.props.curPeriod.getFullYear(), this.props.curPeriod.getMonth());
+    let curDate = new Date(period.getFullYear(), period.getMonth());
     let isCurrentDay = JSON.stringify(realDate) == JSON.stringify(curDate);
 
     for (let i = 0; i < 6; i++) {
@@ -64,8 +65,9 @@ class TableMonthContainer extends React.Component {
   }
 
   render() {
+    const { period } = this.props;
     return (
-      <TableMonth date={`${this.props.curPeriod.getMonth() + 1}/${this.props.curPeriod.getFullYear()}`}
+      <TableMonth date={`${period.getMonth() + 1}/${period.getFullYear()}`}
         tableHeader={this.createTableHeader()} tableRows={this.createRows()}
       />
     );
