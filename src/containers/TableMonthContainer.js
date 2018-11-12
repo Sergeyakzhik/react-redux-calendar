@@ -1,8 +1,7 @@
 import React from 'react';
 import CellContainer from './CellContainer.js';
 import TableMonth from '../components/TableMonth/TableMonth';
-
-const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+import { weekdays } from '../constants/constants';
 
 class TableMonthContainer extends React.Component {
 
@@ -10,16 +9,15 @@ class TableMonthContainer extends React.Component {
     let thead = [];
 
     for(let i = 0; i < 7; i++) {
-      thead.push(<th>{weekDays[i]}</th>);
+      thead.push(<th key={'THMonth' + i}>{weekdays[i]}</th>);
     }
-    return thead;
+    return <tr>{thead}</tr>;
   }
 
   createDaysArray = () => {
     let curDate = this.props.period;
     let curMonth = curDate.getMonth();
     let curYear = curDate.getFullYear();
-    let curDay = curDate.getDate();
     let date = new Date(curYear, curMonth);
     let emptyCellsNum = date.getDay();
     let daysArray = [];
@@ -36,10 +34,6 @@ class TableMonthContainer extends React.Component {
     return daysArray;
   }
 
-  handleAddEvent = (e) => {
-
-  }
-
   createRows = () => {
     const { period } = this.props;
     let tbody = [];
@@ -48,18 +42,17 @@ class TableMonthContainer extends React.Component {
     let date = new Date();
     let realDate = new Date(date.getFullYear(), date.getMonth());
     let curDate = new Date(period.getFullYear(), period.getMonth());
-    let isCurrentDay = JSON.stringify(realDate) == JSON.stringify(curDate);
+    let isCurrentDay = realDate.getTime() === curDate.getTime();
 
     for (let i = 0; i < 6; i++) {
       let cells = [];
 
       for(let j = 0; j < 7; j++) {
-        cells.push(<CellContainer className={isCurrentDay && daysArray[daysArrayInd] == date.getDate() ? 'curDay' : ''} key={`TMonth-${j + i * 7}`} text={daysArray[daysArrayInd]} />);
+        cells.push(<CellContainer className={isCurrentDay && daysArray[daysArrayInd] === date.getDate() ? 'curDay' : ''} key={`TMonth-${j + i * 7}`} text={daysArray[daysArrayInd]} />);
         daysArrayInd++;
       }
-      tbody.push(<tr>{cells}</tr>);
+      tbody.push(<tr key={'TRowMonth' + i}>{cells}</tr>);
     }
-
 
     return tbody;
   }

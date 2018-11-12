@@ -1,36 +1,27 @@
 import React from 'react';
-import DatePicker from "react-datepicker";
 import moment from "moment";
 import AddEventField from '../components/AddEventField/AddEventField';
 
 import { connect } from 'react-redux';
-import { toggleAddEventField } from '../store/actions/addEventFieldAction';
+import {
+  closeAddEventField,
+  changeStartDate,
+  changeEndDate
+} from '../store/actions/addEventFieldActions';
 
 import "react-datepicker/dist/react-datepicker.css";
 
 class AddEventFieldContainer extends React.Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      startDate: moment(),
-      endDate: moment()
-    }
-  }
-
-  getEndDate = () => this.state.startDate ? this.state.startDate : moment();
+  getEndDate = () => this.props.startDate ? this.props.startDate : moment();
 
   handleStartDateChange = date => {
-    this.setState({
-      startDate: date,
-      endDate: date > this.state.endDate ? date : this.state.endDate
-    });
+    this.props.changeStartDate(date);
+    this.props.changeEndDate(date > this.props.endDate ? date : this.props.endDate);
   }
 
   handleEndDateChange = date => {
-    this.setState({
-      endDate: date
-    });
+    this.props.changeEndDate(date);
   }
 
   getCurrentTime = () => {
@@ -39,30 +30,49 @@ class AddEventFieldContainer extends React.Component {
   }
 
   handleEndButtonClick = (e) => {
-    console.log('11')
     if(this.props.isActive === true)
-      return this.props.toggleAddEventField(false);
+      return this.props.closeAddEventField(false);
+  }
+
+  setMinEndDateTime = () => {
+    let curDate = moment()._d.toString().split(' ', 3).join();
+    let propsEndDate = this.props.endDate._d.toString().split(' ', 3).join();
+
+    if(curDate === propsEndDate)
+      return moment().hours(this.getCurrentTime()[0]).minutes(this.getCurrentTime()[1] - 30);
     else
-      return this.props.toggleAddEventField(true);
+      return moment().hours(23).minutes(60);
   }
 
   render() {
+    const { startDate, endDate } = this.props;
+    const currentTime = moment();
     return (
-      <AddEventField startDate={this.state.startDate} endDate={this.state.endDate} onChange={this.handleEndDateChange} onEndButtonClick={this.handleEndButtonClick}
-        minDate={this.state.startDate} minTime={moment().hours(this.getCurrentTime()[0]).minutes(this.getCurrentTime()[1] - 30)}
+      <AddEventField
+        startDate={startDate}
+        endDate={endDate}
+        onStartDateChange={this.handleStartDateChange}
+        onEndDateChange={this.handleEndDateChange}
+        onEndButtonClick={this.handleEndButtonClick}
+        minDate={currentTime}
+        minStartDateTime={moment().hours(this.getCurrentTime()[0]).minutes(this.getCurrentTime()[1] - 30)}
+        minEndDateTime={this.setMinEndDateTime()}
         maxTime={moment().hours(23).minutes(30)}
       />
     );
   }
 }
 
-
 const mapStateToProps = store => ({
-  isActive: store.eventField.isActive
+  isActive: store.eventField.isActive,
+  startDate: store.eventField.startDate,
+  endDate: store.eventField.endDate
 });
 
 const mapDispatchToProps = dispatch => ({
-  toggleAddEventField: isActive => dispatch(toggleAddEventField(isActive))
+  closeAddEventField: isActive => dispatch(closeAddEventField(isActive)),
+  changeStartDate: startDate => dispatch(changeStartDate(startDate)),
+  changeEndDate: endDate => dispatch(changeEndDate(endDate))
 });
 
 export default connect(
