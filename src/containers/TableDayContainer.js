@@ -4,7 +4,7 @@ import TableDay from '../components/TableDay/TableDay';
 import { dayHours } from '../constants/constants';
 
 class TableDayContainer extends React.Component {
-  
+
   createRows = () => {
     const { period } = this.props;
     let tbody = [];
@@ -17,8 +17,16 @@ class TableDayContainer extends React.Component {
     for (let i = 0; i < 24; i++) {
       tbody.push(
         <tr key={'TRowDay' + i}>
-          <CellContainer className={isCurrentDay && i === curHour ? 'curDay' : ''} key={`TDayHour-${dayHours[i]}`} text={dayHours[i]} />
-          <CellContainer className={isCurrentDay && i === curHour ? 'curDay' : ''} key={`TDay-${i}`} text='' />
+          <CellContainer
+            className={isCurrentDay && i === curHour ? 'curDay' : ''}
+            key={`TDayHour-${dayHours[i]}`}
+            text={dayHours[i]}
+          />
+          <CellContainer
+            className={isCurrentDay && i === curHour ? 'curDay' : ''} 
+            key={`TDay-${i}`}
+            text=''
+          />
         </tr>
       );
     }
@@ -28,7 +36,8 @@ class TableDayContainer extends React.Component {
   render() {
     const { period } = this.props;
     return (
-      <TableDay date={`${period.getMonth() + 1}/${period.getDate()}/${period.getFullYear()}`}
+      <TableDay
+        date={`${period.getMonth() + 1}/${period.getDate()}/${period.getFullYear()}`}
         tableRows={this.createRows()}
       />
     );

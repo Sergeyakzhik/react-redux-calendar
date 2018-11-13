@@ -76,13 +76,14 @@ class AppContainer extends Component {
 const mapStateToProps = store => ({
   table: store.calendar.table,
   period: store.calendar.period,
-  isActive: store.eventField.isActive
+  isActive: store.eventField.isActive,
+  events: store.eventField.events
 });
 
 const mapDispatchToProps = dispatch => ({
   toggleTimeSegment: table => dispatch(toggleTimeSegment(table)),
   changeTimePeriod: period => dispatch(changeTimePeriod(period)),
-  openAddEventField: (isActive, startDate, endDate) => dispatch(openAddEventField(isActive, startDate, endDate))
+  openAddEventField: (isActive, startDate, endDate) => dispatch(openAddEventField(isActive, startDate, endDate)),
 });
 
 export default connect(

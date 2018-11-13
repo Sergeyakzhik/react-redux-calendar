@@ -49,7 +49,7 @@ let AddEventField = props => (
           <textarea className="form-control" rows="5" id="comment"></textarea>
         </div>
         <div className="col-sm-12 text-center">
-          <button type="submit" className="btn btn-primary add-event-button">Submit</button>
+          <button onClick={props.onSubmitButtonClick} type="submit" className="btn btn-primary add-event-button">Submit</button>
         </div>
       </div>
     </form>

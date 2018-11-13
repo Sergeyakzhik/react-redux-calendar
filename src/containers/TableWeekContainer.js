@@ -66,11 +66,22 @@ class TableWeekContainer extends React.Component {
       let cells = [];
 
       for(let j = 0; j < 7; j++) {
-        cells.push(<CellContainer className={isCurrentDay && j === curDay ? 'curDay' : ''} key={`TWeek-${j + i * 7}`} text='' />);
+        cells.push(
+          <CellContainer
+            className={isCurrentDay && j === curDay ? 'curDay' : ''}
+            key={`TWeek-${j + i * 7}`}
+            text=''
+          />
+        );
         weekdaysArrayInd++;
       }
 
-      cells.unshift(<CellContainer key={`TDayHour-${dayHours[i]}`} text={dayHours[i]} />);
+      cells.unshift(
+        <CellContainer
+          key={`TDayHour-${dayHours[i]}`} 
+          text={dayHours[i]}
+        />
+      );
       tbody.push(<tr key={'TRowWeek' + i}>{cells}</tr>);
     }
     return tbody;
