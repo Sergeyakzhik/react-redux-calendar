@@ -10,16 +10,14 @@ import {
 } from '../../constants/action-types';
 import moment from "moment";
 
-let defaultDate = moment();
-
 const initialState = {
   isActive: false,
   events: {},
   event: {
     name: '',
     place: '',
-    startDate: defaultDate,
-    endDate: defaultDate,
+    startDate: '',
+    endDate: '',
     description: ''
   }
 }
@@ -28,13 +26,11 @@ export function eventFieldReducer(state = initialState, action) {
   switch (action.type) {
     case OPEN_EVENT_FIELD:
       return { ...state,
-        isActive: action.payload.isActive,
-        startDate: action.payload.startDate,
-        endDate: action.payload.endDate,
+        isActive: action.payload,
         event: {
           ...state.event,
-          startDate: action.payload.startDate,
-          endDate: action.payload.endDate
+          startDate: moment(),
+          endDate: moment()
         }
       }
     case CLOSE_EVENT_FIELD:

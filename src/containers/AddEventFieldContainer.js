@@ -40,16 +40,6 @@ class AddEventFieldContainer extends React.Component {
 
   handleEndButtonClick = e => this.props.closeAddEventField(false);
 
-  setMinTime = date => {
-    let curDate = moment().startOf('day').toString();
-    let propsDate = date.startOf('day').toString();
-
-    if(curDate === propsDate)
-      return moment().hours(this.getCurrentTime()[0]).minutes(this.getCurrentTime()[1] - 30);
-    else
-      return moment().hours(23).minutes(60);
-  }
-
   handleInputChange = e => {
     if(e.target.id === 'title')
       this.props.changeEventName(e.target.value);
@@ -85,8 +75,6 @@ class AddEventFieldContainer extends React.Component {
                 onChange={this.handleStartDateChange}
                 showTimeSelect
                 minDate={currentTime}
-                minTime={this.setMinTime(startDate)}
-                maxTime={moment().hours(23).minutes(30)}
                 dateFormat="LLL"
                 timeCaption="Time"
               />
@@ -97,8 +85,6 @@ class AddEventFieldContainer extends React.Component {
                 selected={endDate}
                 onChange={this.handleEndDateChange}
                 minDate={startDate}
-                minTime={this.setMinTime(endDate)}
-                maxTime={moment().hours(23).minutes(30)}
                 showTimeSelect
                 dateFormat="LLL"
                 timeCaption="Time"
@@ -120,9 +106,9 @@ class AddEventFieldContainer extends React.Component {
 
 const mapStateToProps = store => ({
   isActive: store.eventField.isActive,
+  event: store.eventField.event,
   startDate: store.eventField.event.startDate,
-  endDate: store.eventField.event.endDate,
-  event: store.eventField.event
+  endDate: store.eventField.event.endDate
 });
 
 const mapDispatchToProps = dispatch => ({

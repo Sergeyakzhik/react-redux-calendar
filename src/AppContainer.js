@@ -53,12 +53,11 @@ class AppContainer extends Component {
     }
   }
 
-  handleNewEventClick = (e) => {
-    let currentTime = moment();
+  handleNewEventClick = e => {
     if(this.props.isActive === true)
       return this.props.openAddEventField(false);
     else
-      return this.props.openAddEventField(true, currentTime, currentTime);
+      return this.props.openAddEventField(true);
   }
 
   render() {
@@ -83,7 +82,7 @@ const mapStateToProps = store => ({
 const mapDispatchToProps = dispatch => ({
   toggleTimeSegment: table => dispatch(toggleTimeSegment(table)),
   changeTimePeriod: period => dispatch(changeTimePeriod(period)),
-  openAddEventField: (isActive, startDate, endDate) => dispatch(openAddEventField(isActive, startDate, endDate)),
+  openAddEventField: isActive => dispatch(openAddEventField(isActive))
 });
 
 export default connect(

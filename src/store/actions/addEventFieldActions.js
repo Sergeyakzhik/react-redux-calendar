@@ -9,9 +9,9 @@ import {
   CHANGE_EVENT_PLACE
 } from '../../constants/action-types';
 
-export let openAddEventField = (isActive, startDate, endDate) => ({
+export let openAddEventField = isActive => ({
   type: OPEN_EVENT_FIELD,
-  payload: { isActive, startDate, endDate }
+  payload: isActive
 });
 
 export let closeAddEventField = isActive => ({
