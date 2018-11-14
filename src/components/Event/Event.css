@@ -6,7 +6,7 @@
   text-align: center;
 }
 
-.eventsList {
+.events-list {
   position: absolute;
   z-index: 1;
   width: 96%;

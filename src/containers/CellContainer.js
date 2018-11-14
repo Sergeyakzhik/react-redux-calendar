@@ -5,10 +5,6 @@ import EventContainer from './EventContainer';
 
 class CellContainer extends React.Component {
 
-  createEventsList = () => {
-
-  }
-
   render() {
     const { eventsList } = this.props;
     return (

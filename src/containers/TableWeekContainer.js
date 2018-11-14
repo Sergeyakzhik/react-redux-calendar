@@ -4,7 +4,22 @@ import TableWeek from '../components/TableWeek/TableWeek';
 import moment from "moment";
 import { weekdays, dayHours } from '../constants/constants';
 
+import { connect } from 'react-redux';
+
 class TableWeekContainer extends React.Component {
+
+  getListOfEvents = date => {
+    let { events } = this.props;
+    let eventsList = [];
+
+    for(let key in events) {
+      if(events[key].startDate.startOf('day') <= moment(date).startOf('day') &&
+        events[key].endDate.startOf('day') >= moment(date).startOf('day')) {
+        eventsList.push(events[key]);
+      }
+    }
+    return eventsList;
+  }
 
   createTableHeader = () => {
     let thead = [];
@@ -38,7 +53,7 @@ class TableWeekContainer extends React.Component {
       month++;
 
       for(let i = 1; array.length < 7; i++) {
-        array.push(moment().year(curYear).month(month).date(i).startOf('day').toDate());
+        array.push(now.year(curYear).month(month).date(i).startOf('day').toDate());
       }
     }
 
@@ -72,6 +87,7 @@ class TableWeekContainer extends React.Component {
             className={momentDate.toDate().toString() === datesArray[j].toString() ? 'curDay' : ''}
             key={datesArray[j]}
             text=''
+            eventsList={this.getListOfEvents(datesArray[j])}
           />
         );
       }
@@ -106,4 +122,10 @@ class TableWeekContainer extends React.Component {
   }
 }
 
-export default TableWeekContainer;
+const mapStateToProps = store => ({
+  events: store.eventField.events
+});
+
+export default connect(
+  mapStateToProps
+)(TableWeekContainer);

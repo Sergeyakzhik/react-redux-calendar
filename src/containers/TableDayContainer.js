@@ -1,31 +1,48 @@
 import React from 'react';
 import CellContainer from './CellContainer.js';
 import TableDay from '../components/TableDay/TableDay';
+import moment from "moment";
 import { dayHours } from '../constants/constants';
 
+import { connect } from 'react-redux';
+
 class TableDayContainer extends React.Component {
+
+  getListOfEvents = date => {
+    let { events } = this.props;
+    let eventsList = [];
+
+    for(let key in events) {
+      if(events[key].startDate.startOf('day') <= moment(date).startOf('day') &&
+        events[key].endDate.startOf('day') >= moment(date).startOf('day')) {
+        eventsList.push(events[key]);
+      }
+    }
+    return eventsList;
+  }
 
   createRows = () => {
     const { period } = this.props;
     let tbody = [];
-    let date = new Date();
-    let curHour = date.getHours();
-    let realDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    let curDate = new Date(period.getFullYear(), period.getMonth(), period.getDate());
-    let isCurrentDay = realDate.getTime() === curDate.getTime();
+    let momentDate = moment().startOf('hour');
+    let periodDate = moment(period).startOf('hour');
+
+    console.log(momentDate)
 
     for (let i = 0; i < 24; i++) {
+      let date = moment(period).hour(i).startOf('hour').toDate();
       tbody.push(
         <tr key={'TRowDay' + i}>
           <CellContainer
-            className={isCurrentDay && i === curHour ? 'curDay' : ''}
+            className={momentDate.toDate().toString() === periodDate.hour(i).toDate().toString() ? 'curDay' : ''}
             key={`TDayHour-${dayHours[i]}`}
             text={dayHours[i]}
           />
           <CellContainer
-            className={isCurrentDay && i === curHour ? 'curDay' : ''}
-            key={`TDay-${i}`}
+            className={momentDate.toDate().toString() === periodDate.toDate().toString() ? 'curDay' : ''}
+            key={date}
             text=''
+            eventsList={this.getListOfEvents(date)}
           />
         </tr>
       );
@@ -37,11 +54,17 @@ class TableDayContainer extends React.Component {
     const { period } = this.props;
     return (
       <TableDay
-        date={`${period.getMonth() + 1}/${period.getDate()}/${period.getFullYear()}`}
+        date={`${moment(period).month() + 1}/${moment(period).date()}/${moment(period).year()}`}
         tableRows={this.createRows()}
       />
     );
   }
 }
 
-export default TableDayContainer;
+const mapStateToProps = store => ({
+  events: store.eventField.events
+});
+
+export default connect(
+  mapStateToProps
+)(TableDayContainer);
