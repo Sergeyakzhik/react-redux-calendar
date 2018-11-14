@@ -30,18 +30,15 @@ class TableWeekContainer extends React.Component {
     let month = startOfWeek.month();
     let daysInCurMonth = moment(period).startOf('week').daysInMonth();
 
-    console.log(endOfWeekDate)
-
     if(startOfWeekDate > endOfWeekDate) {
       for(let i = startOfWeekDate; i <= daysInCurMonth; i++) {
         array.push(now.year(curYear).month(month).date(i).startOf('day').toDate());
       }
 
       month++;
-      console.log(endOfWeek.startOf('day').toDate())
 
-      for(let i = endOfWeekDate; array.length < 7; i++) {                        //// TODO: fix
-        array.push(now.year(curYear).month(month).date(i).startOf('week').toDate());
+      for(let i = 1; array.length < 7; i++) {
+        array.push(moment().year(curYear).month(month).date(i).startOf('day').toDate());
       }
     }
 
@@ -72,7 +69,7 @@ class TableWeekContainer extends React.Component {
       for(let j = 0; j < 7; j++) {
         cells.push(
           <CellContainer
-            // className={momentDate.toDate().toString() === datesArray[j].toString() ? 'curDay' : ''}
+            className={momentDate.toDate().toString() === datesArray[j].toString() ? 'curDay' : ''}
             key={datesArray[j]}
             text=''
           />
