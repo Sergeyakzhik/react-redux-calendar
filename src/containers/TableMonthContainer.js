@@ -4,7 +4,22 @@ import TableMonth from '../components/TableMonth/TableMonth';
 import moment from "moment";
 import { weekdays } from '../constants/constants';
 
+import { connect } from 'react-redux';
+
 class TableMonthContainer extends React.Component {
+
+  getListOfEvents = date => {
+    let { events } = this.props;
+    let eventsList = [];
+
+    for(let key in events) {
+      if(events[key].startDate.startOf('day') <= moment(date).startOf('day') &&
+        events[key].endDate.startOf('day') >= moment(date).startOf('day')) {
+        eventsList.push(events[key]);
+      }
+    }
+    return eventsList;
+  }
 
   createTableHeader = () => {
     let thead = [];
@@ -28,6 +43,7 @@ class TableMonthContainer extends React.Component {
             className={momentDate.toDate().toString() === datesArray[j + 7 * i].toString() ? 'curDay' : ''}
             key={datesArray[j + 7 * i]}
             text={moment(datesArray[j + 7 * i]).date()}
+            eventsList={this.getListOfEvents(datesArray[j + 7 * i])}
           />
         );
       }
@@ -43,7 +59,6 @@ class TableMonthContainer extends React.Component {
     let startOfMonth = now.startOf('month');
     let firstCell = startOfMonth.startOf('week');
     let firstCellDate = startOfMonth.startOf('week').date();
-    let daysInM = moment().daysInMonth();
     let curYear = moment(period).year();
     let month = firstCell.month();
     let daysInCurMonth = firstCell.daysInMonth();
@@ -53,10 +68,11 @@ class TableMonthContainer extends React.Component {
       if(i > daysInCurMonth) {
         i = 1;
         daysInCurMonth = daysInNextMonth;
-        month++
+        month++;
       }
       array.push(now.year(curYear).month(month).date(i).startOf('day').toDate());
     }
+
     return array;
   }
 
@@ -64,7 +80,7 @@ class TableMonthContainer extends React.Component {
     const { period } = this.props;
     return (
       <TableMonth
-        date={`${period.getMonth() + 1}/${period.getFullYear()}`}
+        date={`${period.month() + 1}/${period.year()}`}
         tableHeader={this.createTableHeader()}
         tableRows={this.createRows()}
       />
@@ -72,4 +88,10 @@ class TableMonthContainer extends React.Component {
   }
 }
 
-export default TableMonthContainer;
+const mapStateToProps = store => ({
+  events: store.eventField.events
+});
+
+export default connect(
+  mapStateToProps
+)(TableMonthContainer);

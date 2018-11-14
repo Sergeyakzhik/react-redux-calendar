@@ -8,38 +8,48 @@ class TableWeekContainer extends React.Component {
 
   createTableHeader = () => {
     let thead = [];
-    let weekdaysArray = this.fillWeekdaysArray();
+    let datesArray = this.fillDatesArray();
 
-    for(let i = 0; i < weekdaysArray.length; i++) {
-      thead.push(<th key={'THWeek' + i}>{weekdays[i]} {weekdaysArray[i]}</th>);
+    for(let i = 0; i < datesArray.length; i++) {
+      thead.push(<th key={'THWeek' + i}>{weekdays[i]} {moment(datesArray[i]).date()}</th>);
     }
     thead.unshift(<th key={'THWeekEmpty'}></th>)
 
     return <tr>{thead}</tr>;
   }
 
-  fillWeekdaysArray = () => {
+  fillDatesArray = () => {
     let array = [];
     const { period } = this.props;
-    let startDate = moment(period).startOf('week').toDate();
-    let endDate = moment(period).endOf('week').toDate();
+    let now = moment(period);
+    let startOfWeek = moment(period).startOf('week');
+    let startOfWeekDate = startOfWeek.date();
+    let endOfWeek = moment(period).endOf('week');
+    let endOfWeekDate = endOfWeek.date();
+    let curYear = moment(period).year();
+    let month = startOfWeek.month();
+    let daysInCurMonth = moment(period).startOf('week').daysInMonth();
 
-    if(startDate.getMonth() !== endDate.getMonth()) {
-      for(let i = startDate.getDate(); i <= moment(startDate).daysInMonth(); i++) {
-        array.push(i);
+    console.log(endOfWeekDate)
+
+    if(startOfWeekDate > endOfWeekDate) {
+      for(let i = startOfWeekDate; i <= daysInCurMonth; i++) {
+        array.push(now.year(curYear).month(month).date(i).startOf('day').toDate());
       }
 
-      for(let i = 1; array.length < 7; i++) {
-        array.push(i);
+      month++;
+      console.log(endOfWeek.startOf('day').toDate())
+
+      for(let i = endOfWeekDate; array.length < 7; i++) {                        //// TODO: fix
+        array.push(now.year(curYear).month(month).date(i).startOf('week').toDate());
       }
     }
 
     else {
-      for(let i = startDate.getDate(); i <= endDate.getDate(); i++) {
-        array.push(i);
+      for(let i = startOfWeekDate; i <= endOfWeekDate; i++) {
+        array.push(now.year(curYear).month(month).date(i).startOf('day').toDate());
       }
     }
-
     return array;
   }
 
@@ -52,15 +62,9 @@ class TableWeekContainer extends React.Component {
   }
 
   createRows = () => {
-    const { period } = this.props;
     let tbody = [];
-    let weekdaysArray = this.fillWeekdaysArray();
-    let weekdaysArrayInd = 0;
-    let date = new Date();
-    let curDay = date.getDay();
-    let realDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    let curDate = new Date(period.getFullYear(), period.getMonth(), period.getDate());
-    let isCurrentDay = realDate.getTime() === curDate.getTime();
+    let datesArray = this.fillDatesArray();
+    let momentDate = moment().startOf('day');
 
     for (let i = 0; i < 24; i++) {
       let cells = [];
@@ -68,17 +72,16 @@ class TableWeekContainer extends React.Component {
       for(let j = 0; j < 7; j++) {
         cells.push(
           <CellContainer
-            className={isCurrentDay && j === curDay ? 'curDay' : ''}
-            key={`TWeek-${j + i * 7}`}
+            // className={momentDate.toDate().toString() === datesArray[j].toString() ? 'curDay' : ''}
+            key={datesArray[j]}
             text=''
           />
         );
-        weekdaysArrayInd++;
       }
 
       cells.unshift(
         <CellContainer
-          key={`TDayHour-${dayHours[i]}`} 
+          key={`TDayHour-${dayHours[i]}`}
           text={dayHours[i]}
         />
       );

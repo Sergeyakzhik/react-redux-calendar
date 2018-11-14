@@ -1,19 +1,21 @@
 import React from 'react';
-import Cell from '../components/Cell/Cell'
+import '../components/Cell/Cell.css';
+import '../components/Cell/Cell.css';
+import EventContainer from './EventContainer';
 
 class CellContainer extends React.Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      hasEvent: false,
-      numberOfEvents: 0
-    }
+  createEventsList = () => {
+
   }
 
   render() {
+    const { eventsList } = this.props;
     return (
-      <Cell className={this.props.className} text={this.props.text} />
+      <td className={this.props.className}>
+        <h4>{this.props.text}</h4>
+        {eventsList ? <EventContainer eventsList={eventsList} /> : null}
+      </td>
     );
   }
 }

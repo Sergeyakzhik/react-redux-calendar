@@ -1,8 +1,9 @@
-import { TOGGLE_TIME_SEGMENT, CHANGE_PERIOD } from '../../constants/action-types.js'
+import { TOGGLE_TIME_SEGMENT, CHANGE_PERIOD } from '../../constants/action-types.js';
+import moment from "moment";
 
 const initialState = {
   table: 'Month',
-  period: new Date(),
+  period: moment()
 }
 
 export function calendarReducer(state = initialState, action) {

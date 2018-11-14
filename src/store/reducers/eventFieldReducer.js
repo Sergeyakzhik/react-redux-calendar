@@ -52,11 +52,16 @@ export function eventFieldReducer(state = initialState, action) {
         }
       }
     case ADD_EVENT:
+    const newEvent = action.payload.event;
       return { ...state,
         isActive: action.payload.isActive,
         events: {
           ...state.events,
-          ['event_' + action.payload.event.name]: action.payload.event
+          ['event_' +
+            newEvent.name +
+            newEvent.startDate.date() +
+            newEvent.endDate.date()
+          ]: action.payload.event
         }
       }
     case CHANGE_EVENT_NAME:

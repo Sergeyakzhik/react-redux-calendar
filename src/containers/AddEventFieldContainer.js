@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from "moment";
-import AddEventField from '../components/AddEventField/AddEventField';
+import '../components/AddEventField/AddEventField.css';
 import DatePicker from "react-datepicker";
 
 import { connect } from 'react-redux';
@@ -115,7 +115,7 @@ const mapDispatchToProps = dispatch => ({
   closeAddEventField: isActive => dispatch(closeAddEventField(isActive)),
   changeStartDate: startDate => dispatch(changeStartDate(startDate)),
   changeEndDate: endDate => dispatch(changeEndDate(endDate)),
-  addEvent: (isActive, events) => dispatch(addEvent(isActive, events)),
+  addEvent: (isActive, event) => dispatch(addEvent(isActive, event)),
   changeEventName: name => dispatch(changeEventName(name)),
   changeEventDescription: description => dispatch(changeEventDescription(description)),
   changeEventPlace: place => dispatch(changeEventPlace(place))

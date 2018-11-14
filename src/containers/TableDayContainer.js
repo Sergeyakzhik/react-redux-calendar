@@ -23,7 +23,7 @@ class TableDayContainer extends React.Component {
             text={dayHours[i]}
           />
           <CellContainer
-            className={isCurrentDay && i === curHour ? 'curDay' : ''} 
+            className={isCurrentDay && i === curHour ? 'curDay' : ''}
             key={`TDay-${i}`}
             text=''
           />

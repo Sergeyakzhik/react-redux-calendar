@@ -2,6 +2,7 @@
   height: 7rem;
   border: 1px solid black;
   text-align: left;
+  position: relative;
 }
 
 .table-month th:first-child {

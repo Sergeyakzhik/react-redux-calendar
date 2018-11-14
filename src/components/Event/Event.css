@@ -1,0 +1,37 @@
+.event {
+  height: 1.5rem;
+  background-color: orange;
+  border-radius: 7px;
+  margin: 0.2rem 0;
+  text-align: center;
+}
+
+.eventsList {
+  position: absolute;
+  z-index: 1;
+  width: 96%;
+  height: 4.5rem;
+  top: 2rem;
+  left: 50%;
+  margin-left: -48%;
+  border-radius: 7px;
+  overflow: auto;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: white;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #272830;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

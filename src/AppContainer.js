@@ -9,7 +9,7 @@ import { openAddEventField } from './store/actions/addEventFieldActions';
 
 class AppContainer extends Component {
 
-  setCurrentPeriod = () => new Date();
+  setCurrentPeriod = () => moment();
 
   getCurrentYear = () => this.props.period.getFullYear();
 
@@ -31,9 +31,9 @@ class AppContainer extends Component {
 
   handlePeriodTogglerClick = (e) => {
     const { table, period, changeTimePeriod } = this.props;
-    let curYear = period.getFullYear();
-    let curMonth = period.getMonth();
-    let curDate = period.getDate();
+    let curYear = moment(period).year();
+    let curMonth = moment(period).month();
+    let curDate = moment(period).date();
 
     if(e.target.id === 'left-button') {
       if(table === 'Month')
