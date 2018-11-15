@@ -4,7 +4,22 @@ import TableWeek from '../components/TableWeek/TableWeek';
 import moment from "moment";
 import { weekdays, dayHours } from '../constants/constants';
 
+import { connect } from 'react-redux';
+
 class TableWeekContainer extends React.Component {
+
+  getListOfEvents = date => {
+    let { events } = this.props;
+    let eventsList = [];
+
+    for(let key in events) {
+      if(events[key].startDate.startOf('day') <= moment(date).startOf('day') &&
+        events[key].endDate.startOf('day') >= moment(date).startOf('day')) {
+        eventsList.push(events[key]);
+      }
+    }
+    return eventsList;
+  }
 
   createTableHeader = () => {
     let thead = [];
@@ -30,18 +45,15 @@ class TableWeekContainer extends React.Component {
     let month = startOfWeek.month();
     let daysInCurMonth = moment(period).startOf('week').daysInMonth();
 
-    console.log(endOfWeekDate)
-
     if(startOfWeekDate > endOfWeekDate) {
       for(let i = startOfWeekDate; i <= daysInCurMonth; i++) {
         array.push(now.year(curYear).month(month).date(i).startOf('day').toDate());
       }
 
       month++;
-      console.log(endOfWeek.startOf('day').toDate())
 
-      for(let i = endOfWeekDate; array.length < 7; i++) {                        //// TODO: fix
-        array.push(now.year(curYear).month(month).date(i).startOf('week').toDate());
+      for(let i = 1; array.length < 7; i++) {
+        array.push(now.year(curYear).month(month).date(i).startOf('day').toDate());
       }
     }
 
@@ -72,9 +84,10 @@ class TableWeekContainer extends React.Component {
       for(let j = 0; j < 7; j++) {
         cells.push(
           <CellContainer
-            // className={momentDate.toDate().toString() === datesArray[j].toString() ? 'curDay' : ''}
+            className={momentDate.toDate().toString() === datesArray[j].toString() ? 'curDay' : ''}
             key={datesArray[j]}
             text=''
+            eventsList={this.getListOfEvents(datesArray[j])}
           />
         );
       }
@@ -109,4 +122,10 @@ class TableWeekContainer extends React.Component {
   }
 }
 
-export default TableWeekContainer;
+const mapStateToProps = store => ({
+  events: store.eventField.events
+});
+
+export default connect(
+  mapStateToProps
+)(TableWeekContainer);

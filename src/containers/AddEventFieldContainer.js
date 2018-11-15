@@ -11,7 +11,8 @@ import {
   addEvent,
   changeEventName,
   changeEventDescription,
-  changeEventPlace
+  changeEventPlace,
+  changeLength
 } from '../store/actions/addEventFieldActions';
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -21,12 +22,14 @@ class AddEventFieldContainer extends React.Component {
   getEndDate = () => this.props.startDate ? this.props.startDate : moment();
 
   handleStartDateChange = date => {
-    this.props.changeStartDate(date);
-    this.props.changeEndDate(date > this.props.endDate ? date : this.props.endDate);
+    const endDate = this.props.endDate;
+    this.props.changeStartDate(date, endDate);
+    this.props.changeEndDate(date, date > endDate ? date : endDate);
   }
 
   handleEndDateChange = date => {
-    this.props.changeEndDate(date);
+    const startDate = this.props.startDate;
+    this.props.changeEndDate(startDate, date);
   }
 
   getCurrentTime = () => {
@@ -113,8 +116,9 @@ const mapStateToProps = store => ({
 
 const mapDispatchToProps = dispatch => ({
   closeAddEventField: isActive => dispatch(closeAddEventField(isActive)),
-  changeStartDate: startDate => dispatch(changeStartDate(startDate)),
-  changeEndDate: endDate => dispatch(changeEndDate(endDate)),
+  changeStartDate: (startDate, endDate) => dispatch(changeStartDate(startDate, endDate)),
+  changeEndDate: (startDate, endDate) => dispatch(changeEndDate(startDate, endDate)),
+  changeLength: length => dispatch(changeLength(length)),
   addEvent: (isActive, event) => dispatch(addEvent(isActive, event)),
   changeEventName: name => dispatch(changeEventName(name)),
   changeEventDescription: description => dispatch(changeEventDescription(description)),

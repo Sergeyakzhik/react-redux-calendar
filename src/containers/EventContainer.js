@@ -8,21 +8,20 @@ class EventContainer extends React.Component {
     let events = [];
 
     for(let i = 0; i < eventsList.length; i++) {
-      console.log(eventsList[i])
       events.push(
         <Event
           key={'Event ' + i}
           name={eventsList[i].name}
+          length={eventsList[i].length}
         />
       );
     }
-
     return events;
   }
 
   render() {
     return (
-      <div className="eventsList">
+      <div className="events-list">
         {this.setEventsList()}
       </div>
     );

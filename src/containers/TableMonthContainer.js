@@ -13,8 +13,9 @@ class TableMonthContainer extends React.Component {
     let eventsList = [];
 
     for(let key in events) {
-      if(events[key].startDate.startOf('day') <= moment(date).startOf('day') &&
-        events[key].endDate.startOf('day') >= moment(date).startOf('day')) {
+      // if(events[key].startDate.startOf('day') <= moment(date).startOf('day') &&
+      //   events[key].endDate.startOf('day') >= moment(date).startOf('day')) {
+      if(events[key].startDate.startOf('day').toString() === moment(date).startOf('day').toString()) {
         eventsList.push(events[key]);
       }
     }
@@ -80,7 +81,7 @@ class TableMonthContainer extends React.Component {
     const { period } = this.props;
     return (
       <TableMonth
-        date={`${period.month() + 1}/${period.year()}`}
+        date={`${moment(period).month() + 1}/${moment(period).year()}`}
         tableHeader={this.createTableHeader()}
         tableRows={this.createRows()}
       />

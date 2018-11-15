@@ -1,21 +1,25 @@
 .event {
+  position: absolute;
   height: 1.5rem;
+  z-index: 1;
   background-color: orange;
   border-radius: 7px;
   margin: 0.2rem 0;
   text-align: center;
 }
 
-.eventsList {
-  position: absolute;
-  z-index: 1;
-  width: 96%;
+.events-list {
+  /* position: absolute; */
+  position: relative;
+  top: -3rem;
+  /* z-index: 1; */
+  /* width: 96%;
   height: 4.5rem;
   top: 2rem;
   left: 50%;
   margin-left: -48%;
   border-radius: 7px;
-  overflow: auto;
+  overflow: auto; */
 }
 
 ::-webkit-scrollbar {

@@ -18,7 +18,8 @@ const initialState = {
     place: '',
     startDate: '',
     endDate: '',
-    description: ''
+    description: '',
+    length: 1
   }
 }
 
@@ -37,20 +38,28 @@ export function eventFieldReducer(state = initialState, action) {
       return { ...state,
         isActive: action.payload,
       }
-    case CHANGE_START_DATE:
+    case CHANGE_START_DATE: {
+    const start = action.payload.startDate;
+    const end = action.payload.endDate;
       return { ...state,
         event: {
           ...state.event,
-          startDate: action.payload
+          length: end.diff(start, 'days') + 2,
+          startDate: start
         }
       }
-    case CHANGE_END_DATE:
+    }
+    case CHANGE_END_DATE: {
+      const start = action.payload.startDate;
+      const end = action.payload.endDate;
       return { ...state,
         event: {
           ...state.event,
-          endDate: action.payload
+          length: end.diff(start, 'days') + 2,
+          endDate: end
         }
       }
+    }
     case ADD_EVENT:
     const newEvent = action.payload.event;
       return { ...state,
