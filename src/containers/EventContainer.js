@@ -21,7 +21,7 @@ class EventContainer extends React.Component {
 
   render() {
     return (
-      <div className="events-list">
+      <div className="">
         {this.setEventsList()}
       </div>
     );

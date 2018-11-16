@@ -4,7 +4,7 @@ import EventContainer from '../../containers/EventContainer';
 
 let Cell = props => (
   <td className={props.className}>
-    <h4>{props.text}</h4>
+    // <h4>{props.text}</h4>
     <EventContainer />
   </td>
 );

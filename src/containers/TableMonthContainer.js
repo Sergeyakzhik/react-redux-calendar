@@ -1,10 +1,16 @@
 import React from 'react';
 import CellContainer from './CellContainer.js';
 import TableMonth from '../components/TableMonth/TableMonth';
+import Event from '../components/Event/Event';
 import moment from "moment";
 import { weekdays } from '../constants/constants';
 
 import { connect } from 'react-redux';
+import {
+  openAddEventField,
+  changeStartDate,
+  changeEndDate
+} from '../store/actions/addEventFieldActions';
 
 class TableMonthContainer extends React.Component {
 
@@ -35,22 +41,80 @@ class TableMonthContainer extends React.Component {
     let tbody = [];
     let momentDate = moment().startOf('day');
     let datesArray = this.fillDatesArray();
-
     for (let i = 0; i < 6; i++) {
       let cells = [];
+      let skeletonHeaderCells = [];
+      let skeletonBody = this.createSkeletonBody(i);
       for(let j = 0; j < 7; j++) {
         cells.push(
-          <CellContainer
+          <td
             className={momentDate.toDate().toString() === datesArray[j + 7 * i].toString() ? 'curDay' : ''}
-            key={datesArray[j + 7 * i]}
-            text={moment(datesArray[j + 7 * i]).date()}
-            eventsList={this.getListOfEvents(datesArray[j + 7 * i])}
-          />
+            key={'TCellMonth' + (j + 7 * i)}
+          ></td>
+        );
+        skeletonHeaderCells.push(
+          <td key={'TSkeletonHeader' + (j + 7 * i)}>
+            <h4>{moment(datesArray[j + 7 * i]).date()}</h4>
+          </td>
         );
       }
-      tbody.push(<tr key={'TRowMonth' + i}>{cells}</tr>);
+      tbody.push(
+        <tr className="table-row" key={'TRowMonth' + i}>
+          {cells}
+        </tr>
+      );
+      tbody.push(
+        <div className="events-skeleton" key={'TRowMonthSkeleton' + i}>
+          <table>
+            <thead>
+              <tr>{skeletonHeaderCells}</tr>
+            </thead>
+            <tbody>
+              {skeletonBody}
+            </tbody>
+          </table>
+        </div>
+      );
     }
     return tbody;
+  }
+
+  handleCellClick = e => {
+    const date = moment(new Date(e.target.attributes.date.value));
+    console.log((moment(new Date(date))))
+    this.props.changeStartDate(date, date);
+    this.props.openAddEventField(true);
+  }
+
+  createSkeletonBody = (weekIndex) => {
+    let datesArray = this.fillDatesArray();
+    let skeletonBody = [];
+
+    for(let i = 0; i < 3; i++) {
+      let row = [];
+
+      for(let j = 0; j < 7; ) {
+        let events = this.getListOfEvents(datesArray[j + 7 * weekIndex]);
+
+        // if(events.length !== 0) {
+        //    console.log(events.splice(0, j));
+        // }
+        row.push(
+          <td
+            key={datesArray[j + 7 * weekIndex]}
+            eventsList={events}
+            colSpan={events[i] ? events[i].length : 1}
+            onClick={this.handleCellClick}
+            date={datesArray[j + 7 * weekIndex]}
+          >
+            {events[i] ? <Event name={events[i] ? events[i].name : ""} length={events[i].length} /> : null}
+          </td>
+        );
+        j += events[i] ? events[i].length : 1;
+      }
+      skeletonBody.push(<tr key={'TSkeletonBody' + i}>{row}</tr>);
+    }
+    return skeletonBody;
   }
 
   fillDatesArray = () => {
@@ -89,10 +153,17 @@ class TableMonthContainer extends React.Component {
   }
 }
 
+const mapDispatchToProps = dispatch => ({
+  openAddEventField: isActive => dispatch(openAddEventField(isActive)),
+  changeStartDate: (startDate, endDate) => dispatch(changeStartDate(startDate, endDate)),
+  changeEndDate: (startDate, endDate) => dispatch(changeEndDate(startDate, endDate))
+});
+
 const mapStateToProps = store => ({
   events: store.eventField.events
 });
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(TableMonthContainer);

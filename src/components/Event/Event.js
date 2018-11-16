@@ -2,8 +2,8 @@ import React from 'react';
 import './Event.css';
 
 let Event = props => (
-  <div className="event" style={{width: `${props.length * 9.85}rem`}}>
-    {props.name}
+  <div className="event">
+    <h4>{props.name}</h4>
   </div>
 );
 
