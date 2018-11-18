@@ -56,9 +56,12 @@ export function eventFieldReducer(state = initialState, action) {
     }
     case ADD_EVENT:
       const newEvent = action.payload.event;
+      console.log(newEvent)
       const startDate = newEvent.startDate;
       const endDate = newEvent.endDate;
-      const length = endDate.diff(startDate.startOf('day'), 'days') + 1;
+      const length = endDate.diff(moment(startDate).startOf('day'), 'days') + 1;
+
+      console.log(newEvent)
 
       newEvent.length = length;
 

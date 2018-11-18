@@ -1,5 +1,4 @@
 import React from 'react';
-import CellContainer from './CellContainer.js';
 import TableMonth from '../components/TableMonth/TableMonth';
 import Event from '../components/Event/Event';
 import moment from "moment";
@@ -19,9 +18,7 @@ class TableMonthContainer extends React.Component {
     let eventsList = [];
 
     for(let key in events) {
-      // if(events[key].startDate.startOf('day') <= moment(date).startOf('day') &&
-      //   events[key].endDate.startOf('day') >= moment(date).startOf('day')) {
-      if(events[key].startDate.startOf('day').toString() === moment(date).startOf('day').toString()) {
+      if(moment(events[key].startDate).startOf('day').toString() === moment(date).startOf('day').toString()) {
         eventsList.push(events[key]);
       }
     }
@@ -41,28 +38,35 @@ class TableMonthContainer extends React.Component {
     let tbody = [];
     let momentDate = moment().startOf('day');
     let datesArray = this.fillDatesArray();
+
     for (let i = 0; i < 6; i++) {
       let cells = [];
       let skeletonHeaderCells = [];
       let skeletonBody = this.createSkeletonBody(i);
+
       for(let j = 0; j < 7; j++) {
+
         cells.push(
           <td
             className={momentDate.toDate().toString() === datesArray[j + 7 * i].toString() ? 'curDay' : ''}
             key={'TCellMonth' + (j + 7 * i)}
           ></td>
         );
+
         skeletonHeaderCells.push(
           <td key={'TSkeletonHeader' + (j + 7 * i)}>
             <h4>{moment(datesArray[j + 7 * i]).date()}</h4>
           </td>
         );
+
       }
+
       tbody.push(
         <tr className="table-row" key={'TRowMonth' + i}>
           {cells}
         </tr>
       );
+
       tbody.push(
         <div className="events-skeleton" key={'TRowMonthSkeleton' + i}>
           <table>
@@ -75,6 +79,7 @@ class TableMonthContainer extends React.Component {
           </table>
         </div>
       );
+
     }
     return tbody;
   }
@@ -94,8 +99,8 @@ class TableMonthContainer extends React.Component {
     rows.forEach(arr => arr.numberOfCells = 0);
 
     for(let i = 0; i < 7; i++) {
-
       let events = this.getListOfEvents(datesArray[i + 7 * weekIndex]);
+
       events.sort(this.dynamicSort('length'));
 
       for(let j = 0; j < 3; j++) {
@@ -130,15 +135,6 @@ class TableMonthContainer extends React.Component {
 
     return skeletonBody;
   }
-  // 
-  // getEventsForWeek = weekIndex => {
-  //   let datesArray = this.fillDatesArray();
-  //   let weekEvents = [];
-  //
-  //   for(let i = 0; i < 7; i++) {
-  //     weekEvents.push(this.getListOfEvents(datesArray[i + 7 * weekIndex]));
-  //   }
-  // }
 
   dynamicSort(property) {
     return function (a,b) {

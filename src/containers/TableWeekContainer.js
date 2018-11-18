@@ -1,5 +1,4 @@
 import React from 'react';
-import CellContainer from './CellContainer.js';
 import TableWeek from '../components/TableWeek/TableWeek';
 import moment from "moment";
 import { weekdays, dayHours } from '../constants/constants';
@@ -75,32 +74,90 @@ class TableWeekContainer extends React.Component {
 
   createRows = () => {
     let tbody = [];
-    let datesArray = this.fillDatesArray();
     let momentDate = moment().startOf('day');
+    let datesArray = this.fillDatesArray();
+    let skeletonBody = this.createSkeletonBody();
 
-    for (let i = 0; i < 24; i++) {
+    for (let i = 0; i < 48; i++) {
       let cells = [];
 
       for(let j = 0; j < 7; j++) {
+
         cells.push(
-          <CellContainer
+          <td
             className={momentDate.toDate().toString() === datesArray[j].toString() ? 'curDay' : ''}
             key={datesArray[j]}
             text=''
             eventsList={this.getListOfEvents(datesArray[j])}
-          />
+          >
+          </td>
         );
       }
 
       cells.unshift(
-        <CellContainer
+        <td
           key={`TDayHour-${dayHours[i]}`}
           text={dayHours[i]}
-        />
+        >
+        {dayHours[i]}
+        </td>
       );
+
       tbody.push(<tr key={'TRowWeek' + i}>{cells}</tr>);
     }
+
+    tbody.push(
+      <div className="events-skeleton" key={'TWeekSkeleton'}>
+        <table>
+          <tbody>
+            {skeletonBody}
+          </tbody>
+        </table>
+      </div>
+    );
+
     return tbody;
+  }
+
+  createSkeletonBody = () => {
+    let datesArray = this.fillDatesArray();
+    let skeletonBody = [];
+    let rows = [];
+    let tbody = [];
+
+    for(let i = 0; i < 48; i++)
+      rows.push([]);
+
+    for(let i = 0; i < 7; i++) {
+      let events = this.getListOfEvents(datesArray[i]);
+
+      for(let j = 0; j < 48; j++) {
+
+        rows[j].push(
+          <td
+            key={datesArray[i]}
+            eventsList={events}
+            date={datesArray[j]}
+          >
+          </td>
+        );
+
+      //  events.shift();
+      }
+    }
+
+    for(let i = 0; i < 48; i++)
+      tbody.push(<tr key='TSkeletonBody'>{rows[i]}</tr>);
+
+    skeletonBody.push(
+      <>
+        {tbody}
+      </>
+    );
+
+    console.log(skeletonBody)
+
+    return skeletonBody;
   }
 
   setHeaderFirstMonth = () => moment(this.props.period).startOf('week').month() + 1;

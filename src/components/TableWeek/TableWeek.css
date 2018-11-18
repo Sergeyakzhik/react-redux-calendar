@@ -30,3 +30,24 @@
   top: 0;
   height: 100%;
 }
+
+.table-week .events-skeleton {
+  position: absolute;
+  width: 87.7%;
+  height: 100%;
+  top: 4.7rem;
+  left: 8.8rem;
+}
+
+.table-week .events-skeleton table {
+  table-layout: fixed;
+}
+
+.table-week .events-skeleton td {
+  border: none;
+  background-color: transparent;
+}
+
+.table-week .events-skeleton tbody td {
+  text-align: center;
+}

@@ -29,6 +29,7 @@ class AddEventFieldContainer extends React.Component {
 
   handleEndDateChange = date => {
     const startDate = this.props.startDate;
+
     this.props.changeEndDate(date);
   }
 
@@ -38,7 +39,40 @@ class AddEventFieldContainer extends React.Component {
   }
 
   handleSubmitButtonClick = e => {
+
+    if(this.isLongerThanWeek(this.props.event)) {
+      let events = this.splitEvent(this.props.event);
+
+      events.forEach(event => this.props.addEvent(false, Object.assign({}, event)));
+    }
+
     this.props.addEvent(false, Object.assign({}, this.props.event));
+  }
+
+  splitEvent = event => {
+    let events = []
+
+    while(this.isLongerThanWeek(event)) {
+      let part = Object.assign({}, event);
+      part.endDate = moment(part.startDate).endOf('week').startOf('day');
+
+      event.startDate = moment(part.endDate).date(part.endDate.date() + 1).startOf('day');
+      console.log(event.startDate)
+      events.push(part);
+    }
+
+    events.push(event);
+
+    return events;
+  }
+
+  isLongerThanWeek = () => {
+    const event = this.props.event;
+    const startDate = moment(event.startDate).startOf('day');
+    const endDate = moment(event.endDate).startOf('day');
+    const eventLength = endDate.diff(startDate, 'days') + 1;
+
+    return moment(startDate).endOf('week').startOf('day').diff(startDate, 'days') + 1 < eventLength;
   }
 
   handleEndButtonClick = e => this.props.closeAddEventField(false);

@@ -30,21 +30,21 @@
   margin-top: -7rem;
 }
 
-.events-skeleton table {
+.table-month .events-skeleton table {
   table-layout: fixed;
 }
 
-.events-skeleton td {
+.table-month .events-skeleton td {
   border: none;
   background-color: transparent;
   width: 157px;
 }
 
-.events-skeleton thead td {
+.table-month .events-skeleton thead td {
   height: 1rem;
 }
 
-.events-skeleton tbody td {
+.table-month .events-skeleton tbody td {
   height: 1.5rem;
   text-align: center;
   padding: 0 5px 0 8px;
