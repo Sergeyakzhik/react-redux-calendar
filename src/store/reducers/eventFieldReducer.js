@@ -30,8 +30,8 @@ export function eventFieldReducer(state = initialState, action) {
         isActive: action.payload,
         event: {
           ...state.event,
-          startDate: moment(),
-          endDate: moment()
+          startDate: state.event.startDate || moment(),
+          endDate: state.event.startDate || moment()
         }
       }
     case CLOSE_EVENT_FIELD:
@@ -39,29 +39,29 @@ export function eventFieldReducer(state = initialState, action) {
         isActive: action.payload,
       }
     case CHANGE_START_DATE: {
-    const start = action.payload.startDate;
-    const end = action.payload.endDate;
       return { ...state,
         event: {
           ...state.event,
-          length: end.diff(start, 'days') + 2,
-          startDate: start
+          startDate: action.payload
         }
       }
     }
     case CHANGE_END_DATE: {
-      const start = action.payload.startDate;
-      const end = action.payload.endDate;
       return { ...state,
         event: {
           ...state.event,
-          length: end.diff(start, 'days') + 2,
-          endDate: end
+          endDate: action.payload
         }
       }
     }
     case ADD_EVENT:
-    const newEvent = action.payload.event;
+      const newEvent = action.payload.event;
+      const startDate = newEvent.startDate;
+      const endDate = newEvent.endDate;
+      const length = endDate.diff(startDate.startOf('day'), 'days') + 1;
+
+      newEvent.length = length;
+
       return { ...state,
         isActive: action.payload.isActive,
         events: {
@@ -70,7 +70,7 @@ export function eventFieldReducer(state = initialState, action) {
             newEvent.name +
             newEvent.startDate.date() +
             newEvent.endDate.date()
-          ]: action.payload.event
+          ]: newEvent
         }
       }
     case CHANGE_EVENT_NAME:

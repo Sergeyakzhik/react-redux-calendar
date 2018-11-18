@@ -81,40 +81,70 @@ class TableMonthContainer extends React.Component {
 
   handleCellClick = e => {
     const date = moment(new Date(e.target.attributes.date.value));
-    console.log((moment(new Date(date))))
-    this.props.changeStartDate(date, date);
+    this.props.changeStartDate(date);
+    this.props.changeEndDate(date);
     this.props.openAddEventField(true);
   }
 
   createSkeletonBody = (weekIndex) => {
     let datesArray = this.fillDatesArray();
     let skeletonBody = [];
+    let rows = [[], [], []];
 
-    for(let i = 0; i < 3; i++) {
-      let row = [];
+    rows.forEach(arr => arr.numberOfCells = 0);
 
-      for(let j = 0; j < 7; ) {
-        let events = this.getListOfEvents(datesArray[j + 7 * weekIndex]);
+    for(let i = 0; i < 7; i++) {
 
-        // if(events.length !== 0) {
-        //    console.log(events.splice(0, j));
-        // }
-        row.push(
-          <td
-            key={datesArray[j + 7 * weekIndex]}
-            eventsList={events}
-            colSpan={events[i] ? events[i].length : 1}
-            onClick={this.handleCellClick}
-            date={datesArray[j + 7 * weekIndex]}
-          >
-            {events[i] ? <Event name={events[i] ? events[i].name : ""} length={events[i].length} /> : null}
-          </td>
-        );
-        j += events[i] ? events[i].length : 1;
+      let events = this.getListOfEvents(datesArray[i + 7 * weekIndex]);
+      events.sort(this.dynamicSort('length'));
+
+      for(let j = 0; j < 3; j++) {
+
+        if(rows[j].numberOfCells !== 7 && rows[j].numberOfCells < i + 1) {
+
+          rows[j].push(
+            <td
+              key={datesArray[i + 7 * weekIndex]}
+              eventsList={events}
+              colSpan={events[0] ? events[0].length : 1}
+              onClick={this.handleCellClick}
+              date={datesArray[j + 7 * weekIndex]}
+            >
+              {events[0] ? <Event name={events[0] ? events[0].name : ""} length={events[0].length} /> : null}
+            </td>
+          );
+
+          rows[j].numberOfCells += events[0] ? events[0].length : 1;
+          events.shift();
+        }
       }
-      skeletonBody.push(<tr key={'TSkeletonBody' + i}>{row}</tr>);
     }
+
+    skeletonBody.push(
+      <>
+        <tr key={'TSkeletonBody'}>{rows[0]}</tr>
+        <tr key={'TSkeletonBody'}>{rows[1]}</tr>
+        <tr key={'TSkeletonBody'}>{rows[2]}</tr>
+      </>
+    );
+
     return skeletonBody;
+  }
+  // 
+  // getEventsForWeek = weekIndex => {
+  //   let datesArray = this.fillDatesArray();
+  //   let weekEvents = [];
+  //
+  //   for(let i = 0; i < 7; i++) {
+  //     weekEvents.push(this.getListOfEvents(datesArray[i + 7 * weekIndex]));
+  //   }
+  // }
+
+  dynamicSort(property) {
+    return function (a,b) {
+        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+        return -result;
+    }
   }
 
   fillDatesArray = () => {
@@ -155,8 +185,8 @@ class TableMonthContainer extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
   openAddEventField: isActive => dispatch(openAddEventField(isActive)),
-  changeStartDate: (startDate, endDate) => dispatch(changeStartDate(startDate, endDate)),
-  changeEndDate: (startDate, endDate) => dispatch(changeEndDate(startDate, endDate))
+  changeStartDate: startDate => dispatch(changeStartDate(startDate)),
+  changeEndDate: endDate => dispatch(changeEndDate(endDate)),
 });
 
 const mapStateToProps = store => ({

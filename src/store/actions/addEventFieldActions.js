@@ -6,8 +6,7 @@ import {
   ADD_EVENT,
   CHANGE_EVENT_NAME,
   CHANGE_EVENT_DESCRIPTION,
-  CHANGE_EVENT_PLACE,
-  CHANGE_LENGTH
+  CHANGE_EVENT_PLACE
 } from '../../constants/action-types';
 
 export let openAddEventField = isActive => ({
@@ -20,25 +19,14 @@ export let closeAddEventField = isActive => ({
   payload: isActive
 });
 
-export let changeStartDate = (startDate, endDate) => ({
+export let changeStartDate = startDate => ({
   type: CHANGE_START_DATE,
-  payload: {
-    startDate,
-    endDate
-  }
+  payload: startDate
 });
 
-export let changeEndDate = (startDate, endDate) => ({
+export let changeEndDate = endDate => ({
   type: CHANGE_END_DATE,
-  payload: {
-    startDate,
-    endDate
-  }
-});
-
-export let changeLength = length => ({
-  type: CHANGE_LENGTH,
-  payload: length
+  payload: endDate
 });
 
 export let addEvent = (isActive, event) => ({
