@@ -151,18 +151,23 @@ class TableWeekContainer extends React.Component {
             numberOfEvents++;
         });
 
-        if(curEvent) {
-          timeDiff = moment(curEvent.endDate).diff(moment(curEvent.startDate), 'minutes');
-        }
+        let eventsList = [];
 
-        let rowSpan = timeDiff / 15;
+        curEvents.forEach((event, ind) => {
 
-        let style = {
-          zIndex: j,
-          height: rowSpan * 15 + 'px',
-          width: 50 + '%',
-          left: 10 * (numberOfEvents - 1) + 'px'
-        }
+          timeDiff = moment(event.endDate).diff(moment(event.startDate), 'minutes');
+
+          let rowSpan = timeDiff / 15;
+
+          let style = {
+            zIndex: j - ind,
+            height: rowSpan * 15 + 'px',
+            width: 50 + '%',
+            left: 10 * (numberOfEvents - 1 - ind) + 'px'
+          }
+
+          eventsList.push(<Event name={event.name} length={event.length} style={style} />);
+        });
 
         rows[j].push(
           <td
@@ -170,15 +175,10 @@ class TableWeekContainer extends React.Component {
             eventsList={events}
             date={datesArray[i]}
             numberOfEvents={numberOfEvents}
-            // rowSpan={curEvent ? rowSpan : 1}
           >
-            {curEvent ? <Event name={curEvent ? curEvent.name : ""} length={curEvent.length} style={style} /> : null}
+            {eventsList.map(event => event)}
           </td>
         );
-
-        // if(rowSpan > 1) {
-        //   j += rowSpan - 1;
-        // }
       }
     }
 
