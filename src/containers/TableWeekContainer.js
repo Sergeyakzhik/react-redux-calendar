@@ -1,5 +1,6 @@
 import React from 'react';
 import TableWeek from '../components/TableWeek/TableWeek';
+import Event from '../components/Event/Event';
 import moment from "moment";
 import { weekdays, dayHours } from '../constants/constants';
 
@@ -12,8 +13,7 @@ class TableWeekContainer extends React.Component {
     let eventsList = [];
 
     for(let key in events) {
-      if(events[key].startDate.startOf('day') <= moment(date).startOf('day') &&
-        events[key].endDate.startOf('day') >= moment(date).startOf('day')) {
+      if(moment(events[key].startDate).startOf('day').toString() === moment(date).startOf('day').toString()) {
         eventsList.push(events[key]);
       }
     }
@@ -125,28 +125,64 @@ class TableWeekContainer extends React.Component {
     let rows = [];
     let tbody = [];
 
-    for(let i = 0; i < 48; i++)
+    for(let i = 0; i < 96; i++) {
       rows.push([]);
+    }
 
     for(let i = 0; i < 7; i++) {
       let events = this.getListOfEvents(datesArray[i]);
 
-      for(let j = 0; j < 48; j++) {
+      for(let j = 0; j < 96; j++) {
+        let curEvent;
+        let timeDiff;
+        let min = j % 4 === 0 ? 0 : j % 4 === 1 ? 15 : j % 4 === 2 ? 30 : 45;
+        let curEvents = [];
+        let numberOfEvents = 0;
+
+        events.forEach(event => {
+          if(moment(event.startDate).startOf('minute').toString() === moment(datesArray[i]).hours(j / 4).minutes(min).toString())
+            curEvents.push(event);
+        });
+
+        events.forEach(event => {
+          if(moment(event.startDate).startOf('minute').toString() <= moment(datesArray[i]).hours(j / 4).minutes(min).toString() &&
+            moment(event.endDate).startOf('minute').toString() >= moment(datesArray[i]).hours(j / 4).minutes(min).toString()
+          )
+            numberOfEvents++;
+        });
+
+        if(curEvent) {
+          timeDiff = moment(curEvent.endDate).diff(moment(curEvent.startDate), 'minutes');
+        }
+
+        let rowSpan = timeDiff / 15;
+
+        let style = {
+          zIndex: j,
+          height: rowSpan * 15 + 'px',
+          width: 50 + '%',
+          left: 10 * (numberOfEvents - 1) + 'px'
+        }
 
         rows[j].push(
           <td
             key={datesArray[i]}
             eventsList={events}
-            date={datesArray[j]}
+            date={datesArray[i]}
+            numberOfEvents={numberOfEvents}
+            // rowSpan={curEvent ? rowSpan : 1}
           >
+            {curEvent ? <Event name={curEvent ? curEvent.name : ""} length={curEvent.length} style={style} /> : null}
           </td>
         );
 
-      //  events.shift();
+        // if(rowSpan > 1) {
+        //   j += rowSpan - 1;
+        // }
       }
     }
 
-    for(let i = 0; i < 48; i++)
+    for(let i = 0; i < 96; i++)
       tbody.push(<tr key='TSkeletonBody'>{rows[i]}</tr>);
 
     skeletonBody.push(
@@ -155,9 +191,14 @@ class TableWeekContainer extends React.Component {
       </>
     );
 
-    console.log(skeletonBody)
-
     return skeletonBody;
+  }
+
+  countMinutes = () => {
+    let now = moment();
+    let minutes = now.minutes();
+
+    return minutes <= 15 ? 15 : minutes <= 30 ? 30 : minutes <= 45 ? 45 : 0;
   }
 
   setHeaderFirstMonth = () => moment(this.props.period).startOf('week').month() + 1;

@@ -28,13 +28,12 @@ class AddEventFieldContainer extends React.Component {
   }
 
   handleEndDateChange = date => {
-    const startDate = this.props.startDate;
-
     this.props.changeEndDate(date);
   }
 
   getCurrentTime = () => {
     let date = new Date();
+    
     return [date.getHours(), date.getMinutes()];
   }
 
@@ -110,6 +109,7 @@ class AddEventFieldContainer extends React.Component {
               <DatePicker
                 selected={startDate}
                 onChange={this.handleStartDateChange}
+                timeIntervals={15}
                 showTimeSelect
                 minDate={currentTime}
                 dateFormat="LLL"
@@ -121,6 +121,7 @@ class AddEventFieldContainer extends React.Component {
               <DatePicker
                 selected={endDate}
                 onChange={this.handleEndDateChange}
+                timeIntervals={15}
                 minDate={startDate}
                 showTimeSelect
                 dateFormat="LLL"

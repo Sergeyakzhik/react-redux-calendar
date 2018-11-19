@@ -23,6 +23,13 @@ const initialState = {
   }
 }
 
+let countMinutes = () => {
+  let now = moment();
+  let minutes = now.minutes();
+
+  return minutes <= 15 ? 15 : minutes <= 30 ? 30 : minutes <= 45 ? 45 : 0;
+}
+
 export function eventFieldReducer(state = initialState, action) {
   switch (action.type) {
     case OPEN_EVENT_FIELD:
@@ -30,8 +37,8 @@ export function eventFieldReducer(state = initialState, action) {
         isActive: action.payload,
         event: {
           ...state.event,
-          startDate: state.event.startDate || moment(),
-          endDate: state.event.startDate || moment()
+          startDate: state.event.startDate || moment().minutes(countMinutes()),
+          endDate: state.event.startDate || moment().minutes(countMinutes())
         }
       }
     case CLOSE_EVENT_FIELD:
@@ -56,12 +63,9 @@ export function eventFieldReducer(state = initialState, action) {
     }
     case ADD_EVENT:
       const newEvent = action.payload.event;
-      console.log(newEvent)
       const startDate = newEvent.startDate;
       const endDate = newEvent.endDate;
       const length = endDate.diff(moment(startDate).startOf('day'), 'days') + 1;
-
-      console.log(newEvent)
 
       newEvent.length = length;
 
