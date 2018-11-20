@@ -13,15 +13,15 @@ import {
 
 class TableMonthContainer extends React.Component {
 
-  getListOfEvents = date => {
-    let { events } = this.props;
+  getListOfEvents = (events, date) => {
     let eventsList = [];
 
-    for(let key in events) {
-      if(moment(events[key].startDate).startOf('day').toString() === moment(date).startOf('day').toString()) {
-        eventsList.push(events[key]);
+    events.forEach(event => {
+      if(moment(event.startDate).startOf('day').toString() === moment(date).startOf('day').toString()) {
+        eventsList.push(event);
       }
-    }
+    });
+
     return eventsList;
   }
 
@@ -95,13 +95,14 @@ class TableMonthContainer extends React.Component {
     let datesArray = this.fillDatesArray();
     let skeletonBody = [];
     let rows = [[], [], []];
+    let splitEvents = this.splitEventsByWeek();
 
     rows.forEach(arr => arr.numberOfCells = 0);
 
     for(let i = 0; i < 7; i++) {
-      let events = this.getListOfEvents(datesArray[i + 7 * weekIndex]);
+      let events = this.getListOfEvents(splitEvents, datesArray[i + 7 * weekIndex]);
 
-      events.sort(this.dynamicSort('length'));
+      events.sort(this.sortEvents('length'));
 
       for(let j = 0; j < 3; j++) {
 
@@ -110,7 +111,6 @@ class TableMonthContainer extends React.Component {
           rows[j].push(
             <td
               key={datesArray[i + 7 * weekIndex]}
-              eventsList={events}
               colSpan={events[0] ? events[0].length : 1}
               onClick={this.handleCellClick}
               date={datesArray[j + 7 * weekIndex]}
@@ -136,7 +136,38 @@ class TableMonthContainer extends React.Component {
     return skeletonBody;
   }
 
-  dynamicSort(property) {
+  splitEventsByWeek = () => {
+    let { events } = this.props;
+    let splitEvents = [];
+
+    for(let key in events) {
+      let event = Object.assign({}, events[key]);
+
+      while(this.isLongerThanWeek(event)) {
+        let curEvent = Object.assign({}, event);
+        curEvent.endDate = moment(curEvent.startDate).endOf('week').startOf('day');
+        curEvent.length = curEvent.endDate.diff(moment(curEvent.startDate).startOf('day'), 'days') + 1;
+
+        event.startDate = moment(curEvent.endDate).date(curEvent.endDate.date() + 1).startOf('day');
+        event.length = event.endDate.diff(moment(event.startDate).startOf('day'), 'days') + 1;
+        splitEvents.push(curEvent);
+      }
+
+      splitEvents.push(event);
+    }
+
+    return splitEvents;
+  }
+
+  isLongerThanWeek = event => {
+    const startDate = moment(event.startDate).startOf('day');
+    const endDate = moment(event.endDate).startOf('day');
+    const eventLength = endDate.diff(startDate, 'days') + 1;
+
+    return moment(startDate).endOf('week').startOf('day').diff(startDate, 'days') + 1 < eventLength;
+  }
+
+  sortEvents = property => {
     return function (a,b) {
         var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
         return -result;

@@ -26,13 +26,39 @@
 }
 
 .table-day .event {
-  top: 0;
-  height: 100%;
   margin: 0;
-  padding-top: 0.3rem;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  border: 0.08rem solid black;
 }
 
-.table-day .events-list {
-  top: 0;
+.table-day .event h4 {
+  margin: 0;
+  font-size: 0.8rem;
+}
+
+.table-day .events-skeleton {
+  position: absolute;
+  width: 89.4%;
+  height: 96.9%;
+  top: 2.9rem;
+  left: 7.2rem;
+}
+
+.table-day .events-skeleton table {
+  table-layout: fixed;
   height: 100%;
+  width: 100%;
+}
+
+.table-day .events-skeleton td {
+  border: none;
+  background-color: transparent;
+  height: 15px;
+}
+
+.table-day .events-skeleton tbody td {
+  text-align: center;
 }

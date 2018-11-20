@@ -16,7 +16,7 @@
 }
 
 .table-week {
-  border-spacing: 0.15rem
+  border-spacing: 2px;
 }
 
 .table-week .event {
@@ -31,11 +31,6 @@
 .table-week .event h4 {
   margin: 0;
   font-size: 0.8rem;
-}
-
-.table-week .events-list {
-  top: 0;
-  height: 100%;
 }
 
 .table-week .events-skeleton {

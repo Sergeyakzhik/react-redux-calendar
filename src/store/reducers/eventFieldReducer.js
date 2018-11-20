@@ -24,8 +24,7 @@ const initialState = {
 }
 
 let countMinutes = () => {
-  let now = moment();
-  let minutes = now.minutes();
+  let minutes = moment().minutes();
 
   return minutes <= 15 ? 15 : minutes <= 30 ? 30 : minutes <= 45 ? 45 : 0;
 }
