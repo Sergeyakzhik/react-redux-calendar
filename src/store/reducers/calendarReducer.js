@@ -3,7 +3,7 @@ import moment from "moment";
 
 const initialState = {
   table: 'Month',
-  period: moment()
+  period: moment(),
 }
 
 export function calendarReducer(state = initialState, action) {

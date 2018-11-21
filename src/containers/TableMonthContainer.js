@@ -1,6 +1,7 @@
 import React from 'react';
 import TableMonth from '../components/TableMonth/TableMonth';
 import Event from '../components/Event/Event';
+import ShowMoreField from '../components/ShowMoreField/ShowMoreField';
 import moment from "moment";
 import { weekdays } from '../constants/constants';
 
@@ -10,6 +11,7 @@ import {
   changeStartDate,
   changeEndDate
 } from '../store/actions/addEventFieldActions';
+import { openShowMoreField } from '../store/actions/showMoreFieldActions';
 
 class TableMonthContainer extends React.Component {
 
@@ -49,8 +51,18 @@ class TableMonthContainer extends React.Component {
         cells.push(
           <td
             className={momentDate.toDate().toString() === datesArray[j + 7 * i].toString() ? 'curDay' : ''}
-            key={'TCellMonth' + (j + 7 * i)}
-          ></td>
+          >
+            <button
+              type="button"
+              id="showMoreButton"
+              className="btn btn-primary show-more-button"
+              onClick={this.handleShowMoreClick}
+              date={datesArray[j + 7 * i].toString()}
+              events={this.getListOfEvents(this.splitEventsByDay(), datesArray[j + 7 * i])}
+            >
+              Show more
+            </button>
+          </td>
         );
 
         skeletonHeaderCells.push(
@@ -123,6 +135,11 @@ class TableMonthContainer extends React.Component {
           events.shift();
         }
       }
+
+      if(events.length > 3) {
+        //openShowMoreFiels
+        //getListOfEvents by e.target.attributes.date.value
+      }
     }
 
     skeletonBody.push(
@@ -159,12 +176,43 @@ class TableMonthContainer extends React.Component {
     return splitEvents;
   }
 
+  splitEventsByDay = () => {
+    let { events } = this.props;
+    let splitEvents = [];
+
+    for(let key in events) {
+      let event = Object.assign({}, events[key]);
+
+      while(this.isLongerThanDay(event)) {
+        let curEvent = Object.assign({}, event);
+        curEvent.endDate = moment(curEvent.startDate).endOf('day');
+        curEvent.length = 1;
+
+        event.startDate = moment(curEvent.endDate).date(curEvent.endDate.date() + 1).startOf('day');
+        event.length = 1;
+        splitEvents.push(curEvent);
+      }
+
+      splitEvents.push(event);
+    }
+
+    return splitEvents;
+  }
+
   isLongerThanWeek = event => {
     const startDate = moment(event.startDate).startOf('day');
     const endDate = moment(event.endDate).startOf('day');
     const eventLength = endDate.diff(startDate, 'days') + 1;
 
     return moment(startDate).endOf('week').startOf('day').diff(startDate, 'days') + 1 < eventLength;
+  }
+
+  isLongerThanDay = event => {
+    const startDate = moment(event.startDate).startOf('day');
+    const endDate = moment(event.endDate).startOf('day');
+    const eventLength = endDate.diff(startDate, 'days') + 1;
+
+    return moment(startDate).endOf('week').startOf('day').diff(startDate, 'days') + 1 > 1;
   }
 
   sortEvents = property => {
@@ -198,14 +246,21 @@ class TableMonthContainer extends React.Component {
     return array;
   }
 
+  handleShowMoreClick = e => {
+    this.props.openShowMoreField(true, e.target.attributes.events);
+  }
+
   render() {
     const { period } = this.props;
     return (
-      <TableMonth
-        date={`${moment(period).month() + 1}/${moment(period).year()}`}
-        tableHeader={this.createTableHeader()}
-        tableRows={this.createRows()}
-      />
+      <>
+        <TableMonth
+          date={`${moment(period).month() + 1}/${moment(period).year()}`}
+          tableHeader={this.createTableHeader()}
+          tableRows={this.createRows()}
+        />
+        {this.props.isActive ? <ShowMoreField /> : null}
+      </>
     );
   }
 }
@@ -214,10 +269,12 @@ const mapDispatchToProps = dispatch => ({
   openAddEventField: isActive => dispatch(openAddEventField(isActive)),
   changeStartDate: startDate => dispatch(changeStartDate(startDate)),
   changeEndDate: endDate => dispatch(changeEndDate(endDate)),
+  openShowMoreField: (isActive, events) => dispatch(openShowMoreField(isActive, events))
 });
 
 const mapStateToProps = store => ({
-  events: store.eventField.events
+  events: store.eventField.events,
+  isActive: store.showMoreField.isActive
 });
 
 export default connect(

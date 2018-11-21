@@ -49,3 +49,18 @@
   text-align: center;
   padding: 0 5px 0 8px;
 }
+
+.show-more-button {
+  position: absolute;
+  z-index: 1000;
+  width: 5rem;
+  height: 1.3rem;
+  padding: 0;
+  border: 0.04rem solid black;
+  outline: none;
+  background-color: #a1e070;
+  color: black;
+  font-size: 0.7rem;
+  top: 5rem;
+  left: 0.5rem;
+}
