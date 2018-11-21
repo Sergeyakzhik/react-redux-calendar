@@ -6,7 +6,7 @@
   margin: 5% 15%;
   border-radius: 10px;
   padding-bottom: 1rem;
-  z-index: 100;
+  z-index: 2000;
 }
 
 .input-form label {

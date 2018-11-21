@@ -1,7 +1,7 @@
 import React from 'react';
 import TableMonth from '../components/TableMonth/TableMonth';
-import Event from '../components/Event/Event';
-import ShowMoreField from '../components/ShowMoreField/ShowMoreField';
+import EventContainer from './EventContainer';
+import ShowMoreFieldContainer from './ShowMoreFieldContainer';
 import moment from "moment";
 import { weekdays } from '../constants/constants';
 
@@ -11,7 +11,7 @@ import {
   changeStartDate,
   changeEndDate
 } from '../store/actions/addEventFieldActions';
-import { openShowMoreField } from '../store/actions/showMoreFieldActions';
+import { toggleShowMoreField } from '../store/actions/showMoreFieldActions';
 
 class TableMonthContainer extends React.Component {
 
@@ -47,21 +47,24 @@ class TableMonthContainer extends React.Component {
       let skeletonBody = this.createSkeletonBody(i);
 
       for(let j = 0; j < 7; j++) {
+        let eventsOfDay = this.getListOfEvents(this.splitEventsByDay(), datesArray[j + 7 * i]);
 
         cells.push(
           <td
             className={momentDate.toDate().toString() === datesArray[j + 7 * i].toString() ? 'curDay' : ''}
           >
-            <button
-              type="button"
-              id="showMoreButton"
-              className="btn btn-primary show-more-button"
-              onClick={this.handleShowMoreClick}
-              date={datesArray[j + 7 * i].toString()}
-              events={this.getListOfEvents(this.splitEventsByDay(), datesArray[j + 7 * i])}
-            >
-              Show more
-            </button>
+            {
+              eventsOfDay.length > 3 ?
+              <button
+                type="button"
+                id="showMoreButton"
+                className="btn btn-primary show-more-button"
+                onClick={this.handleShowMoreClick}
+                date={datesArray[j + 7 * i].toString()}
+              >
+                Show more
+              </button> : null
+            }
           </td>
         );
 
@@ -127,7 +130,13 @@ class TableMonthContainer extends React.Component {
               onClick={this.handleCellClick}
               date={datesArray[j + 7 * weekIndex]}
             >
-              {events[0] ? <Event name={events[0] ? events[0].name : ""} length={events[0].length} /> : null}
+              {events[0] ?
+                <EventContainer
+                  event={events[0]} 
+                  name={events[0] ? events[0].name : ""}
+                  length={events[0].length}
+                /> : null
+              }
             </td>
           );
 
@@ -210,9 +219,8 @@ class TableMonthContainer extends React.Component {
   isLongerThanDay = event => {
     const startDate = moment(event.startDate).startOf('day');
     const endDate = moment(event.endDate).startOf('day');
-    const eventLength = endDate.diff(startDate, 'days') + 1;
 
-    return moment(startDate).endOf('week').startOf('day').diff(startDate, 'days') + 1 > 1;
+    return startDate.toString() !== endDate.toString();
   }
 
   sortEvents = property => {
@@ -247,7 +255,7 @@ class TableMonthContainer extends React.Component {
   }
 
   handleShowMoreClick = e => {
-    this.props.openShowMoreField(true, e.target.attributes.events);
+    this.props.toggleShowMoreField(true, this.getListOfEvents(this.splitEventsByDay(), e.target.attributes.date.value));
   }
 
   render() {
@@ -259,7 +267,7 @@ class TableMonthContainer extends React.Component {
           tableHeader={this.createTableHeader()}
           tableRows={this.createRows()}
         />
-        {this.props.isActive ? <ShowMoreField /> : null}
+        {this.props.isActive ? <ShowMoreFieldContainer /> : null}
       </>
     );
   }
@@ -269,7 +277,7 @@ const mapDispatchToProps = dispatch => ({
   openAddEventField: isActive => dispatch(openAddEventField(isActive)),
   changeStartDate: startDate => dispatch(changeStartDate(startDate)),
   changeEndDate: endDate => dispatch(changeEndDate(endDate)),
-  openShowMoreField: (isActive, events) => dispatch(openShowMoreField(isActive, events))
+  toggleShowMoreField: (isActive, events) => dispatch(toggleShowMoreField(isActive, events))
 });
 
 const mapStateToProps = store => ({

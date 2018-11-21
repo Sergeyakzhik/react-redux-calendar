@@ -1,9 +1,9 @@
-import { OPEN_SHOW_MORE_FIELD } from '../../constants/action-types';
+import { TOGGLE_SHOW_MORE_FIELD } from '../../constants/action-types';
 
-export let openShowMoreField = (isOpened, events) => ({
-  type: OPEN_SHOW_MORE_FIELD,
+export let toggleShowMoreField = (isActive, events) => ({
+  type: TOGGLE_SHOW_MORE_FIELD,
   payload: {
-    isOpened,
+    isActive,
     events
   }
 });

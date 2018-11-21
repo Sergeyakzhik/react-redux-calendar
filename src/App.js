@@ -18,7 +18,7 @@ let App = props => {
               <PeriodToggler onPeriodTogglerClick={onPeriodTogglerClick} />
             </div>
             <div className="col-sm-4">
-              <h1>Calendar</h1>
+              <h1 onClick={(e) => console.log("d")}>Calendar</h1>
             </div>
             <div className="col-sm-4 text-right">
               <div className="row">

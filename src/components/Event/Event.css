@@ -1,5 +1,5 @@
 .event {
-  height: 1.5rem;
+  height: 1.3rem;
   z-index: 1;
   background-color: orange;
   border-radius: 7px;
@@ -7,16 +7,12 @@
   text-align: center;
 }
 
-.events-list {
-  position: absolute;
-  z-index: 1;
-  width: 96%;
-  height: 4.5rem;
-  top: 2rem;
-  left: 50%;
-  margin-left: -48%;
-  border-radius: 7px;
-  overflow: auto;
+.event h4 {
+  pointer-events: none;
+}
+
+.event:hover {
+  z-index: 100!important;
 }
 
 ::-webkit-scrollbar {

@@ -1,0 +1,16 @@
+.event-info {
+  position: absolute;
+  background-color: #000000ed;
+  width: 12rem;
+  left: 50%;
+  margin-left: -6rem;
+  border-radius: 10px;
+  padding: 0.5rem;
+  z-index: 1500;
+  top: 2rem;
+  color: white;
+}
+
+.event-info h6 {
+
+}

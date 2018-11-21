@@ -174,7 +174,7 @@ class TableWeekContainer extends React.Component {
       eventHeight = timeDiff / 15;
 
       style = {
-        zIndex: ind + 2,
+        zIndex: 20 - ind,
         height: eventHeight * 17 + 'px',
         width: 50 + '%',
         left: 10 * (numberOfEvents - 1 - ind) + 'px'

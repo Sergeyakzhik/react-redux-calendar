@@ -1,31 +1,47 @@
 import React from 'react';
 import Event from '../components/Event/Event';
+import EventInfoField from '../components/EventInfoField/EventInfoField';
+
+import { connect } from 'react-redux';
+import { toggleEventInfoField } from '../store/actions/eventInfoFieldActions';
 
 class EventContainer extends React.Component {
 
-  setEventsList = () => {
-    const { eventsList } = this.props;
-    let events = [];
+  handleMouseEnter = e => {
+    this.props.toggleEventInfoField(true, e.target);
+  }
 
-    for(let i = 0; i < eventsList.length; i++) {
-      events.push(
-        <Event
-          key={'Event ' + i}
-          name={eventsList[i].name}
-          length={eventsList[i].length}
-        />
-      );
-    }
-    return events;
+  handleMouseLeave = e => {
+    this.props.toggleEventInfoField(false, '');
   }
 
   render() {
     return (
-      <div className="">
-        {this.setEventsList()}
-      </div>
+      <>
+        <Event
+          style={this.props.style}
+          onMouseEnter={this.handleMouseEnter}
+          onMouseLeave={this.handleMouseLeave}
+          name={this.props.name}
+          event={this.props.event}
+          isActive={this.props.isActive}
+          isCurrentTarget={this.props.target === this.props.event.startDate.toString()}
+        />
+      </>
     );
   }
 }
 
-export default EventContainer;
+const mapStateToProps = store => ({
+  isActive: store.eventInfoField.isActive,
+  target: store.eventInfoField.target
+});
+
+const mapDispatchToProps = dispatch => ({
+  toggleEventInfoField: (isActive, target) => dispatch(toggleEventInfoField(isActive, target)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EventContainer);
