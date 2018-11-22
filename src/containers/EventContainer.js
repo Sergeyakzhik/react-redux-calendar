@@ -8,7 +8,7 @@ import { toggleEventInfoField } from '../store/actions/eventInfoFieldActions';
 class EventContainer extends React.Component {
 
   handleMouseEnter = e => {
-    this.props.toggleEventInfoField(true, e.target);
+    this.props.toggleEventInfoField(true, e.target.attributes.date.value);
   }
 
   handleMouseLeave = e => {
@@ -22,11 +22,11 @@ class EventContainer extends React.Component {
           style={this.props.style}
           onMouseEnter={this.handleMouseEnter}
           onMouseLeave={this.handleMouseLeave}
-          name={this.props.name}
-          event={this.props.event}
+          date={this.props.date}
           isActive={this.props.isActive}
-          isCurrentTarget={this.props.target === this.props.event.startDate.toString()}
+          name={this.props.event.name}
         />
+        {this.props.isActive && (this.props.target === this.props.date) ? <EventInfoField event={this.props.event} date={this.props.date} /> : null}
       </>
     );
   }

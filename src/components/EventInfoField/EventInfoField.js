@@ -10,7 +10,7 @@ let EventInfoField = props => (
         <h6>{props.event.place}</h6>
       </div>
       <div className="col-sm-12">
-        <h6>{props.event.description || 'No description'}</h6>
+        <h6>{props.event.description}</h6>
       </div>
     </div>
   </div>

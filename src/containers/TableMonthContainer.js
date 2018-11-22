@@ -132,9 +132,10 @@ class TableMonthContainer extends React.Component {
             >
               {events[0] ?
                 <EventContainer
-                  event={events[0]} 
+                  event={events[0]}
                   name={events[0] ? events[0].name : ""}
                   length={events[0].length}
+                  date={events[0].startDate.toString()}
                 /> : null
               }
             </td>

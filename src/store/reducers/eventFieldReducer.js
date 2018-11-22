@@ -77,6 +77,13 @@ export function eventFieldReducer(state = initialState, action) {
             newEvent.startDate.date() +
             newEvent.endDate.date()
           ]: newEvent
+        },
+        event: {
+          ...state.event,
+          name: '',
+          place: '',
+          description: '',
+          length: 1
         }
       }
     case CHANGE_EVENT_NAME:

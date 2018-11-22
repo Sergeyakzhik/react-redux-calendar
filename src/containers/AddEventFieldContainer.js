@@ -69,7 +69,7 @@ class AddEventFieldContainer extends React.Component {
             </div>
             <div className="form-group col-sm-6 text-center">
               <label htmlFor="place">Place</label>
-              <input type="text" className="form-control" id="place" placeholder="Place"/>
+              <input type="text" className="form-control" id="place" placeholder="Place" onChange={this.handleInputChange}/>
             </div>
             <div className="form-group col-sm-6 text-center">
               <label htmlFor="dateTimeStart" className="col-form-label">From</label>

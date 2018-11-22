@@ -1,6 +1,6 @@
 import React from 'react';
 import TableWeek from '../components/TableWeek/TableWeek';
-import Event from '../components/Event/Event';
+import EventContainer from './EventContainer';
 import moment from "moment";
 import { weekdays, dayHours } from '../constants/constants';
 
@@ -176,11 +176,10 @@ class TableWeekContainer extends React.Component {
       style = {
         zIndex: 20 - ind,
         height: eventHeight * 17 + 'px',
-        width: 50 + '%',
-        left: 10 * (numberOfEvents - 1 - ind) + 'px'
+        width: 95 - (numberOfEvents - 1) * 10 + '%',
       }
 
-      eventsList.push(<Event name={event.name} length={event.length} style={style} />);
+      eventsList.push(<EventContainer event={event} date={event.startDate.toString()} length={event.length} style={style} />);
     });
 
     return eventsList;
