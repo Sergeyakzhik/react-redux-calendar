@@ -17,12 +17,10 @@
 }
 
 .table-day {
-  width: 100%;
-  border-spacing: 0.15rem
-}
-
-.table-day {
-  width: 100%;
+  width: 64%;
+  margin: auto;
+  position: relative;
+  border-spacing: 0.15rem;
 }
 
 .table-day .event {
@@ -43,8 +41,8 @@
   position: absolute;
   width: 89.4%;
   height: 96.9%;
-  top: 2.9rem;
-  left: 7.2rem;
+  top: 0;
+  left: 4.6rem;
 }
 
 .table-day .events-skeleton table {

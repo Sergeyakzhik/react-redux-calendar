@@ -4,41 +4,44 @@ import EventInfoField from '../components/EventInfoField/EventInfoField';
 
 import { connect } from 'react-redux';
 import { toggleEventInfoField } from '../store/actions/eventInfoFieldActions';
+import { deleteEvent } from '../store/actions/addEventFieldActions';
 
 class EventContainer extends React.Component {
 
   handleMouseEnter = e => {
-    this.props.toggleEventInfoField(true, e.target.attributes.date.value);
+    this.props.toggleEventInfoField(e.target.attributes.targetKey.value);
   }
 
   handleMouseLeave = e => {
-    this.props.toggleEventInfoField(false, '');
+    this.props.toggleEventInfoField('');
   }
 
   render() {
+    let isActive = this.props.curTarget === this.props.targetKey;
     return (
       <>
         <Event
           style={this.props.style}
           onMouseEnter={this.handleMouseEnter}
           onMouseLeave={this.handleMouseLeave}
-          date={this.props.date}
-          isActive={this.props.isActive}
-          name={this.props.event.name}
+          onDeleteButtonClick={this.handleDeleteButtonClick}
+          event={this.props.event}
+          targetKey={this.props.targetKey}
+          isActive={isActive}
         />
-        {this.props.isActive && (this.props.target === this.props.date) ? <EventInfoField event={this.props.event} date={this.props.date} /> : null}
+        {isActive ? <EventInfoField event={this.props.event} /> : null}
       </>
     );
   }
 }
 
 const mapStateToProps = store => ({
-  isActive: store.eventInfoField.isActive,
-  target: store.eventInfoField.target
+  curTarget: store.eventInfoField.curTarget
 });
 
 const mapDispatchToProps = dispatch => ({
-  toggleEventInfoField: (isActive, target) => dispatch(toggleEventInfoField(isActive, target)),
+  toggleEventInfoField: curTarget => dispatch(toggleEventInfoField(curTarget)),
+  deleteEvent: curTarget => dispatch(deleteEvent(curTarget))
 });
 
 export default connect(

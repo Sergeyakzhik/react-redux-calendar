@@ -17,6 +17,15 @@
 
 .table-week {
   border-spacing: 2px;
+  display: block;
+}
+
+.table-week thead {
+
+}
+
+.table-week tbody {
+
 }
 
 .table-week .event {

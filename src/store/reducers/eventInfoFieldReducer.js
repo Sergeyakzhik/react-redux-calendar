@@ -1,16 +1,14 @@
 import { TOGGLE_EVENT_INFO_FIELD } from '../../constants/action-types.js';
 
 const initialState = {
-  isActive: false,
-  target: ''
+  curTarget: ''
 }
 
 export function eventInfoFieldReducer(state = initialState, action) {
   switch (action.type) {
     case TOGGLE_EVENT_INFO_FIELD:
       return {
-        isActive: action.payload.isActive,
-        target: action.payload.target
+        curTarget: action.payload
       }
     default:
       return state;

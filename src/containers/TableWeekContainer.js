@@ -5,6 +5,11 @@ import moment from "moment";
 import { weekdays, dayHours } from '../constants/constants';
 
 import { connect } from 'react-redux';
+import {
+  openAddEventField,
+  changeStartDate,
+  changeEndDate
+} from '../store/actions/addEventFieldActions';
 
 class TableWeekContainer extends React.Component {
 
@@ -94,7 +99,7 @@ class TableWeekContainer extends React.Component {
         </td>
       );
 
-      tbody.push(<tr key={'TRowWeek' + i}>{cells}</tr>);
+      tbody.push(<tr className="table-row" key={'TRowWeek' + i}>{cells}</tr>);
     }
 
     tbody.push(
@@ -110,11 +115,21 @@ class TableWeekContainer extends React.Component {
     return tbody;
   }
 
+  handleCellClick = e => {
+    const date = moment(new Date(e.target.attributes.date.value));
+
+    this.props.changeStartDate(date);
+    this.props.changeEndDate(date);
+    this.props.openAddEventField(true);
+  }
+
   createSkeletonBody = () => {
     let datesArray = this.fillDatesArray();
     let rows = [];
     let tbody = [];
     let splitEvents = this.splitEventsByDays();
+
+    console.log(splitEvents)
 
     for(let i = 0; i < 96; i++) {
       rows.push([]);
@@ -122,6 +137,8 @@ class TableWeekContainer extends React.Component {
 
     for(let i = 0; i < 7; i++) {
       let events = this.getListOfEvents(splitEvents, datesArray[i]);
+
+      events.sort(this.sortEvents('timeDiff'));
 
       for(let j = 0; j < 96; j++) {
         let min = j % 4 === 0 ? 0 : j % 4 === 1 ? 15 : j % 4 === 2 ? 30 : 45;
@@ -144,7 +161,8 @@ class TableWeekContainer extends React.Component {
         rows[j].push(
           <td
             key={datesArray[i]}
-            date={datesArray[i]}
+            onClick={this.handleCellClick}
+            date={moment(datesArray[i]).hours(j / 4).minutes(min).toDate()}
             numberOfEvents={numberOfEvents}
           >
             {eventsList.map(event => event)}
@@ -165,21 +183,27 @@ class TableWeekContainer extends React.Component {
 
   createEvents = (events, numberOfEvents) => {
     let eventsList = [];
-    let timeDiff;
     let eventHeight;
     let style = {};
 
     events.forEach((event, ind) => {
-      timeDiff = moment(event.endDate).diff(moment(event.startDate), 'minutes');
-      eventHeight = timeDiff / 15;
+      eventHeight = event.timeDiff / 15;
 
       style = {
-        zIndex: 20 - ind,
+        zIndex: 20 + numberOfEvents,
         height: eventHeight * 17 + 'px',
-        width: 95 - (numberOfEvents - 1) * 10 + '%',
+        width: 95 - (numberOfEvents - 1) * 15 + '%'
       }
 
-      eventsList.push(<EventContainer event={event} date={event.startDate.toString()} length={event.length} style={style} />);
+      eventsList.push(
+        <EventContainer
+          event={event}
+          targetKey={event.name + event.startDate.toString() + event.endDate.toString()}
+          style={style}
+        />
+      );
+
+      numberOfEvents--;
     });
 
     return eventsList;
@@ -195,8 +219,10 @@ class TableWeekContainer extends React.Component {
       while(this.isLongerThanDay(event)) {
         let curEvent = Object.assign({}, event);
         curEvent.endDate = moment(curEvent.startDate).endOf('day');
+        curEvent.timeDiff = moment(curEvent.endDate).diff(moment(curEvent.startDate), 'minutes');
 
         event.startDate = moment(curEvent.endDate).date(curEvent.endDate.date() + 1).startOf('day');
+        event.timeDiff = moment(event.endDate).diff(moment(event.startDate), 'minutes');
         splitEvents.push(curEvent);
       }
 
@@ -206,12 +232,21 @@ class TableWeekContainer extends React.Component {
     return splitEvents;
   }
 
+  sortEvents = property => {
+    return function (a,b) {
+        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+        return result;
+    }
+  }
+
   isLongerThanDay = event => {
     const startDate = event.startDate;
     const endDate = event.endDate;
-    const eventLength = endDate.diff(startDate, 'hours');
+    const eventLengthHrs = endDate.diff(startDate, 'hours');
+    const eventLengthInMins = endDate.diff(startDate, 'minutes');
+    const minsBeforeEndOfDay = moment(startDate).endOf('day').diff(startDate, 'minutes');
 
-    return eventLength > 24;
+    return eventLengthHrs > 24 || eventLengthInMins > minsBeforeEndOfDay;
   }
 
   setHeaderFirstMonth = () => moment(this.props.period).startOf('week').month() + 1;
@@ -233,10 +268,17 @@ class TableWeekContainer extends React.Component {
   }
 }
 
+const mapDispatchToProps = dispatch => ({
+  openAddEventField: isActive => dispatch(openAddEventField(isActive)),
+  changeStartDate: startDate => dispatch(changeStartDate(startDate)),
+  changeEndDate: endDate => dispatch(changeEndDate(endDate))
+});
+
 const mapStateToProps = store => ({
   events: store.eventField.events
 });
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(TableWeekContainer);

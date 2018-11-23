@@ -4,6 +4,7 @@ import {
   CHANGE_START_DATE,
   CHANGE_END_DATE,
   ADD_EVENT,
+  DELETE_EVENT,
   CHANGE_EVENT_NAME,
   CHANGE_EVENT_DESCRIPTION,
   CHANGE_EVENT_PLACE
@@ -19,7 +20,8 @@ const initialState = {
     startDate: '',
     endDate: '',
     description: '',
-    length: 1
+    length: 1,
+    timeDiff: 0
   }
 }
 
@@ -65,17 +67,19 @@ export function eventFieldReducer(state = initialState, action) {
       const startDate = newEvent.startDate;
       const endDate = newEvent.endDate;
       const length = endDate.diff(moment(startDate).startOf('day'), 'days') + 1;
+      const timeDiff = moment(endDate).diff(moment(startDate), 'minutes');
 
       newEvent.length = length;
+      newEvent.timeDiff = timeDiff;
 
       return { ...state,
         isActive: action.payload.isActive,
         events: {
           ...state.events,
-          ['event_' +
+          [
             newEvent.name +
-            newEvent.startDate.date() +
-            newEvent.endDate.date()
+            newEvent.startDate.toString() +
+            newEvent.endDate.toString()
           ]: newEvent
         },
         event: {
@@ -83,8 +87,13 @@ export function eventFieldReducer(state = initialState, action) {
           name: '',
           place: '',
           description: '',
-          length: 1
+          length: 1,
+          timeDiff: 0
         }
+      }
+    case DELETE_EVENT:
+      delete state.events[action.payload]
+      return { ...state
       }
     case CHANGE_EVENT_NAME:
       return { ...state,

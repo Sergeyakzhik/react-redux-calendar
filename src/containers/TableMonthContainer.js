@@ -101,6 +101,7 @@ class TableMonthContainer extends React.Component {
 
   handleCellClick = e => {
     const date = moment(new Date(e.target.attributes.date.value));
+
     this.props.changeStartDate(date);
     this.props.changeEndDate(date);
     this.props.openAddEventField(true);
@@ -128,14 +129,12 @@ class TableMonthContainer extends React.Component {
               key={datesArray[i + 7 * weekIndex]}
               colSpan={events[0] ? events[0].length : 1}
               onClick={this.handleCellClick}
-              date={datesArray[j + 7 * weekIndex]}
+              date={datesArray[i + 7 * weekIndex]}
             >
               {events[0] ?
                 <EventContainer
                   event={events[0]}
-                  name={events[0] ? events[0].name : ""}
-                  length={events[0].length}
-                  date={events[0].startDate.toString()}
+                  targetKey={events[0].name + events[0].startDate.toString() + events[0].endDate.toString()}
                 /> : null
               }
             </td>
@@ -144,11 +143,6 @@ class TableMonthContainer extends React.Component {
           rows[j].numberOfCells += events[0] ? events[0].length : 1;
           events.shift();
         }
-      }
-
-      if(events.length > 3) {
-        //openShowMoreFiels
-        //getListOfEvents by e.target.attributes.date.value
       }
     }
 

@@ -1,14 +1,15 @@
 .event {
   height: 1.3rem;
   z-index: 1;
-  background-color: orange;
+  background-color: #ff8201bf;
   border-radius: 7px;
   margin: 0.2rem 0;
   text-align: center;
   left: 0.2rem;
+  box-shadow: 4px 4px 5px #00000061;
 }
 
-.event h4 {
+.event h4, .event i {
   pointer-events: none;
 }
 
@@ -28,4 +29,19 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+.delete-button {
+  position: absolute;
+  right: 0.8rem;
+  top: 0.2rem;
+  font-size: 1rem;
+  color: white;
+  transition: color 0.3s;
+}
+
+.delete-button:hover {
+  color: red;
+  transition: color 0.3s;
+  cursor: pointer;
 }

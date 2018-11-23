@@ -4,6 +4,7 @@ import {
   CHANGE_START_DATE,
   CHANGE_END_DATE,
   ADD_EVENT,
+  DELETE_EVENT,
   CHANGE_EVENT_NAME,
   CHANGE_EVENT_DESCRIPTION,
   CHANGE_EVENT_PLACE
@@ -35,6 +36,11 @@ export let addEvent = (isActive, event) => ({
     isActive,
     event
   }
+});
+
+export let deleteEvent = curTarget => ({
+  type: DELETE_EVENT,
+  payload: curTarget
 });
 
 export let changeEventName = name => ({

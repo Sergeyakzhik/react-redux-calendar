@@ -2,11 +2,14 @@
   position: absolute;
   background-color: #000000ed;
   width: 14rem;
-  left: 170%;
   margin-left: -7rem;
   border-radius: 10px;
   padding: 0.5rem;
   z-index: 1500;
   color: white;
   top: 0;
+}
+
+.event-info {
+  right: -14rem;
 }

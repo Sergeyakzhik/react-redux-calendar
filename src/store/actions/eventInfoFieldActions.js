@@ -1,9 +1,6 @@
 import { TOGGLE_EVENT_INFO_FIELD } from '../../constants/action-types';
 
-export let toggleEventInfoField = (isActive, target) => ({
+export let toggleEventInfoField = curTarget => ({
   type: TOGGLE_EVENT_INFO_FIELD,
-  payload: {
-    isActive,
-    target
-  }
+  payload: curTarget
 });
