@@ -198,7 +198,7 @@ class TableWeekContainer extends React.Component {
       eventsList.push(
         <EventContainer
           event={event}
-          targetKey={event.name + event.startDate.toString() + event.endDate.toString()}
+          targetKey={event.targetKey}
           style={style}
         />
       );
@@ -275,7 +275,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = store => ({
-  events: store.eventField.events
+  events: store.calendar.events
 });
 
 export default connect(

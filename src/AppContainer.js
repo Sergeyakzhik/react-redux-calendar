@@ -76,7 +76,7 @@ const mapStateToProps = store => ({
   table: store.calendar.table,
   period: store.calendar.period,
   isActive: store.eventField.isActive,
-  events: store.eventField.events
+  events: store.calendar.events
 });
 
 const mapDispatchToProps = dispatch => ({

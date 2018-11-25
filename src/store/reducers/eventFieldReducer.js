@@ -3,8 +3,6 @@ import {
   CLOSE_EVENT_FIELD,
   CHANGE_START_DATE,
   CHANGE_END_DATE,
-  ADD_EVENT,
-  DELETE_EVENT,
   CHANGE_EVENT_NAME,
   CHANGE_EVENT_DESCRIPTION,
   CHANGE_EVENT_PLACE
@@ -13,7 +11,6 @@ import moment from "moment";
 
 const initialState = {
   isActive: false,
-  events: {},
   event: {
     name: '',
     place: '',
@@ -21,7 +18,8 @@ const initialState = {
     endDate: '',
     description: '',
     length: 1,
-    timeDiff: 0
+    timeDiff: 0,
+    targetKey: ''
   }
 }
 
@@ -34,6 +32,16 @@ let countMinutes = () => {
 export function eventFieldReducer(state = initialState, action) {
   switch (action.type) {
     case OPEN_EVENT_FIELD:
+      state.event = Object.assign({}, {
+        ...state.event,
+        name: '',
+        place: '',
+        description: '',
+        length: 1,
+        timeDiff: 0,
+        targetKey: ''
+      });
+
       return { ...state,
         isActive: action.payload,
         event: {
@@ -62,39 +70,6 @@ export function eventFieldReducer(state = initialState, action) {
         }
       }
     }
-    case ADD_EVENT:
-      const newEvent = action.payload.event;
-      const startDate = newEvent.startDate;
-      const endDate = newEvent.endDate;
-      const length = endDate.diff(moment(startDate).startOf('day'), 'days') + 1;
-      const timeDiff = moment(endDate).diff(moment(startDate), 'minutes');
-
-      newEvent.length = length;
-      newEvent.timeDiff = timeDiff;
-
-      return { ...state,
-        isActive: action.payload.isActive,
-        events: {
-          ...state.events,
-          [
-            newEvent.name +
-            newEvent.startDate.toString() +
-            newEvent.endDate.toString()
-          ]: newEvent
-        },
-        event: {
-          ...state.event,
-          name: '',
-          place: '',
-          description: '',
-          length: 1,
-          timeDiff: 0
-        }
-      }
-    case DELETE_EVENT:
-      delete state.events[action.payload]
-      return { ...state
-      }
     case CHANGE_EVENT_NAME:
       return { ...state,
         event: {

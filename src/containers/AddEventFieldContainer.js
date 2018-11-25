@@ -8,11 +8,11 @@ import {
   closeAddEventField,
   changeStartDate,
   changeEndDate,
-  addEvent,
   changeEventName,
   changeEventDescription,
   changeEventPlace
 } from '../store/actions/addEventFieldActions';
+import { addEvent } from '../store/actions/calendarActions';
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -38,7 +38,8 @@ class AddEventFieldContainer extends React.Component {
   }
 
   handleSubmitButtonClick = e => {
-    this.props.addEvent(false, Object.assign({}, this.props.event));
+    this.handleEndButtonClick();
+    this.props.addEvent(Object.assign({}, this.props.event));
   }
 
   handleEndButtonClick = e => this.props.closeAddEventField(false);
@@ -121,7 +122,7 @@ const mapDispatchToProps = dispatch => ({
   closeAddEventField: isActive => dispatch(closeAddEventField(isActive)),
   changeStartDate: startDate => dispatch(changeStartDate(startDate)),
   changeEndDate: endDate => dispatch(changeEndDate(endDate)),
-  addEvent: (isActive, event) => dispatch(addEvent(isActive, event)),
+  addEvent: event => dispatch(addEvent(event)),
   changeEventName: name => dispatch(changeEventName(name)),
   changeEventDescription: description => dispatch(changeEventDescription(description)),
   changeEventPlace: place => dispatch(changeEventPlace(place))

@@ -19,7 +19,7 @@ class ShowMoreFieldContainer extends React.Component {
 }
 
 const mapStateToProps = store => ({
-  events: store.showMoreField.events
+  events: store.calendar.events
 });
 
 const mapDispatchToProps = dispatch => ({

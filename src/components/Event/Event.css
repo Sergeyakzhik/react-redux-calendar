@@ -7,6 +7,7 @@
   text-align: center;
   left: 0.2rem;
   box-shadow: 4px 4px 5px #00000061;
+  user-select: none;
 }
 
 .event h4, .event i {
@@ -33,7 +34,7 @@
 
 .delete-button {
   position: absolute;
-  right: 0.8rem;
+  left: 0.8rem;
   top: 0.2rem;
   font-size: 1rem;
   color: white;
@@ -44,4 +45,21 @@
   color: red;
   transition: color 0.3s;
   cursor: pointer;
+}
+
+.table-month .resizer {
+  position: absolute;
+  right: -17px;
+  width: 59px;
+  height: 100%;
+  top: 0;
+  cursor: e-resize;
+}
+
+.table-month .resizer:active {
+  height: 263px;
+  width: 320px;
+  top: -431%;
+  z-index: 200;
+  right: -162px;
 }

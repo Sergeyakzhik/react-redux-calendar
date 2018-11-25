@@ -3,8 +3,6 @@ import {
   CLOSE_EVENT_FIELD,
   CHANGE_START_DATE,
   CHANGE_END_DATE,
-  ADD_EVENT,
-  DELETE_EVENT,
   CHANGE_EVENT_NAME,
   CHANGE_EVENT_DESCRIPTION,
   CHANGE_EVENT_PLACE
@@ -28,19 +26,6 @@ export let changeStartDate = startDate => ({
 export let changeEndDate = endDate => ({
   type: CHANGE_END_DATE,
   payload: endDate
-});
-
-export let addEvent = (isActive, event) => ({
-  type: ADD_EVENT,
-  payload: {
-    isActive,
-    event
-  }
-});
-
-export let deleteEvent = curTarget => ({
-  type: DELETE_EVENT,
-  payload: curTarget
 });
 
 export let changeEventName = name => ({

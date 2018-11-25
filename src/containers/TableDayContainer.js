@@ -35,14 +35,10 @@ class TableDayContainer extends React.Component {
     let momentDate = now.minutes(curRoundedMin).startOf('minute');
     let skeletonBody = this.createSkeletonBody();
 
-    console.log(momentDate)
-
     for (let i = 0; i < 48; i++) {
       let min = i % 2 === 0 ? 0 : 30;
       let roundedHour = min === 0 ? Math.floor(i / 2) + i % 2 : Math.floor(i / 2);
       let date = moment(period).hour(roundedHour).minutes(min).startOf('minute').toDate();
-
-      console.log(date)
 
       tbody.push(
         <tr className="table-row" key={'TRowDay' + i}>
@@ -137,6 +133,7 @@ class TableDayContainer extends React.Component {
     let eventHeight;
     let style = {};
 
+
     events.forEach((event, ind) => {
       eventHeight = event.timeDiff / 15;
 
@@ -149,7 +146,7 @@ class TableDayContainer extends React.Component {
       eventsList.push(
         <EventContainer
           event={event}
-          targetKey={event.name + event.startDate.toString() + event.endDate.toString()}
+          targetKey={event.targetKey}
           style={style}
         />
       );
@@ -218,7 +215,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = store => ({
-  events: store.eventField.events
+  events: store.calendar.events
 });
 
 export default connect(

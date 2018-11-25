@@ -134,7 +134,7 @@ class TableMonthContainer extends React.Component {
               {events[0] ?
                 <EventContainer
                   event={events[0]}
-                  targetKey={events[0].name + events[0].startDate.toString() + events[0].endDate.toString()}
+                  targetKey={events[0].targetKey}
                 /> : null
               }
             </td>
@@ -276,7 +276,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = store => ({
-  events: store.eventField.events,
+  events: store.calendar.events,
   isActive: store.showMoreField.isActive
 });
 
