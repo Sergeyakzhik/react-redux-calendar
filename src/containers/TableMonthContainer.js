@@ -118,7 +118,7 @@ class TableMonthContainer extends React.Component {
     for(let i = 0; i < 7; i++) {
       let events = this.getListOfEvents(splitEvents, datesArray[i + 7 * weekIndex]);
 
-      events.sort(this.sortEvents('length'));
+      // events.sort(this.sortEvents('length'));
 
       for(let j = 0; j < 3; j++) {
 

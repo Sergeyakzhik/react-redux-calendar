@@ -7,8 +7,8 @@ let Event = props => (
       targetKey={props.targetKey}
       onMouseEnter={props.onMouseEnter}
       onMouseLeave={props.onMouseLeave}
-      onMouseDown={props.onMouseDown}
-      onMouseUp={props.onMouseUp}
+      onMouseDown={props.onMouseDownDragger}
+      onMouseUp={props.onMouseUpDragger}
       onClick={e => e.stopPropagation()}
     >
       <h4>{props.event.name}</h4>
@@ -21,10 +21,10 @@ let Event = props => (
       <div
         className="resizer"
         targetKey={props.targetKey}
-        onMouseOver={props.onMouseOver}
+        onMouseOver={props.onMouseOverResizer}
         onMouseLeave={props.onMouseLeaveResizer}
         onMouseDown={props.onMouseDownResizer}
-        onMouseUp={props.onMouseUp}
+        onMouseUp={props.onMouseUpResizer}
       >
       </div>
     </div>

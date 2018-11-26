@@ -54,12 +54,37 @@
   height: 100%;
   top: 0;
   cursor: e-resize;
+  background: #0000ff6b;
+  z-index: 200;
 }
 
-.table-month .resizer:active {
-  height: 263px;
-  width: 320px;
+.table-month:active .resizer:hover {
+  height: 312px;
+  width: 480px;
   top: -431%;
-  z-index: 200;
+  z-index: 201;
   right: -162px;
+}
+
+/* .table-month .dragger {
+  position: absolute;
+  right: 0;
+  width: 82%;
+  height: 100%;
+  top: 0;
+  cursor: grab;
+  background: #0000ff6b;
+  z-index: 199;
+} */
+
+.event:hover {
+  cursor: grab;
+}
+
+.event:active {
+  position: absolute;
+  top: 0;
+  z-index: 200;
+  right: 0;
+  cursor: grabbing;
 }
