@@ -1,0 +1,40 @@
+.table-month .dragger {
+  position: absolute;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  cursor: grab;
+  z-index: 199;
+  background: #4e3fa080;
+}
+
+.table-month .dragger:active {
+  position: absolute;
+  left: -178px;
+  width: 330%;
+  height: 1300%;
+  top: -145px;
+  cursor: -webkit-grab;
+  cursor: grabbing;
+}
+
+.table-week .dragger {
+  position: absolute;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  cursor: grab;
+  z-index: 199;
+  background: #4e3fa080;
+}
+
+.table-week .dragger:active {
+  position: absolute;
+  left: -178px;
+  width: 330%;
+  top: -145px;
+  cursor: -webkit-grab;
+  cursor: grabbing;
+}

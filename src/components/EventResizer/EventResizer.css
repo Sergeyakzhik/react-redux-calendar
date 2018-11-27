@@ -1,0 +1,34 @@
+.table-month .resizer {
+  position: absolute;
+  right: -17px;
+  width: 59px;
+  height: 100%;
+  top: 0;
+  cursor: e-resize;
+  z-index: 200;
+  background: #f9000080;
+}
+
+.table-month .resizer:active {
+  position: absolute;
+  width: 480px;
+  height: 350px;
+  top: -145px;
+}
+
+.table-week .resizer {
+  position: absolute;
+  width: 100%;
+  height: 10px;
+  top: 0;
+  cursor: s-resize;
+  z-index: 200;
+  background: #f9000080;
+}
+
+.table-week .resizer:active {
+  position: absolute;
+  width: 480px;
+  height: 350px;
+  top: -145px;
+}

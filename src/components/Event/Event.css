@@ -39,6 +39,7 @@
   font-size: 1rem;
   color: white;
   transition: color 0.3s;
+  z-index: 202;
 }
 
 .delete-button:hover {
@@ -47,37 +48,7 @@
   cursor: pointer;
 }
 
-.table-month .resizer {
-  position: absolute;
-  right: -17px;
-  width: 59px;
-  height: 100%;
-  top: 0;
-  cursor: e-resize;
-  background: #0000ff6b;
-  z-index: 200;
-}
-
-.table-month:active .resizer:hover {
-  height: 312px;
-  width: 480px;
-  top: -431%;
-  z-index: 201;
-  right: -162px;
-}
-
-/* .table-month .dragger {
-  position: absolute;
-  right: 0;
-  width: 82%;
-  height: 100%;
-  top: 0;
-  cursor: grab;
-  background: #0000ff6b;
-  z-index: 199;
-} */
-
-.event:hover {
+/* .event:hover {
   cursor: grab;
 }
 
@@ -87,4 +58,4 @@
   z-index: 200;
   right: 0;
   cursor: grabbing;
-}
+} */
