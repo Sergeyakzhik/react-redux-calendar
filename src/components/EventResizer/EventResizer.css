@@ -16,7 +16,7 @@
   top: -145px;
 }
 
-.table-week .resizer {
+.table-week .resizer, .table-day .resizer {
   position: absolute;
   width: 100%;
   height: 10px;
@@ -26,9 +26,14 @@
   background: #f9000080;
 }
 
-.table-week .resizer:active {
+.table-week .resizer:active, .table-day .resizer:active {
   position: absolute;
   width: 480px;
   height: 350px;
   top: -145px;
+}
+
+.table-day .resizer:active {
+  width: 780px;
+  left: -70px;
 }

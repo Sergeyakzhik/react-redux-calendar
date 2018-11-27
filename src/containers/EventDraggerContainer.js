@@ -12,7 +12,7 @@ class EventDraggerContainer extends React.Component {
 
   handleMouseDown = e => {
     if(e.button === 0) {
-      let elem = e.target;
+      const elem = e.target;
 
       this.props.changeCurAction('drag');
 
@@ -32,7 +32,7 @@ class EventDraggerContainer extends React.Component {
   }
 
   handleMouseUp = e => {
-    let elem = e.target;
+    const elem = e.target;
 
     this.props.changeCurAction('');
 
@@ -62,6 +62,17 @@ class EventDraggerContainer extends React.Component {
 
       curEvent.startDate = moment(startDate).minutes(moment(startDate).minutes() + 15 * (cellsDiffX + cellsDiffY));
       curEvent.endDate = moment(endDate).minutes(moment(endDate).minutes() + 15 * (cellsDiffX + cellsDiffY));
+
+      elem.style.height = this.props.event.timeDiff / 15 * 17 + 'px';
+    }
+
+    if(curTable === 'Day') {
+      let cellsDiffY = Math.round(diffY / 17);
+
+      curEvent.startDate = moment(startDate).minutes(moment(startDate).minutes() + 15 * cellsDiffY);
+      curEvent.endDate = moment(endDate).minutes(moment(endDate).minutes() + 15 * cellsDiffY);
+
+      elem.style.height = this.props.event.timeDiff / 15 * 17 + 'px';
     }
 
     this.props.updateEvent(this.props.targetKey, curEvent);
@@ -71,9 +82,30 @@ class EventDraggerContainer extends React.Component {
   handleMouseMove = e => {
     let elem = e.target;
 
-    elem.style.width = this.props.event.length * 175 + 500 + 'px';
-    elem.style.left = e.clientX - startX - elem.offsetWidth / 2.5 + 'px';
+    if(this.props.table === 'Day') {
+      elem.style.width = 635 + 300 + 'px';
+      elem.style.left = e.clientX - startX - elem.offsetWidth / 4 + 'px';
+    }
+    else {
+      elem.style.width = this.props.event.length * 175 + 500 + 'px';
+      elem.style.left = e.clientX - startX - elem.offsetWidth / 2.5 + 'px';
+    }
     elem.style.top = e.clientY - startY - elem.offsetHeight / 2.5 + 'px';
+  }
+
+  handleMouseLeave = e => {
+    const elem = e.target;
+
+    this.props.changeCurAction('');
+
+    elem.style.left = '';
+    elem.style.top = '';
+    elem.style.width = '';
+
+    if(this.props.table !== 'Month')
+      elem.style.height = this.props.event.timeDiff / 15 * 17 + 'px';
+
+    elem.removeEventListener('mousemove', this.handleMouseMove);
   }
 
   render() {
@@ -85,6 +117,7 @@ class EventDraggerContainer extends React.Component {
       <EventDragger
         onMouseDown={this.handleMouseDown}
         onMouseUp={this.handleMouseUp}
+        onMouseLeave={this.handleMouseLeave}
         targetKey={this.props.targetKey}
         style={this.props.table !== 'Month' ? style : null}
       />

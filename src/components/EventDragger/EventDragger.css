@@ -19,7 +19,7 @@
   cursor: grabbing;
 }
 
-.table-week .dragger {
+.table-week .dragger, .table-day .dragger {
   position: absolute;
   right: 0;
   width: 100%;
@@ -30,11 +30,17 @@
   background: #4e3fa080;
 }
 
-.table-week .dragger:active {
+.table-week .dragger:active, .table-day .dragger:active {
   position: absolute;
   left: -178px;
   width: 330%;
   top: -145px;
   cursor: -webkit-grab;
   cursor: grabbing;
+}
+
+.table-day .dragger:active {
+  left: -178px;
+  width: 330%;
+  top: -145px;
 }

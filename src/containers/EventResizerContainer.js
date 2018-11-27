@@ -61,6 +61,14 @@ class EventResizerContainer extends React.Component {
       }
     }
 
+    if(curTable === 'Day') {
+      let cellsDiffY = Math.round(diffY / 17);
+
+      if(curEvent.timeDiff / 15 + cellsDiffY > 0) {
+        curEvent.endDate = moment(endDate).minutes(moment(endDate).minutes() + 15 * cellsDiffY);
+      }
+    }
+
     this.props.updateEvent(this.props.targetKey, curEvent);
     e.target.removeEventListener('mousemove', this.handleMouseMove);
   }
@@ -72,6 +80,17 @@ class EventResizerContainer extends React.Component {
     elem.style.top = e.clientY - startY - elem.offsetHeight / 2.5 + 'px';
   }
 
+  handleMouseLeave = e => {
+    const elem = e.target;
+
+    this.props.changeCurAction('');
+
+    elem.style.right = '';
+    elem.style.top = '';
+
+    elem.removeEventListener('mousemove', this.handleMouseMove);
+  }
+
   render() {
     let style = {
       marginTop: this.props.event.timeDiff / 15 * 17 - 10 + 'px'
@@ -81,6 +100,7 @@ class EventResizerContainer extends React.Component {
       <EventResizer
         onMouseDown={this.handleMouseDown}
         onMouseUp={this.handleMouseUp}
+        onMouseLeave={this.handleMouseLeave}
         targetKey={this.props.targetKey}
         style={this.props.table !== 'Month' ? style : null}
       />
