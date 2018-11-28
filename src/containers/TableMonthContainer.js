@@ -52,6 +52,7 @@ class TableMonthContainer extends React.Component {
         cells.push(
           <td
             className={momentDate.toDate().toString() === datesArray[j + 7 * i].toString() ? 'curDay' : ''}
+            key={datesArray[j + 7 * i]}
           >
             {
               eventsOfDay.length > 3 ?
@@ -146,13 +147,11 @@ class TableMonthContainer extends React.Component {
       }
     }
 
-    skeletonBody.push(
-      <>
-        <tr key={'TSkeletonBody'}>{rows[0]}</tr>
-        <tr key={'TSkeletonBody'}>{rows[1]}</tr>
-        <tr key={'TSkeletonBody'}>{rows[2]}</tr>
-      </>
-    );
+    for(let i = 0; i < 3; i++) {
+      skeletonBody.push(
+        <tr key={'TSkeletonBody_' + i}>{rows[i]}</tr>
+      );
+    }
 
     return skeletonBody;
   }

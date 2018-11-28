@@ -53,7 +53,7 @@ export function calendarReducer(state = initialState, action) {
     case UPDATE_EVENT:
       const events = state.events;
       const oldTargetKey = action.payload.targetKey;
-      let eventToUpdate = events[oldTargetKey];
+    //  let eventToUpdate = events[oldTargetKey];
       const updatedEvent = action.payload.newEvent;
       const newTargetKey = updatedEvent.name + updatedEvent.startDate.toString() + updatedEvent.endDate.toString();
 
@@ -63,13 +63,11 @@ export function calendarReducer(state = initialState, action) {
           delete events[oldTargetKey];
       }
 
-      
-
       updatedEvent.length = moment(updatedEvent.endDate).diff(moment(updatedEvent.startDate).startOf('day'), 'days') + 1;
       updatedEvent.timeDiff = moment(updatedEvent.endDate).diff(moment(updatedEvent.startDate), 'minutes');
       updatedEvent.targetKey = newTargetKey;
 
-      eventToUpdate = Object.assign({}, newEvent);
+    //  eventToUpdate = Object.assign({}, newEvent);
 
       return { ...state,
         events: Object.assign({}, state.events)

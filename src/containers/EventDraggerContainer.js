@@ -11,6 +11,7 @@ let startX, startY;
 class EventDraggerContainer extends React.Component {
 
   handleMouseDown = e => {
+    
     if(e.button === 0) {
       const elem = e.target;
 

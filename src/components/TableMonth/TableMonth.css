@@ -9,7 +9,7 @@
   color: #ea0000;
 }
 
-.table-month tr td:first-child {
+.table-month .events-skeleton thead td:first-child {
   color: #ea0000;
 }
 

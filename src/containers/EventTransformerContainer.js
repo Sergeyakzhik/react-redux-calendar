@@ -1,7 +1,6 @@
 import React from 'react';
 import EventResizerContainer from './EventResizerContainer';
 import EventDraggerContainer from './EventDraggerContainer';
-import moment from "moment";
 
 import { connect } from 'react-redux';
 import {
@@ -15,7 +14,7 @@ class EventTransformerContainer extends React.Component {
 
   render() {
     return (
-      <>
+      <div onMouseDown={this.props.onMouseDown}>
         { this.props.curAction !== 'drag' && this.isLastPartOfEvent() ?
           <EventResizerContainer
             event={this.props.event}
@@ -30,7 +29,7 @@ class EventTransformerContainer extends React.Component {
           />
           : null
         }
-      </>
+      </div>
     );
   }
 }

@@ -10,9 +10,9 @@ let Event = props => (
       onClick={e => e.stopPropagation()}
     >
       <h4>{props.event.name}</h4>
-      <div className="delete-button" targetKey={props.targetKey} event={props.event} onClick={props.onDeleteButtonClick}>
-        <i className="fas fa-times"></i>
-      </div>
+    </div>
+    <div className="delete-button" targetKey={props.targetKey} event={props.event} onClick={props.onDeleteButtonClick}>
+      <i className="fas fa-times"></i>
     </div>
   </>
 );

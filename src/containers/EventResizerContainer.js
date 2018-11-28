@@ -14,7 +14,6 @@ class EventResizerContainer extends React.Component {
 
     if(e.button === 0) {
       let elem = e.target;
-      let curTable = this.props.table;
 
       this.props.changeCurAction('resize');
 
