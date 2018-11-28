@@ -57,7 +57,7 @@ class AddEventFieldContainer extends React.Component {
 
   render() {
     const { startDate, endDate } = this.props;
-    const currentTime = moment();
+
     return (
       <div className="input-form">
         <h1>New event</h1>
@@ -66,6 +66,10 @@ class AddEventFieldContainer extends React.Component {
         </div>
         <AddEventForm
           onSubmit={this.submit}
+          startDate={startDate}
+          endDate={endDate}
+          handleStartDateChange={this.handleStartDateChange}
+          handleEndDateChange={this.handleEndDateChange}
         />
       </div>
     );
