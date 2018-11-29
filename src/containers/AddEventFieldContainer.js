@@ -1,7 +1,5 @@
 import React from 'react';
-import moment from "moment";
 import '../components/AddEventField/AddEventField.css';
-import DatePicker from "react-datepicker";
 import AddEventForm from '../components/AddEventField/AddEventForm/AddEventForm';
 
 import { connect } from 'react-redux';
@@ -18,8 +16,6 @@ import { addEvent } from '../store/actions/calendarActions';
 import "react-datepicker/dist/react-datepicker.css";
 
 class AddEventFieldContainer extends React.Component {
-
-  getEndDate = () => this.props.startDate ? this.props.startDate : moment();
 
   handleStartDateChange = date => {
     const { endDate } = this.props;
@@ -39,9 +35,8 @@ class AddEventFieldContainer extends React.Component {
   }
 
   submit = e => {
-    console.log("ssss " + e)
-    // this.handleEndButtonClick();
-    // this.props.addEvent(Object.assign({}, this.props.event));
+    this.handleEndButtonClick();
+    this.props.addEvent(Object.assign({}, this.props.event));
   }
 
   handleEndButtonClick = e => this.props.closeAddEventField(false);
@@ -66,8 +61,6 @@ class AddEventFieldContainer extends React.Component {
         </div>
         <AddEventForm
           onSubmit={this.submit}
-          startDate={startDate}
-          endDate={endDate}
           handleStartDateChange={this.handleStartDateChange}
           handleEndDateChange={this.handleEndDateChange}
         />
@@ -81,7 +74,7 @@ const mapStateToProps = store => ({
   event: store.eventField.event,
   startDate: store.eventField.event.startDate,
   endDate: store.eventField.event.endDate,
-  length: store.eventField.event.length
+  length: store.eventField.event.length,
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -1,7 +1,9 @@
 import React from 'react';
 import moment from "moment";
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, formValueSelector } from 'redux-form';
 import DatePicker from "react-datepicker";
+
+import { connect } from 'react-redux';
 
 let AddEventForm = props => {
   const {
@@ -10,8 +12,9 @@ let AddEventForm = props => {
     endDate,
     minDate,
     handleStartDateChange,
-    handleEndDateChange
+    handleEndDateChange,
   } = props;
+
   let currentTime = moment();
 
   return (
@@ -29,27 +32,28 @@ let AddEventForm = props => {
           <label htmlFor="dateTimeStart" className="col-form-label">From</label>
           <Field
             name="startDate"
-            component={() =>
+            id="startDate"
+            component={(props) =>
                (<DatePicker
-                 selected={startDate}
-                 onChange={handleStartDateChange}
+                 selected={props.input.value || startDate}
+                 onChange={props.input.onChange}
                  minDate={currentTime}
                  showTimeSelect
                  timeIntervals={15}
                  dateFormat="LLL"
                  timeCaption="Time"
-               />)
-             }
+               />)}
            />
         </div>
         <div className="form-group col-sm-6 text-center">
           <label htmlFor="dateTimeEnd" className="col-form-label">To</label>
           <Field
             name="endDate"
-            component={() =>
+            id="endDate"
+            component={(props) =>
                (<DatePicker
-                 selected={endDate}
-                 onChange={handleEndDateChange}
+                 selected={props.input.value || startDate}
+                 onChange={props.input.onChange}
                  minDate={startDate}
                  showTimeSelect
                  timeIntervals={15}
@@ -71,12 +75,14 @@ let AddEventForm = props => {
   );
 }
 
-// createReduxForm = reduxForm({ form: 'addEvent' });
-//
-// AddEventForm = createReduxForm(AddEventForm);
-
 AddEventForm = reduxForm({
   form: 'addEvent'
 })(AddEventForm);
+
+const selector = formValueSelector('addEvent');
+
+AddEventForm = connect(
+  state => selector(state, 'startDate', 'endDate')
+)(AddEventForm);
 
 export default AddEventForm;
