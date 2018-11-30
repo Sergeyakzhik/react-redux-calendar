@@ -1,54 +1,39 @@
 import React from 'react';
-import '../components/AddEventField/AddEventField.css';
-import AddEventForm from '../components/AddEventField/AddEventForm/AddEventForm';
+import AddEventForm from './AddEventForm/AddEventForm';
+import { reduxForm, formValueSelector } from 'redux-form';
 
 import { connect } from 'react-redux';
-import {
-  closeAddEventField,
-  changeStartDate,
-  changeEndDate,
-  changeEventName,
-  changeEventDescription,
-  changeEventPlace
-} from '../store/actions/addEventFieldActions';
+import { closeAddEventField } from '../store/actions/addEventFieldActions';
 import { addEvent } from '../store/actions/calendarActions';
 
 import "react-datepicker/dist/react-datepicker.css";
 
 class AddEventFieldContainer extends React.Component {
 
-  handleStartDateChange = date => {
-    const { endDate } = this.props;
-
-    this.props.changeStartDate(date);
-    this.props.changeEndDate(date > endDate ? date : endDate);
-  }
-
-  handleEndDateChange = date => {
-    this.props.changeEndDate(date);
-  }
-
-  getCurrentTime = () => {
-    let date = new Date();
-
-    return [date.getHours(), date.getMinutes()];
-  }
-
   submit = e => {
     this.handleEndButtonClick();
-    this.props.addEvent(Object.assign({}, this.props.event));
+    this.props.addEvent(this.fillEventData());
   }
+
+  fillEventData = () => {
+    const {
+      startDate,
+      endDate,
+      name,
+      place,
+      description
+    } = this.props;
+
+    return {
+      startDate,
+      endDate,
+      name,
+      place,
+      description
+    }
+  };
 
   handleEndButtonClick = e => this.props.closeAddEventField(false);
-
-  handleInputChange = e => {
-    if(e.target.id === 'title')
-      this.props.changeEventName(e.target.value);
-    if(e.target.id === 'description')
-      this.props.changeEventDescription(e.target.value);
-    if(e.target.id === 'place')
-      this.props.changeEventPlace(e.target.value);
-  }
 
   render() {
     const { startDate, endDate } = this.props;
@@ -61,8 +46,6 @@ class AddEventFieldContainer extends React.Component {
         </div>
         <AddEventForm
           onSubmit={this.submit}
-          handleStartDateChange={this.handleStartDateChange}
-          handleEndDateChange={this.handleEndDateChange}
         />
       </div>
     );
@@ -72,22 +55,27 @@ class AddEventFieldContainer extends React.Component {
 const mapStateToProps = store => ({
   isActive: store.eventField.isActive,
   event: store.eventField.event,
-  startDate: store.eventField.event.startDate,
-  endDate: store.eventField.event.endDate,
   length: store.eventField.event.length,
 });
 
 const mapDispatchToProps = dispatch => ({
   closeAddEventField: isActive => dispatch(closeAddEventField(isActive)),
-  changeStartDate: startDate => dispatch(changeStartDate(startDate)),
-  changeEndDate: endDate => dispatch(changeEndDate(endDate)),
   addEvent: event => dispatch(addEvent(event)),
-  changeEventName: name => dispatch(changeEventName(name)),
-  changeEventDescription: description => dispatch(changeEventDescription(description)),
-  changeEventPlace: place => dispatch(changeEventPlace(place))
 });
 
+const selector = formValueSelector('addEvent');
+
+AddEventFieldContainer = connect(
+  state => selector(
+    state,
+    'startDate',
+    'endDate',
+    'name',
+    'place',
+    'description'
+  )
+)(AddEventFieldContainer)
+
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps
 )(AddEventFieldContainer);

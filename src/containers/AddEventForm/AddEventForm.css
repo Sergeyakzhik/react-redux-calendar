@@ -40,6 +40,12 @@ button.react-datepicker__navigation--previous:hover {
   border-right-color: #4da00b;
 }
 
+.btn-primary.disabled, .btn-primary:disabled {
+  color: #000;
+  background-color: #969696;
+  border-color: #000000;
+}
+
 .react-datepicker__day--selected, .react-datepicker__time-list-item--selected {
   background-color: #a1df70!important;
 }
@@ -73,6 +79,7 @@ button.react-datepicker__navigation--previous:hover {
 
 .input-form textarea {
   width: 94%;
+  border-radius: 0.25rem;
 }
 
 .react-datepicker-wrapper {
