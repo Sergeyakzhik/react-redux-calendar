@@ -7,8 +7,7 @@ import { weekdays, dayHours } from '../constants/constants';
 import { connect } from 'react-redux';
 import {
   openAddEventField,
-  changeStartDate,
-  changeEndDate
+  setInitialDate
 } from '../store/actions/addEventFieldActions';
 
 class TableWeekContainer extends React.Component {
@@ -118,8 +117,7 @@ class TableWeekContainer extends React.Component {
   handleCellClick = e => {
     const date = moment(new Date(e.target.attributes.date.value));
 
-    this.props.changeStartDate(date);
-    this.props.changeEndDate(date);
+    this.props.setInitialDate(date);
     this.props.openAddEventField(true);
   }
 
@@ -270,8 +268,7 @@ class TableWeekContainer extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
   openAddEventField: isActive => dispatch(openAddEventField(isActive)),
-  changeStartDate: startDate => dispatch(changeStartDate(startDate)),
-  changeEndDate: endDate => dispatch(changeEndDate(endDate))
+  setInitialDate: initialDate => dispatch(setInitialDate(initialDate))
 });
 
 const mapStateToProps = store => ({

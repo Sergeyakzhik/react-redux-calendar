@@ -1,8 +1,7 @@
 import {
   OPEN_EVENT_FIELD,
   CLOSE_EVENT_FIELD,
-  CHANGE_START_DATE,
-  CHANGE_END_DATE,
+  SET_INITIAL_DATE,
   CHANGE_EVENT_NAME,
   CHANGE_EVENT_DESCRIPTION,
   CHANGE_EVENT_PLACE
@@ -18,27 +17,7 @@ export let closeAddEventField = isActive => ({
   payload: isActive
 });
 
-export let changeStartDate = startDate => ({
-  type: CHANGE_START_DATE,
-  payload: startDate
-});
-
-export let changeEndDate = endDate => ({
-  type: CHANGE_END_DATE,
-  payload: endDate
-});
-
-export let changeEventName = name => ({
-  type: CHANGE_EVENT_NAME,
-  payload: name
-});
-
-export let changeEventDescription = description => ({
-  type: CHANGE_EVENT_DESCRIPTION,
-  payload: description
-});
-
-export let changeEventPlace = place => ({
-  type: CHANGE_EVENT_PLACE,
-  payload: place
+export let setInitialDate = initialDate => ({
+  type: SET_INITIAL_DATE,
+  payload: initialDate
 });

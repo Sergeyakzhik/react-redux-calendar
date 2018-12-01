@@ -1,16 +1,13 @@
 import React from 'react';
 import moment from "moment";
-import { Field, Fields, reduxForm, formValueSelector } from 'redux-form';
+import { Field, Fields, reduxForm, formValueSelector, change } from 'redux-form';
 import DatePicker from "react-datepicker";
 import './AddEventForm.css';
 
 import { connect } from 'react-redux';
-import {
-  changeStartDate,
-  changeEndDate
-} from '../../store/actions/addEventFieldActions';
+import { setInitialDate } from '../../store/actions/addEventFieldActions';
 
-const initialData = {
+const initialDates = {
   startDate: moment(),
   endDate: moment()
 }
@@ -21,34 +18,36 @@ const eventNameInput = ({ input, type, id, placeholder, meta: { error, touched }
   <div>
     <input {...input} placeholder={placeholder} type={type} id={id} className="form-control"/>
   </div>
-)
+);
 
 class AddEventForm extends React.Component {
 
-  renderDateFields = fields => {                              //FIX: get rid of dates props of event object. Help: https://github.com/erikras/redux-form/issues/369
+  renderDateFields = fields => {
     const { startDate, endDate } = fields;
     const startDateValue = startDate.input.value;
     const endDateValue = endDate.input.value;
-    const event = this.props.event;
+    const initialDate = this.props.initialDate;
+
+    let setInitialDates = (() => {
+      if(initialDate) {
+        this.props.change('startDate', initialDate);
+        this.props.change('endDate', initialDate);
+        this.props.setInitialDate(null);
+      }
+    })();
 
     let handleStartDateChange = date => {
       startDate.input.onChange(date);
-      this.props.changeStartDate(date);
 
-      if(date > endDateValue) {
+      if(date > endDateValue)
         endDate.input.onChange(date);
-        this.props.changeEndDate(date);
-      }
     }
 
     let handleEndDateChange = date => {
       endDate.input.onChange(date);
-      this.props.changeEndDate(date);
 
-      if(date < startDateValue) {
+      if(date < startDateValue)
         startDate.input.onChange(date);
-        this.props.changeStartDate(date);
-      }
     }
 
     return (
@@ -56,9 +55,8 @@ class AddEventForm extends React.Component {
         <div className="form-group col-sm-6 text-center">
           <label htmlFor="dateTimeStart" className="col-form-label">From</label>
           <DatePicker
-            selected={event.startDate}
+            selected={startDateValue}
             onChange={handleStartDateChange}
-            minDate={moment()}
             showTimeSelect
             timeIntervals={15}
             dateFormat="LLL"
@@ -68,7 +66,7 @@ class AddEventForm extends React.Component {
         <div className="form-group col-sm-6 text-center">
           <label htmlFor="dateTimeEnd" className="col-form-label">To</label>
           <DatePicker
-            selected={event.endDate}
+            selected={endDateValue}
             onChange={handleEndDateChange}
             minDate={startDateValue}
             showTimeSelect
@@ -110,12 +108,11 @@ class AddEventForm extends React.Component {
 }
 
 const mapStateToProps = store => ({
-  event: store.eventField.event
+  initialDate: store.eventField.event.initialDate
 });
 
 const mapDispatchToProps = dispatch => ({
-  changeStartDate: startDate => dispatch(changeStartDate(startDate)),
-  changeEndDate: endDate => dispatch(changeEndDate(endDate))
+  setInitialDate: initialDate => dispatch(setInitialDate(initialDate))
 });
 
 AddEventForm = reduxForm({
@@ -125,8 +122,9 @@ AddEventForm = reduxForm({
 const selector = formValueSelector('addEvent');
 
 AddEventForm = connect(
-  state => ({ initialValues: initialData }),
-  state => selector(state, 'startDate', 'endDate')
+  state => ({
+    initialValues: initialDates
+  })
 )(AddEventForm);
 
 export default connect(

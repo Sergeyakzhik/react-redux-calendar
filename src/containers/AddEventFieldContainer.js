@@ -36,8 +36,6 @@ class AddEventFieldContainer extends React.Component {
   handleEndButtonClick = e => this.props.closeAddEventField(false);
 
   render() {
-    const { startDate, endDate } = this.props;
-
     return (
       <div className="input-form">
         <h1>New event</h1>
@@ -53,9 +51,7 @@ class AddEventFieldContainer extends React.Component {
 }
 
 const mapStateToProps = store => ({
-  isActive: store.eventField.isActive,
-  event: store.eventField.event,
-  length: store.eventField.event.length,
+  isActive: store.eventField.isActive
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -77,5 +73,6 @@ AddEventFieldContainer = connect(
 )(AddEventFieldContainer)
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(AddEventFieldContainer);

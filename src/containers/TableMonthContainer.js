@@ -5,11 +5,11 @@ import ShowMoreFieldContainer from './ShowMoreFieldContainer';
 import moment from "moment";
 import { weekdays } from '../constants/constants';
 
+import { formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
 import {
   openAddEventField,
-  changeStartDate,
-  changeEndDate
+  setInitialDate
 } from '../store/actions/addEventFieldActions';
 import { toggleShowMoreField } from '../store/actions/showMoreFieldActions';
 
@@ -103,8 +103,7 @@ class TableMonthContainer extends React.Component {
   handleCellClick = e => {
     const date = moment(new Date(e.target.attributes.date.value));
 
-    this.props.changeStartDate(date);
-    this.props.changeEndDate(date);
+    this.props.setInitialDate(date);
     this.props.openAddEventField(true);
   }
 
@@ -267,17 +266,18 @@ class TableMonthContainer extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  openAddEventField: isActive => dispatch(openAddEventField(isActive)),
-  changeStartDate: startDate => dispatch(changeStartDate(startDate)),
-  changeEndDate: endDate => dispatch(changeEndDate(endDate)),
-  toggleShowMoreField: (isActive, events) => dispatch(toggleShowMoreField(isActive, events))
-});
-
 const mapStateToProps = store => ({
   events: store.calendar.events,
   isActive: store.showMoreField.isActive
 });
+
+const mapDispatchToProps = dispatch => ({
+  openAddEventField: isActive => dispatch(openAddEventField(isActive)),
+  setInitialDate: initialDate => dispatch(setInitialDate(initialDate)),
+  toggleShowMoreField: (isActive, events) => dispatch(toggleShowMoreField(isActive, events))
+});
+
+const selector = formValueSelector('addEvent');
 
 export default connect(
   mapStateToProps,
