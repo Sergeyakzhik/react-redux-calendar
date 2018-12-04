@@ -6,7 +6,6 @@
   top: 0;
   cursor: grab;
   z-index: 199;
-  background: #4e3fa080;
 }
 
 .table-month .dragger:active {
@@ -27,7 +26,6 @@
   top: 0;
   cursor: grab;
   z-index: 199;
-  background: #4e3fa080;
 }
 
 .table-week .dragger:active, .table-day .dragger:active {

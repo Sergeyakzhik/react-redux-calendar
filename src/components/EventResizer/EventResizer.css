@@ -6,7 +6,6 @@
   top: 0;
   cursor: e-resize;
   z-index: 200;
-  background: #f9000080;
 }
 
 .table-month .resizer:active {
@@ -23,7 +22,6 @@
   top: 0;
   cursor: s-resize;
   z-index: 200;
-  background: #f9000080;
 }
 
 .table-week .resizer:active, .table-day .resizer:active {

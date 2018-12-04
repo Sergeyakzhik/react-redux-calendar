@@ -1,7 +1,7 @@
 import { CHANGE_STYLE } from '../../constants/action-types';
 
 const initialState = {
-  style: 'style1'
+  style: 'style2'
 }
 
 export function styleReducer(state = initialState, action) {
