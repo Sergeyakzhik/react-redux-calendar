@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from "moment";
-import { Field, Fields, reduxForm, formValueSelector, change } from 'redux-form';
+import { Field, Fields, reduxForm } from 'redux-form';
 import DatePicker from "react-datepicker";
 import './AddEventForm.css';
 
@@ -28,13 +28,11 @@ class AddEventForm extends React.Component {
     const endDateValue = endDate.input.value;
     const initialDate = this.props.initialDate;
 
-    let setInitialDates = (() => {
-      if(initialDate) {
-        this.props.change('startDate', initialDate);
-        this.props.change('endDate', initialDate);
-        this.props.setInitialDate(null);
-      }
-    })();
+    if(initialDate) {
+      this.props.change('startDate', initialDate);
+      this.props.change('endDate', initialDate);
+      this.props.setInitialDate(null);
+    }
 
     let handleStartDateChange = date => {
       startDate.input.onChange(date);
@@ -118,8 +116,6 @@ const mapDispatchToProps = dispatch => ({
 AddEventForm = reduxForm({
   form: 'addEvent'
 })(AddEventForm);
-
-const selector = formValueSelector('addEvent');
 
 AddEventForm = connect(
   state => ({

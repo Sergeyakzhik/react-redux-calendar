@@ -2,10 +2,7 @@
   text-align: center;
   padding-bottom: 4rem;
   font-family: 'Montserrat';
-}
-
-.App-header {
-  margin: 1rem auto;
+  padding-top: 18px;
 }
 
 main {
@@ -40,8 +37,7 @@ td, th {
 }
 
 td {
-  background-color: rgba(255, 255, 255, 0.8);
-  width: 12rem;
+  width: 12rem;;
 }
 
 th {
@@ -50,10 +46,6 @@ th {
 
 .curDay {
   background-color: #9cff30b8;
-}
-
-.table-row td {
-  box-shadow: 10px 10px 12px black;
 }
 
 h2 {
@@ -81,4 +73,28 @@ h2 {
 .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
   color: #fff;
   background-color: #a1e070;;
+}
+
+/* STYLES */
+
+div.style1 {
+  background-image: linear-gradient(to bottom right, rgb(217, 137, 0), rgb(225, 247, 38));
+}
+
+.style1 td {
+  color: white;
+}
+
+.style1 .table-row td {
+  background-image: linear-gradient(to bottom right, black, rgb(82, 82, 82));
+  box-shadow: 10px 10px 12px #986200;
+}
+
+div.style2 {
+  background-image: linear-gradient(to bottom right, rgb(46, 64, 210), rgb(91, 217, 255));
+}
+
+.style2 .table-row td {
+  background-image: linear-gradient(to bottom right, rgb(239, 253, 192), rgb(185, 233, 255));
+  box-shadow: 10px 10px 12px #00636d;
 }

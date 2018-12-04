@@ -1,11 +1,12 @@
 import React from 'react';
 import Event from '../components/Event/Event';
 import EventTransformerContainer from './EventTransformerContainer';
-import EventInfoField from '../components/EventInfoField/EventInfoField';
+import EventInfoFieldContainer from './EventInfoFieldContainer';
 
 import { connect } from 'react-redux';
 import { toggleEventInfoField } from '../store/actions/eventInfoFieldActions';
 import { deleteEvent } from '../store/actions/calendarActions';
+import { changeEventInfoPosition } from '../store/actions/eventInfoFieldActions';
 
 class EventContainer extends React.Component {
 
@@ -21,6 +22,10 @@ class EventContainer extends React.Component {
     this.props.toggleEventInfoField('');
   }
 
+  handleMouseMove = e => {
+    this.props.changeEventInfoPosition(e.pageX, e.pageY);
+  }
+
   handleDeleteButtonClick = e => {
     e.stopPropagation();
 
@@ -34,6 +39,7 @@ class EventContainer extends React.Component {
       <div
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
+        onMouseMove={this.handleMouseMove}
       >
         <Event
           style={this.props.style}
@@ -47,7 +53,7 @@ class EventContainer extends React.Component {
           event={this.props.event}
           targetKey={this.props.targetKey}
         />
-        {isActive ? <EventInfoField event={this.props.event} /> : null}
+        {isActive ? <EventInfoFieldContainer event={this.props.event} /> : null}
       </div>
     );
   }
@@ -61,6 +67,7 @@ const mapStateToProps = store => ({
 const mapDispatchToProps = dispatch => ({
   toggleEventInfoField: curTarget => dispatch(toggleEventInfoField(curTarget)),
   deleteEvent: curTarget => dispatch(deleteEvent(curTarget)),
+  changeEventInfoPosition: (posX, posY) => dispatch(changeEventInfoPosition(posX, posY))
 });
 
 export default connect(

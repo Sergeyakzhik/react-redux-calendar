@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { toggleTimeSegment } from './store/actions/timeSegmentActions';
 import { changeTimePeriod } from './store/actions/changePeriodAction';
 import { openAddEventField } from './store/actions/addEventFieldActions';
+import { changeStyle } from './store/actions/styleAction';
 
 class AppContainer extends Component {
 
@@ -18,7 +19,7 @@ class AppContainer extends Component {
   shouldComponentUpdate = (nextProps, nextState) => {
     if(
       this.props.table === nextProps.table && this.props.period === nextProps.period
-      && this.props.isActive === nextProps.isActive
+      && this.props.isActive === nextProps.isActive && this.props.style === nextProps.style
     ){
       return false;
     }
@@ -60,13 +61,24 @@ class AppContainer extends Component {
       return this.props.openAddEventField(true);
   }
 
+  handleStyleTogglerClick = e => {
+    if(e.target.value === 'style1')
+      this.props.changeStyle('style1');
+    if(e.target.value === 'style2')
+      this.props.changeStyle('style2');
+  }
+
   render() {
     const { table, period, isActive } = this.props;
+
     return (
-      <App table={table} period={period} isActive={isActive}
+      <App
+        curStyle={this.props.style}
+        table={table} period={period} isActive={isActive}
         onPeriodTogglerClick={this.handlePeriodTogglerClick}
         onNewEventClick={this.handleNewEventClick}
         onPeriodChange={this.handlePeriodChange}
+        onStyleTogglerClick={this.handleStyleTogglerClick}
       />
     );
   }
@@ -76,13 +88,15 @@ const mapStateToProps = store => ({
   table: store.calendar.table,
   period: store.calendar.period,
   isActive: store.eventField.isActive,
-  events: store.calendar.events
+  events: store.calendar.events,
+  style: store.style.style
 });
 
 const mapDispatchToProps = dispatch => ({
   toggleTimeSegment: table => dispatch(toggleTimeSegment(table)),
   changeTimePeriod: period => dispatch(changeTimePeriod(period)),
-  openAddEventField: isActive => dispatch(openAddEventField(isActive))
+  openAddEventField: isActive => dispatch(openAddEventField(isActive)),
+  changeStyle: style => dispatch(changeStyle(style))
 });
 
 export default connect(

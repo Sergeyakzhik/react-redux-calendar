@@ -1,10 +1,7 @@
 import {
   OPEN_EVENT_FIELD,
   CLOSE_EVENT_FIELD,
-  SET_INITIAL_DATE,
-  CHANGE_EVENT_NAME,
-  CHANGE_EVENT_DESCRIPTION,
-  CHANGE_EVENT_PLACE
+  SET_INITIAL_DATE
 } from '../../constants/action-types';
 
 export let openAddEventField = isActive => ({

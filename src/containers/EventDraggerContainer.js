@@ -11,7 +11,7 @@ let startX, startY;
 class EventDraggerContainer extends React.Component {
 
   handleMouseDown = e => {
-    
+
     if(e.button === 0) {
       const elem = e.target;
 
@@ -91,6 +91,7 @@ class EventDraggerContainer extends React.Component {
       elem.style.width = this.props.event.length * 175 + 500 + 'px';
       elem.style.left = e.clientX - startX - elem.offsetWidth / 2.5 + 'px';
     }
+
     elem.style.top = e.clientY - startY - elem.offsetHeight / 2.5 + 'px';
   }
 

@@ -2,7 +2,7 @@ import React from 'react';
 import './EventInfoField.css';
 
 let EventInfoField = props => (
-  <div className="event-info">
+  <div className="event-info" style={props.style}>
     <h5>{props.event.name}</h5>
     <div className="row">
       <div className="col-sm-12">

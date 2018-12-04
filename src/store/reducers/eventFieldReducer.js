@@ -1,24 +1,14 @@
 import {
   OPEN_EVENT_FIELD,
   CLOSE_EVENT_FIELD,
-  CHANGE_START_DATE,
-  SET_INITIAL_DATE,
-  CHANGE_EVENT_DESCRIPTION,
-  CHANGE_EVENT_PLACE
+  SET_INITIAL_DATE
 } from '../../constants/action-types';
-import moment from "moment";
 
 const initialState = {
   isActive: false,
   event: {
     initialDate: ''
   }
-}
-
-let countMinutes = () => {
-  let minutes = moment().minutes();
-
-  return minutes <= 15 ? 15 : minutes <= 30 ? 30 : minutes <= 45 ? 45 : 0;
 }
 
 export function eventFieldReducer(state = initialState, action) {

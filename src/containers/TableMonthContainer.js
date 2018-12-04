@@ -5,7 +5,6 @@ import ShowMoreFieldContainer from './ShowMoreFieldContainer';
 import moment from "moment";
 import { weekdays } from '../constants/constants';
 
-import { formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
 import {
   openAddEventField,
@@ -276,8 +275,6 @@ const mapDispatchToProps = dispatch => ({
   setInitialDate: initialDate => dispatch(setInitialDate(initialDate)),
   toggleShowMoreField: (isActive, events) => dispatch(toggleShowMoreField(isActive, events))
 });
-
-const selector = formValueSelector('addEvent');
 
 export default connect(
   mapStateToProps,

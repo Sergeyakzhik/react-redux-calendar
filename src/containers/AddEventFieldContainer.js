@@ -1,6 +1,6 @@
 import React from 'react';
 import AddEventForm from './AddEventForm/AddEventForm';
-import { reduxForm, formValueSelector } from 'redux-form';
+import { formValueSelector } from 'redux-form';
 
 import { connect } from 'react-redux';
 import { closeAddEventField } from '../store/actions/addEventFieldActions';

@@ -6,19 +6,30 @@ import TableDayContainer from './containers/TableDayContainer.js';
 import AddEventFieldContainer from './containers/AddEventFieldContainer.js';
 import TimeSegmentToggler from './components/TimeSegmentToggler/TimeSegmentToggler';
 import PeriodToggler from './components/PeriodToggler/PeriodToggler';
+import StyleToggler from './components/StyleToggler/StyleToggler';
 
 let App = props => {
-  const { table, period, isActive, onPeriodTogglerClick, onNewEventClick, onPeriodChange } = props;
+  const {
+    table,
+    period,
+    isActive,
+    onPeriodTogglerClick,
+    onNewEventClick,
+    onPeriodChange,
+    onStyleTogglerClick
+  } = props;
+
   return (
-    <div className="App">
+    <div className={`App ` + props.curStyle}>
       <div className="container">
         <header className="App-header">
           <div className="row">
             <div className="col-sm-4 text-left">
               <PeriodToggler onPeriodTogglerClick={onPeriodTogglerClick} />
+              <StyleToggler onStyleTogglerClick={onStyleTogglerClick} style={props.style}/>
             </div>
             <div className="col-sm-4">
-              <h1 onClick={(e) => console.log("d")}>Calendar</h1>
+              <h1>Calendar</h1>
             </div>
             <div className="col-sm-4 text-right">
               <div className="row">

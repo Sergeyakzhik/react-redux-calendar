@@ -5,6 +5,8 @@ import { eventFieldReducer } from './eventFieldReducer';
 import { showMoreFieldReducer } from './showMoreFieldReducer';
 import { eventInfoFieldReducer } from './eventInfoFieldReducer';
 import { eventTransformerReducer } from './eventTransformerReducer';
+import { styleReducer } from './styleReducer';
+
 
 export const rootReducer = combineReducers({
   form: formReducer,
@@ -12,5 +14,6 @@ export const rootReducer = combineReducers({
   eventField: eventFieldReducer,
   showMoreField: showMoreFieldReducer,
   eventInfoField: eventInfoFieldReducer,
-  eventTransformer: eventTransformerReducer
+  eventTransformer: eventTransformerReducer,
+  style: styleReducer
 });

@@ -1,0 +1,31 @@
+.btn-group label {
+  color: black;
+  background-color: white;
+  width: 3rem;
+  height: 2.7rem;
+}
+
+.style-toggler {
+  margin-left: 4rem;
+}
+
+.style-toggler label {
+  padding: 0.2rem;
+}
+
+.style-option {
+  width: 100%;
+  height: 100%;
+}
+
+.btn-group label.gradient-yellow-blue {
+  background-image: linear-gradient(to bottom right, rgb(239, 253, 192), rgb(200, 233, 252));
+}
+
+.btn-group label.gradient-black-gray {
+  background-image: linear-gradient(to bottom right, black, rgb(82, 82, 82));
+}
+
+input[type="radio"] {
+  display: none;
+}
