@@ -4,7 +4,7 @@ import {
   SET_INITIAL_DATE
 } from '../../constants/action-types';
 
-const initialState = {
+export const initialState = {
   isActive: false,
   event: {
     initialDate: ''

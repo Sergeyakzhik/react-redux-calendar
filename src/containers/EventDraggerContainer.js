@@ -49,20 +49,22 @@ class EventDraggerContainer extends React.Component {
     elem.style.top = '';
     elem.style.width = '';
 
+    let newStartDate, newEndDate;
+
     if(curTable === 'Month') {
       let cellsDiffX = Math.round(diffX / 157);
       let cellsDiffY = Math.round(diffY / 100) * 7;
 
-      curEvent.startDate = moment(startDate).date(moment(startDate).date() + cellsDiffX + cellsDiffY);
-      curEvent.endDate = moment(endDate).date(moment(endDate).date() + cellsDiffX + cellsDiffY);
+      newStartDate = moment().year(startDate.year()).month(startDate.month()).date(startDate.date() + cellsDiffX + cellsDiffY);
+      newEndDate = moment().year(endDate.year()).month(endDate.month()).date(endDate.date() + cellsDiffX + cellsDiffY);
     }
 
     if(curTable === 'Week') {
       let cellsDiffX = Math.round(diffX / 67) * 48;
       let cellsDiffY = Math.round(diffY / 17);
 
-      curEvent.startDate = moment(startDate).minutes(moment(startDate).minutes() + 15 * (cellsDiffX + cellsDiffY));
-      curEvent.endDate = moment(endDate).minutes(moment(endDate).minutes() + 15 * (cellsDiffX + cellsDiffY));
+      newStartDate = moment().year(startDate.year()).month(startDate.month()).date(startDate.date()).hours(startDate.hours()).minutes(startDate.minutes() + 15 * (cellsDiffX + cellsDiffY));
+      newEndDate = moment().year(endDate.year()).month(endDate.month()).date(endDate.date()).hours(endDate.hours()).minutes(endDate.minutes() + 15 * (cellsDiffX + cellsDiffY));
 
       elem.style.height = this.props.event.timeDiff / 15 * 17 + 'px';
     }
@@ -70,13 +72,13 @@ class EventDraggerContainer extends React.Component {
     if(curTable === 'Day') {
       let cellsDiffY = Math.round(diffY / 17);
 
-      curEvent.startDate = moment(startDate).minutes(moment(startDate).minutes() + 15 * cellsDiffY);
-      curEvent.endDate = moment(endDate).minutes(moment(endDate).minutes() + 15 * cellsDiffY);
+      newStartDate = moment().year(startDate.year()).month(startDate.month()).date(startDate.date()).hours(startDate.hours()).minutes(startDate.minutes() + 15 * cellsDiffY);
+      newEndDate = moment().year(endDate.year()).month(endDate.month()).date(endDate.date()).hours(endDate.hours()).minutes(endDate.minutes() + 15 * cellsDiffY);
 
       elem.style.height = this.props.event.timeDiff / 15 * 17 + 'px';
     }
 
-    this.props.updateEvent(this.props.targetKey, curEvent);
+    this.props.updateEvent(this.props.targetKey, Object.assign({}, { ...curEvent, startDate: newStartDate, endDate: newEndDate }));
     e.target.removeEventListener('mousemove', this.handleMouseMove);
   }
 

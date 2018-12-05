@@ -7,7 +7,7 @@ import {
 } from '../../constants/action-types.js';
 import moment from "moment";
 
-const initialState = {
+export const initialState = {
   table: 'Month',
   period: moment(),
   events: {}
@@ -53,7 +53,6 @@ export function calendarReducer(state = initialState, action) {
     case UPDATE_EVENT:
       const events = state.events;
       const oldTargetKey = action.payload.targetKey;
-    //  let eventToUpdate = events[oldTargetKey];
       const updatedEvent = action.payload.newEvent;
       const newTargetKey = updatedEvent.name + updatedEvent.startDate.toString() + updatedEvent.endDate.toString();
 
@@ -67,7 +66,7 @@ export function calendarReducer(state = initialState, action) {
       updatedEvent.timeDiff = moment(updatedEvent.endDate).diff(moment(updatedEvent.startDate), 'minutes');
       updatedEvent.targetKey = newTargetKey;
 
-    //  eventToUpdate = Object.assign({}, newEvent);
+      events[newTargetKey ]= Object.assign({}, updatedEvent);
 
       return { ...state,
         events: Object.assign({}, state.events)

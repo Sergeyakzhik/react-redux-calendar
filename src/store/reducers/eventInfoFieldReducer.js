@@ -3,7 +3,7 @@ import {
   CHANGE_POSITION
 } from '../../constants/action-types.js';
 
-const initialState = {
+export const initialState = {
   curTarget: '',
   posX: '',
   posY: ''

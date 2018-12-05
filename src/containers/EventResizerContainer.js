@@ -33,8 +33,8 @@ class EventResizerContainer extends React.Component {
     this.props.changeCurAction('');
 
     let curTable = this.props.table;
-    let diffX =  e.clientX - startX;
-    let diffY =  e.clientY - startY;
+    let diffX = e.clientX - startX;
+    let diffY = e.clientY - startY;
 
     let curEvent = this.props.events[this.props.targetKey];
     let endDate = curEvent.endDate;
@@ -42,12 +42,14 @@ class EventResizerContainer extends React.Component {
     elem.style.right = '';
     elem.style.top = '';
 
+    let newEndDate;
+
     if(curTable === 'Month') {
       let cellsDiffX = Math.round(diffX / 157);
       let cellsDiffY = Math.round(diffY / 100) * 7;
 
       if(curEvent.length + cellsDiffX + cellsDiffY > 0) {
-        curEvent.endDate = moment(endDate).date(moment(endDate).date() + cellsDiffX + cellsDiffY);
+        newEndDate = moment().year(endDate.year()).month(endDate.month()).date(endDate.date() + cellsDiffX + cellsDiffY);
       }
     }
 
@@ -56,7 +58,7 @@ class EventResizerContainer extends React.Component {
       let cellsDiffY = Math.round(diffY / 17);
 
       if(curEvent.timeDiff / 15 + cellsDiffX + cellsDiffY > 0) {
-        curEvent.endDate = moment(endDate).minutes(moment(endDate).minutes() + 15 * (cellsDiffX + cellsDiffY));
+        newEndDate = moment().year(endDate.year()).month(endDate.month()).date(endDate.date()).hours(endDate.hours()).minutes(endDate.minutes() + 15 * (cellsDiffX + cellsDiffY));
       }
     }
 
@@ -64,11 +66,11 @@ class EventResizerContainer extends React.Component {
       let cellsDiffY = Math.round(diffY / 17);
 
       if(curEvent.timeDiff / 15 + cellsDiffY > 0) {
-        curEvent.endDate = moment(endDate).minutes(moment(endDate).minutes() + 15 * cellsDiffY);
+        newEndDate = moment().year(endDate.year()).month(endDate.month()).date(endDate.date()).hours(endDate.hours()).minutes(endDate.minutes() + 15 * cellsDiffY);
       }
     }
 
-    this.props.updateEvent(this.props.targetKey, curEvent);
+    this.props.updateEvent(this.props.targetKey, Object.assign({}, { ...curEvent, endDate: newEndDate }));
     e.target.removeEventListener('mousemove', this.handleMouseMove);
   }
 
