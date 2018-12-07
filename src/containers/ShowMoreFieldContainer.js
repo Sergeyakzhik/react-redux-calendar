@@ -1,8 +1,8 @@
-import ShowMoreField from '../components/ShowMoreField/ShowMoreField';
+import ShowMoreField from '../components/ShowMoreField';
 import React from 'react';
 
 import { connect } from 'react-redux';
-import { toggleShowMoreField } from '../store/actions/showMoreFieldActions';
+import { toggleShowMoreField } from '../store/actions/showMoreField';
 
 class ShowMoreFieldContainer extends React.Component {
 
@@ -19,7 +19,7 @@ class ShowMoreFieldContainer extends React.Component {
 }
 
 const mapStateToProps = store => ({
-  events: store.calendar.events
+  events: store.showMoreField.events
 });
 
 const mapDispatchToProps = dispatch => ({

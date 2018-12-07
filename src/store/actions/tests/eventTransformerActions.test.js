@@ -1,8 +1,8 @@
 import { CHANGE_CURRENT_ACTION } from '../../../constants/action-types';
-import { changeCurAction } from '../eventTransformerActions';
+import { changeCurAction } from '../eventTransformer';
 
 describe('EventTransformation', () => {
-  it('changeCurAction()', () => {
+  it('changes current action', () => {
     const action = '';
     const expectedAction = {
       type: CHANGE_CURRENT_ACTION,

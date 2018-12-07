@@ -5,7 +5,7 @@ import {
   DELETE_EVENT,
   UPDATE_EVENT
 } from '../../../constants/action-types';
-import { calendarReducer, initialState } from '../calendarReducer';
+import { calendarReducer, initialState } from '../calendar';
 
 import moment from "moment";
 
@@ -19,7 +19,7 @@ const testEvent = {
 const testEventKey = 'testEvent' + date.toString() + date.toString();
 
 describe('CalendarReducer', () => {
-  it('ADD_EVENT', () => {
+  it('adds event', () => {
     const action = {
       type: ADD_EVENT,
       payload: testEvent
@@ -36,7 +36,7 @@ describe('CalendarReducer', () => {
     });
   })
 
-  it('DELETE_EVENT', () => {
+  it('deletes event', () => {
     let state = Object.assign({}, { ...initialState, events: { [testEventKey]: testEvent } })
 
     const action = {
@@ -50,7 +50,7 @@ describe('CalendarReducer', () => {
     });
   })
 
-  it('UPDATE_EVENT', () => {
+  it('updates event', () => {
     let state = Object.assign({}, { ...initialState, events: { [testEventKey]: testEvent } })
 
     const action = {
@@ -69,7 +69,7 @@ describe('CalendarReducer', () => {
     });
   })
 
-  it('TOGGLE_TIME_SEGMENT', () => {
+  it('toggles time segment', () => {
     const action = {
       type: TOGGLE_TIME_SEGMENT,
       payload: 'week'
@@ -81,7 +81,7 @@ describe('CalendarReducer', () => {
     });
   })
 
-  it('CHANGE_PERIOD', () => {
+  it('changes period', () => {
     const action = {
       type: CHANGE_PERIOD,
       payload: date.toString()

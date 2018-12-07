@@ -3,10 +3,12 @@ import App from './App';
 import moment from "moment";
 
 import { connect } from 'react-redux';
-import { toggleTimeSegment } from './store/actions/timeSegmentActions';
-import { changeTimePeriod } from './store/actions/changePeriodAction';
-import { openAddEventField } from './store/actions/addEventFieldActions';
-import { changeStyle } from './store/actions/styleAction';
+import {
+  changeTimePeriod,
+  toggleTimeSegment
+} from './store/actions/calendar';
+import { openAddEventField } from './store/actions/addEventField';
+import { changeStyle } from './store/actions/style';
 
 class AppContainer extends Component {
 

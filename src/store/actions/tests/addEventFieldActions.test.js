@@ -7,10 +7,10 @@ import {
   openAddEventField,
   closeAddEventField,
   setInitialDate
-} from '../addEventFieldActions';
+} from '../addEventField';
 
 describe('AddEventFieldActions', () => {
-  it('openAddEventField()', () => {
+  it('opens AddEventField', () => {
     const isActive = true;
     const expectedAction = {
       type: OPEN_EVENT_FIELD,
@@ -19,7 +19,7 @@ describe('AddEventFieldActions', () => {
     expect(openAddEventField(isActive)).toEqual(expectedAction);
   })
 
-  it('closeAddEventField()', () => {
+  it('closes AddEventField', () => {
     const isActive = false;
     const expectedAction = {
       type: CLOSE_EVENT_FIELD,
@@ -28,7 +28,7 @@ describe('AddEventFieldActions', () => {
     expect(closeAddEventField(isActive)).toEqual(expectedAction);
   })
 
-  it('setInitialDate()', () => {
+  it('sets initial date', () => {
     const initialDate = {};
     const expectedAction = {
       type: SET_INITIAL_DATE,

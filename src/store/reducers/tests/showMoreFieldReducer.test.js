@@ -1,8 +1,8 @@
 import { TOGGLE_SHOW_MORE_FIELD } from '../../../constants/action-types';
-import { showMoreFieldReducer, initialState } from '../showMoreFieldReducer';
+import { showMoreFieldReducer, initialState } from '../showMoreField';
 
 describe('ShowMoreFieldReducer', () => {
-  it('TOGGLE_SHOW_MORE_FIELD', () => {
+  it('toggles ShowMoreField', () => {
     const action = {
       type: TOGGLE_SHOW_MORE_FIELD,
       payload: {

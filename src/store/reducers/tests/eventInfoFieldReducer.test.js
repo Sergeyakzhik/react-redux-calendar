@@ -2,10 +2,10 @@ import {
   TOGGLE_EVENT_INFO_FIELD,
   CHANGE_POSITION
 } from '../../../constants/action-types';
-import { eventInfoFieldReducer, initialState } from '../eventInfoFieldReducer';
+import { eventInfoFieldReducer, initialState } from '../eventInfoField';
 
 describe('EventInfoFieldReducer', () => {
-  it('TOGGLE_EVENT_INFO_FIELD', () => {
+  it('toggles EventInfoField', () => {
     const action = {
       type: TOGGLE_EVENT_INFO_FIELD,
       payload: 'true'
@@ -16,7 +16,7 @@ describe('EventInfoFieldReducer', () => {
     });
   })
 
-  it('CHANGE_POSITION', () => {
+  it('changes position', () => {
     const action = {
       type: CHANGE_POSITION,
       payload: {

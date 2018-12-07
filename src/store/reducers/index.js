@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
-import { calendarReducer } from './calendarReducer';
-import { eventFieldReducer } from './eventFieldReducer';
-import { showMoreFieldReducer } from './showMoreFieldReducer';
-import { eventInfoFieldReducer } from './eventInfoFieldReducer';
-import { eventTransformerReducer } from './eventTransformerReducer';
-import { styleReducer } from './styleReducer';
+import { calendarReducer } from './calendar';
+import { eventFieldReducer } from './eventField';
+import { showMoreFieldReducer } from './showMoreField';
+import { eventInfoFieldReducer } from './eventInfoField';
+import { eventTransformerReducer } from './eventTransformer';
+import { styleReducer } from './style';
 
 export const rootReducer = combineReducers({
   form: formReducer,

@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TimeSegmentToggler render TimeSegmentToggler component 1`] = `
+<select
+  className="form-control"
+  onChange={[Function]}
+>
+  <option>
+    Month
+  </option>
+  <option>
+    Week
+  </option>
+  <option>
+    Day
+  </option>
+</select>
+`;

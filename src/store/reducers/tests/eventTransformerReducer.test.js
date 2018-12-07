@@ -1,8 +1,8 @@
 import { CHANGE_CURRENT_ACTION } from '../../../constants/action-types';
-import { eventTransformerReducer, initialState } from '../eventTransformerReducer';
+import { eventTransformerReducer, initialState } from '../eventTransformer';
 
 describe('EventTransformerReducer', () => {
-  it('CHANGE_CURRENT_ACTION', () => {
+  it('changes current action', () => {
     const action = {
       type: CHANGE_CURRENT_ACTION,
       payload: 'drag'

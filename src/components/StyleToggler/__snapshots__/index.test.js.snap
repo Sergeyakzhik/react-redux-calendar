@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StyleToggler render StyleToggler component 1`] = `
+<div
+  className="btn-group btn-group-toggle style-toggler radio"
+>
+  <input
+    autoComplete="off"
+    checked={false}
+    id="style1"
+    name="style-toggler"
+    onChange={[Function]}
+    type="radio"
+    value="style1"
+  />
+  <label
+    className="btn btn-secondary style-option style1"
+    htmlFor="style1"
+  />
+  <input
+    autoComplete="off"
+    checked={false}
+    id="style2"
+    name="style-toggler"
+    onChange={[Function]}
+    type="radio"
+    value="style2"
+  />
+  <label
+    className="btn btn-secondary style-option style2"
+    htmlFor="style2"
+  />
+</div>
+`;

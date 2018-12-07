@@ -5,11 +5,16 @@ import DatePicker from "react-datepicker";
 import './AddEventForm.css';
 
 import { connect } from 'react-redux';
-import { setInitialDate } from '../../store/actions/addEventFieldActions';
+import { setInitialDate } from '../../store/actions/addEventField';
+
+let now = moment();
+let mins = now.minutes() < 15 ? 0 : now.minutes() < 30 ? 15 : now.minutes() < 45 ? 30 : 45;
+
+now = now.minutes(mins);
 
 const initialDates = {
-  startDate: moment(),
-  endDate: moment()
+  startDate: now,
+  endDate: moment(now).minutes(now.minutes() + 15)
 }
 
 const required = value => value ? undefined : 'Required';
@@ -30,22 +35,22 @@ class AddEventForm extends React.Component {
 
     if(initialDate) {
       this.props.change('startDate', initialDate);
-      this.props.change('endDate', initialDate);
+      this.props.change('endDate', moment(initialDate).minutes(initialDate.minutes() + 15));
       this.props.setInitialDate(null);
     }
 
     let handleStartDateChange = date => {
       startDate.input.onChange(date);
 
-      if(date > endDateValue)
-        endDate.input.onChange(date);
+      if(date >= endDateValue)
+        endDate.input.onChange(moment(date).minutes(date.minutes() + 15));
     }
 
     let handleEndDateChange = date => {
       endDate.input.onChange(date);
 
-      if(date < startDateValue)
-        startDate.input.onChange(date);
+      if(date <= startDateValue)
+        startDate.input.onChange(moment(date).minutes(date.minutes() - 15));
     }
 
     return (

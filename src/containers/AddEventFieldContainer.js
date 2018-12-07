@@ -3,8 +3,8 @@ import AddEventForm from './AddEventForm/AddEventForm';
 import { formValueSelector } from 'redux-form';
 
 import { connect } from 'react-redux';
-import { closeAddEventField } from '../store/actions/addEventFieldActions';
-import { addEvent } from '../store/actions/calendarActions';
+import { closeAddEventField } from '../store/actions/addEventField';
+import { addEvent } from '../store/actions/calendar';
 
 import "react-datepicker/dist/react-datepicker.css";
 

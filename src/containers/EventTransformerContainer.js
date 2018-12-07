@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import {
   deleteEvent,
   updateEvent
-} from '../store/actions/calendarActions';
+} from '../store/actions/calendar';
 
 class EventTransformerContainer extends React.Component {
 

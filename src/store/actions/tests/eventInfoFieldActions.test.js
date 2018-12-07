@@ -5,10 +5,10 @@ import {
 import {
   toggleEventInfoField,
   changeEventInfoPosition
-} from '../eventInfoFieldActions';
+} from '../eventInfoField';
 
 describe('InfoFieldActions', () => {
-  it('toggleEventInfoField()', () => {
+  it('toggles EventInfoField', () => {
     const curTarget = '';
     const expectedAction = {
       type: TOGGLE_EVENT_INFO_FIELD,
@@ -17,7 +17,7 @@ describe('InfoFieldActions', () => {
     expect(toggleEventInfoField(curTarget)).toEqual(expectedAction);
   })
 
-  it('changeEventInfoPosition()', () => {
+  it('changes EventInfoField position', () => {
     const posX = '';
     const posY = '';
     const expectedAction = {

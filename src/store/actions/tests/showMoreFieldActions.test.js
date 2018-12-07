@@ -1,8 +1,8 @@
 import { TOGGLE_SHOW_MORE_FIELD } from '../../../constants/action-types';
-import { toggleShowMoreField } from '../showMoreFieldActions';
+import { toggleShowMoreField } from '../showMoreField';
 
 describe('EventTransformation', () => {
-  it('toggleShowMoreField()', () => {
+  it('toggles ShowMoreField', () => {
     const isActive = true;
     const events = {};
     const expectedAction = {

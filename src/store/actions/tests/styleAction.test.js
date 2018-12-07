@@ -1,8 +1,8 @@
 import { CHANGE_STYLE } from '../../../constants/action-types';
-import { changeStyle } from '../styleAction';
+import { changeStyle } from '../style';
 
 describe('EventTransformation', () => {
-  it('changeStyle()', () => {
+  it('changes style', () => {
     const style = '';
     const expectedAction = {
       type: CHANGE_STYLE,

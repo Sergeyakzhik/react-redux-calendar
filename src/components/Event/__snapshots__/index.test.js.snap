@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Event render Event component 1`] = `
+<Fragment>
+  <div
+    className="event"
+    onClick={[Function]}
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+    style={Object {}}
+    targetKey=""
+  >
+    <h4>
+      new Event
+    </h4>
+  </div>
+  <div
+    className="delete-button"
+    event={
+      Object {
+        "name": "new Event",
+      }
+    }
+    onClick={[Function]}
+    targetKey=""
+  >
+    <i
+      className="fas fa-times"
+    />
+  </div>
+</Fragment>
+`;

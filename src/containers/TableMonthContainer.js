@@ -1,5 +1,5 @@
 import React from 'react';
-import TableMonth from '../components/TableMonth/TableMonth';
+import TableMonth from '../components/TableMonth';
 import EventContainer from './EventContainer';
 import ShowMoreFieldContainer from './ShowMoreFieldContainer';
 import moment from "moment";
@@ -9,8 +9,8 @@ import { connect } from 'react-redux';
 import {
   openAddEventField,
   setInitialDate
-} from '../store/actions/addEventFieldActions';
-import { toggleShowMoreField } from '../store/actions/showMoreFieldActions';
+} from '../store/actions/addEventField';
+import { toggleShowMoreField } from '../store/actions/showMoreField';
 
 class TableMonthContainer extends React.Component {
 
@@ -69,7 +69,7 @@ class TableMonthContainer extends React.Component {
         );
 
         skeletonHeaderCells.push(
-          <td key={'TSkeletonHeader' + (j + 7 * i)}>
+          <td key={'TSkeletonHeader' + (j + 7 * i)} onClick={this.handleCellClick} date={datesArray[j + 7 * i]}>
             <h4>{moment(datesArray[j + 7 * i]).date()}</h4>
           </td>
         );
@@ -117,7 +117,7 @@ class TableMonthContainer extends React.Component {
     for(let i = 0; i < 7; i++) {
       let events = this.getListOfEvents(splitEvents, datesArray[i + 7 * weekIndex]);
 
-      // events.sort(this.sortEvents('length'));
+      events.sort(this.sortEvents('length'));
 
       for(let j = 0; j < 3; j++) {
 
@@ -252,6 +252,7 @@ class TableMonthContainer extends React.Component {
 
   render() {
     const { period } = this.props;
+
     return (
       <>
         <TableMonth

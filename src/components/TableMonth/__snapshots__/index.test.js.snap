@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TableMonth render TableMonth component 1`] = `
+<div>
+  <h2>
+    date
+  </h2>
+  <table
+    className="table-month"
+  >
+    <thead />
+    <tbody />
+  </table>
+</div>
+`;

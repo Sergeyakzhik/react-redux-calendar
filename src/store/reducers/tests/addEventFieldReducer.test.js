@@ -3,10 +3,10 @@ import {
   CLOSE_EVENT_FIELD,
   SET_INITIAL_DATE
 } from '../../../constants/action-types';
-import { eventFieldReducer, initialState } from '../eventFieldReducer';
+import { eventFieldReducer, initialState } from '../eventField';
 
 describe('AddEventFieldReducer', () => {
-  it('OPEN_EVENT_FIELD', () => {
+  it('opens AddEventField', () => {
     const action = {
       type: OPEN_EVENT_FIELD,
       payload: true
@@ -17,7 +17,7 @@ describe('AddEventFieldReducer', () => {
     });
   })
 
-  it('CLOSE_EVENT_FIELD', () => {
+  it('closes AddEventField', () => {
     const action = {
       type: CLOSE_EVENT_FIELD,
       payload: false
@@ -28,7 +28,7 @@ describe('AddEventFieldReducer', () => {
     });
   })
 
-  it('SET_INITIAL_DATE', () => {
+  it('sets initial date', () => {
     const action = {
       type: SET_INITIAL_DATE,
       payload: {}

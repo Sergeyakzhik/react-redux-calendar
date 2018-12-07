@@ -1,10 +1,10 @@
 import React from 'react';
-import EventDragger from '../components/EventDragger/EventDragger';
+import EventDragger from '../components/EventDragger';
 import moment from "moment";
 
 import { connect } from 'react-redux';
-import { updateEvent } from '../store/actions/calendarActions';
-import { changeCurAction } from '../store/actions/eventTransformerActions';
+import { updateEvent } from '../store/actions/calendar';
+import { changeCurAction } from '../store/actions/eventTransformer';
 
 let startX, startY;
 

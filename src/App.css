@@ -52,16 +52,6 @@ h2 {
   color: white;
 }
 
-.add-event-button {
-  width: 7rem;
-  height: 2.7rem;
-  margin-top: 0.3rem;
-  border: none;
-  outline: none;
-  background-color: #a1e070;
-  color: black;
-}
-
 .btn-primary.focus, .btn-primary:focus {
   box-shadow: none;
 }
@@ -72,7 +62,16 @@ h2 {
 
 .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
   color: #fff;
-  background-color: #a1e070;;
+  background-color: #aeffb0;;
+}
+
+.add-event-button {
+  width: 7rem;
+  height: 2.7rem;
+  margin-top: 0.3rem;
+  border: none;
+  outline: none;
+  color: black;
 }
 
 /* STYLES */
@@ -90,6 +89,22 @@ div.style1 {
   box-shadow: 10px 10px 12px #986200;
 }
 
+.style1 .event {
+  background-color: #ff8d00;
+  color: black;
+}
+
+.style1 .add-event-button {
+  background-color: #181818;
+  color: white;
+}
+
+.style1 select.form-control {
+  background-color: #181818;
+  color: white;
+  border: none;
+}
+
 div.style2 {
   background-image: linear-gradient(to bottom right, rgb(46, 64, 210), rgb(91, 217, 255));
 }
@@ -97,4 +112,18 @@ div.style2 {
 .style2 .table-row td {
   background-image: linear-gradient(to bottom right, rgb(239, 253, 192), rgb(185, 233, 255));
   box-shadow: 10px 10px 12px #00636d;
+}
+
+.style2 .event {
+  background-color: #4eb2f3;
+  color: white;
+}
+
+.style2 .add-event-button {
+  background-color: #d9f6da;
+  color: black;
+}
+
+.style2 select.form-control {
+  background-color: #d9f6da;
 }

@@ -1,8 +1,8 @@
 import { CHANGE_STYLE } from '../../../constants/action-types';
-import { styleReducer, initialState } from '../styleReducer';
+import { styleReducer, initialState } from '../style';
 
 describe('StyleReducer', () => {
-  it('CHANGE_STYLE', () => {
+  it('changes style', () => {
     const action = {
       type: CHANGE_STYLE,
       payload: 'style1'

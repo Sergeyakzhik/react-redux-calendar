@@ -1,5 +1,5 @@
 import React from 'react';
-import TableDay from '../components/TableDay/TableDay';
+import TableDay from '../components/TableDay';
 import EventContainer from './EventContainer';
 import moment from "moment";
 import { dayHours } from '../constants/constants';
@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import {
   openAddEventField,
   setInitialDate
-} from '../store/actions/addEventFieldActions';
+} from '../store/actions/addEventField';
 
 class TableDayContainer extends React.Component {
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import EventInfoField from '../components/EventInfoField/EventInfoField';
+import EventInfoField from '../components/EventInfoField';
 
 import { connect } from 'react-redux';
 
@@ -8,8 +8,8 @@ class EventInfoFieldContainer extends React.Component {
   render() {
     const { posX, posY } = this.props;
     const style = {
-      left: posX + 'px',
-      top: posY + 'px'
+      left: posX / 9 + 'px',
+      top: posY / 9 - 160 + 'px'
     };
 
     return ( <EventInfoField event={this.props.event} style={style} /> );

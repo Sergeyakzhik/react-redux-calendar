@@ -4,9 +4,9 @@ import TableMonthContainer from './containers/TableMonthContainer.js';
 import TableWeekContainer from './containers/TableWeekContainer.js';
 import TableDayContainer from './containers/TableDayContainer.js';
 import AddEventFieldContainer from './containers/AddEventFieldContainer.js';
-import TimeSegmentToggler from './components/TimeSegmentToggler/TimeSegmentToggler';
-import PeriodToggler from './components/PeriodToggler/PeriodToggler';
-import StyleToggler from './components/StyleToggler/StyleToggler';
+import TimeSegmentToggler from './components/TimeSegmentToggler/index';
+import PeriodToggler from './components/PeriodToggler/index';
+import StyleToggler from './components/StyleToggler/index';
 
 let App = props => {
   const {
@@ -24,22 +24,20 @@ let App = props => {
       <div className="container">
         <header className="App-header">
           <div className="row">
-            <div className="col-sm-4 text-left">
+            <div className="col-sm-2 text-left">
               <PeriodToggler onPeriodTogglerClick={onPeriodTogglerClick} />
+            </div>
+            <div className="col-sm-2 text-left">
               <StyleToggler onStyleTogglerClick={onStyleTogglerClick} style={props.style}/>
             </div>
             <div className="col-sm-4">
               <h1>Calendar</h1>
             </div>
-            <div className="col-sm-4 text-right">
-              <div className="row">
-                <div className="col-6 text-right">
-                  <button type="button" className="btn btn-primary add-event-button" onClick={onNewEventClick}>Add Event</button>
-                </div>
-                <div className="col-6 text-right">
-                  <TimeSegmentToggler onPeriodChange={onPeriodChange} />
-                </div>
-              </div>
+            <div className="col-sm-2 text-right">
+              <button type="button" className="btn btn-primary add-event-button" onClick={onNewEventClick}>Add Event</button>
+            </div>
+            <div className="col-sm-2 text-right">
+              <TimeSegmentToggler onPeriodChange={onPeriodChange} />
             </div>
           </div>
         </header>

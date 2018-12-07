@@ -1,12 +1,12 @@
 import React from 'react';
-import Event from '../components/Event/Event';
+import Event from '../components/Event';
 import EventTransformerContainer from './EventTransformerContainer';
 import EventInfoFieldContainer from './EventInfoFieldContainer';
 
 import { connect } from 'react-redux';
-import { toggleEventInfoField } from '../store/actions/eventInfoFieldActions';
-import { deleteEvent } from '../store/actions/calendarActions';
-import { changeEventInfoPosition } from '../store/actions/eventInfoFieldActions';
+import { toggleEventInfoField } from '../store/actions/eventInfoField';
+import { deleteEvent } from '../store/actions/calendar';
+import { changeEventInfoPosition } from '../store/actions/eventInfoField';
 
 class EventContainer extends React.Component {
 

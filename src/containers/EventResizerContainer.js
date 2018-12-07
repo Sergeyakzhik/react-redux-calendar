@@ -1,10 +1,10 @@
 import React from 'react';
-import EventResizer from '../components/EventResizer/EventResizer';
+import EventResizer from '../components/EventResizer';
 import moment from "moment";
 
 import { connect } from 'react-redux';
-import { updateEvent } from '../store/actions/calendarActions';
-import { changeCurAction } from '../store/actions/eventTransformerActions';
+import { updateEvent } from '../store/actions/calendar';
+import { changeCurAction } from '../store/actions/eventTransformer';
 
 let startX, startY;
 
@@ -48,8 +48,12 @@ class EventResizerContainer extends React.Component {
       let cellsDiffX = Math.round(diffX / 157);
       let cellsDiffY = Math.round(diffY / 100) * 7;
 
+      console.log(cellsDiffX)
+      console.log(curEvent.length)
+
       if(curEvent.length + cellsDiffX + cellsDiffY > 0) {
         newEndDate = moment().year(endDate.year()).month(endDate.month()).date(endDate.date() + cellsDiffX + cellsDiffY);
+        this.props.updateEvent(this.props.targetKey, Object.assign({}, { ...curEvent, endDate: newEndDate }));
       }
     }
 
@@ -59,6 +63,7 @@ class EventResizerContainer extends React.Component {
 
       if(curEvent.timeDiff / 15 + cellsDiffX + cellsDiffY > 0) {
         newEndDate = moment().year(endDate.year()).month(endDate.month()).date(endDate.date()).hours(endDate.hours()).minutes(endDate.minutes() + 15 * (cellsDiffX + cellsDiffY));
+        this.props.updateEvent(this.props.targetKey, Object.assign({}, { ...curEvent, endDate: newEndDate }));
       }
     }
 
@@ -67,10 +72,10 @@ class EventResizerContainer extends React.Component {
 
       if(curEvent.timeDiff / 15 + cellsDiffY > 0) {
         newEndDate = moment().year(endDate.year()).month(endDate.month()).date(endDate.date()).hours(endDate.hours()).minutes(endDate.minutes() + 15 * cellsDiffY);
+        this.props.updateEvent(this.props.targetKey, Object.assign({}, { ...curEvent, endDate: newEndDate }));
       }
     }
 
-    this.props.updateEvent(this.props.targetKey, Object.assign({}, { ...curEvent, endDate: newEndDate }));
     e.target.removeEventListener('mousemove', this.handleMouseMove);
   }
 

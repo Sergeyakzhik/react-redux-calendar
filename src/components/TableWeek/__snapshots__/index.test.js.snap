@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TableWeek render TableWeek component 1`] = `
+<div>
+  <h2>
+    date
+  </h2>
+  <table
+    className="table-week"
+  >
+    <thead />
+    <tbody />
+  </table>
+</div>
+`;

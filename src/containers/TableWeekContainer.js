@@ -1,5 +1,5 @@
 import React from 'react';
-import TableWeek from '../components/TableWeek/TableWeek';
+import TableWeek from '../components/TableWeek';
 import EventContainer from './EventContainer';
 import moment from "moment";
 import { weekdays, dayHours } from '../constants/constants';
@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import {
   openAddEventField,
   setInitialDate
-} from '../store/actions/addEventFieldActions';
+} from '../store/actions/addEventField';
 
 class TableWeekContainer extends React.Component {
 
@@ -145,6 +145,8 @@ class TableWeekContainer extends React.Component {
         let eventsList = [];
 
         events.forEach(event => {
+          console.log(moment(event.startDate).startOf('minute').toString())
+          console.log(moment(datesArray[i]).hours(j / 4).minutes(min).toString())
           if(moment(event.startDate).startOf('minute').toString() === moment(datesArray[i]).hours(j / 4).minutes(min).toString())
             curCellEvents.push(event);
 

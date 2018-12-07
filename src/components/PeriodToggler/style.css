@@ -1,0 +1,50 @@
+.btn-group {
+  margin-top: 0.3rem;
+}
+
+.style1 .btn-group button {
+  color: #ffffff;
+  background-color: #181818;
+  width: 3rem;
+  height: 2.7rem;
+  border-color: black;
+}
+
+.style1 .btn:hover {
+  background-color: #4e4e4e;
+}
+
+.style1 .btn-secondary.focus, .btn-secondary:focus {
+  box-shadow: none;
+}
+
+.style1 .btn-secondary:not(:disabled):not(.disabled).active, .style1 .btn-secondary:not(:disabled):not(.disabled):active, .show>.btn-secondary.dropdown-toggle {
+  color: black;
+  background-color: #757575;
+  border-color: transparent;
+}
+
+.style2 .btn-group button {
+  color: black;
+  background-color: #daf6da;
+  width: 3rem;
+  height: 2.7rem;
+}
+
+.style2 .btn:hover {
+  background-color: #eafbc4;
+}
+
+.style2 .btn-secondary.focus, .btn-secondary:focus {
+  box-shadow: none;
+}
+
+.style2 .btn-secondary:not(:disabled):not(.disabled).active, .style2 .btn-secondary:not(:disabled):not(.disabled):active, .show>.btn-secondary.dropdown-toggle {
+  color: black;
+  background-color: #aeffb0;
+  border-color: transparent;
+}
+
+i {
+  pointer-events: none;
+}
