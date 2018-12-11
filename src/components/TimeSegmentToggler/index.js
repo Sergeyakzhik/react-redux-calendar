@@ -1,7 +1,7 @@
 import React from 'react';
 import './style.css';
 
-let TimeSegmentToggler = props => (
+const TimeSegmentToggler = props => (
   <select onChange={props.onPeriodChange} className="form-control">
     <option>Month</option>
     <option>Week</option>

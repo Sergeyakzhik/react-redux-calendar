@@ -1,7 +1,7 @@
 import React from 'react';
 import './style.css';
 
-let TableDay = props => (
+const TableDay = props => (
   <div>
     <h2>{props.date}</h2>
     <table className="table-day">

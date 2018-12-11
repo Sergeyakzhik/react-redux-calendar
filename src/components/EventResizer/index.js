@@ -1,7 +1,7 @@
 import React from 'react';
 import './style.css';
 
-let EventResizer = props => (
+const EventResizer = props => (
   <div
     className="resizer"
     targetKey={props.targetKey}
@@ -10,8 +10,7 @@ let EventResizer = props => (
     onMouseLeave={props.onMouseLeave}
     onClick={e => e.stopPropagation()}
     style={props.style}
-  >
-  </div>
+  />
 );
 
 export default EventResizer;

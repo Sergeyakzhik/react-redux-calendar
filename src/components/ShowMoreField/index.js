@@ -1,16 +1,16 @@
 import React from 'react';
 import './style.css';
 
-let ShowMoreField = props => (
+const ShowMoreField = props => (
   <div className="show-more">
     <div className="close-button" onClick={props.onCloseButtonClick}>
-      <i className="fas fa-times"></i>
+      <i className="fas fa-times" />
     </div>
     <div>
       <ul>
         {props.events.map(event => (
             <>
-              <hr/>
+              <hr />
               <li>
                 <div className="row">
                   <div className="col-sm-6">

@@ -1,7 +1,7 @@
 import React from 'react';
 import './style.css';
 
-let EventInfoField = props => (
+const EventInfoField = props => (
   <div className="event-info" style={props.style}>
     <h5>{props.event.name}</h5>
     <div className="row">

@@ -1,26 +1,32 @@
 import React from 'react';
 import './App.css';
-import TableMonthContainer from './containers/TableMonthContainer.js';
-import TableWeekContainer from './containers/TableWeekContainer.js';
-import TableDayContainer from './containers/TableDayContainer.js';
-import AddEventFieldContainer from './containers/AddEventFieldContainer.js';
-import TimeSegmentToggler from './components/TimeSegmentToggler/index';
-import PeriodToggler from './components/PeriodToggler/index';
-import StyleToggler from './components/StyleToggler/index';
+import TableMonthContainer from './containers/TableMonthContainer';
+import TableWeekContainer from './containers/TableWeekContainer';
+import TableDayContainer from './containers/TableDayContainer';
+import EditEventFieldContainer from './containers/EditEventFieldContainer';
+import TimeSegmentToggler from './components/TimeSegmentToggler';
+import PeriodToggler from './components/PeriodToggler';
+import StyleToggler from './components/StyleToggler';
 
-let App = props => {
+import {
+  MONTH,
+  WEEK,
+  DAY,
+} from './constants/constants';
+
+const App = (props) => {
   const {
+    curStyle,
     table,
-    period,
     isActive,
     onPeriodTogglerClick,
     onNewEventClick,
     onPeriodChange,
-    onStyleTogglerClick
+    onStyleTogglerClick,
   } = props;
 
   return (
-    <div className={`App ` + props.curStyle}>
+    <div className={`App ${curStyle}`}>
       <div className="container">
         <header className="App-header">
           <div className="row">
@@ -28,7 +34,7 @@ let App = props => {
               <PeriodToggler onPeriodTogglerClick={onPeriodTogglerClick} />
             </div>
             <div className="col-sm-2 text-left">
-              <StyleToggler onStyleTogglerClick={onStyleTogglerClick} style={props.style}/>
+              <StyleToggler onStyleTogglerClick={onStyleTogglerClick} style={curStyle} />
             </div>
             <div className="col-sm-4">
               <h1>Calendar</h1>
@@ -42,17 +48,16 @@ let App = props => {
           </div>
         </header>
         <main>
-          {isActive ? <AddEventFieldContainer isActive={isActive} /> : null}
+          {isActive ? <EditEventFieldContainer /> : null}
           <div className="main-table">
-            {
-              table === 'Month' ? <TableMonthContainer period={period} /> :
-              (table === 'Week' ? <TableWeekContainer period={period} /> : <TableDayContainer period={period} />)
-            }
+            { table === MONTH ? <TableMonthContainer /> : null }
+            { table === WEEK ? <TableWeekContainer /> : null }
+            { table === DAY ? <TableDayContainer /> : null }
           </div>
         </main>
       </div>
     </div>
   );
-}
+};
 
 export default App;

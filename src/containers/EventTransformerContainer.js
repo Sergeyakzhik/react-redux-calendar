@@ -1,32 +1,48 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import EventResizerContainer from './EventResizerContainer';
 import EventDraggerContainer from './EventDraggerContainer';
+import {
+  DRAG,
+  RESIZE,
+} from '../constants/constants';
 
-import { connect } from 'react-redux';
 import {
   deleteEvent,
-  updateEvent
+  updateEvent,
 } from '../store/actions/calendar';
 
 class EventTransformerContainer extends React.Component {
+  isLastPartOfEvent = () => {
+    const { events, targetKey, event } = this.props;
+    const { endDate } = event;
 
-  isLastPartOfEvent = () => this.props.event.endDate.toString() === this.props.events[this.props.targetKey].endDate.toString();
+    return endDate.toString() === events[targetKey].endDate.toString();
+  }
 
   render() {
+    const {
+      curAction, event, targetKey, onMouseDown, eventPartKey,
+    } = this.props;
+
     return (
-      <div onMouseDown={this.props.onMouseDown}>
-        { this.props.curAction !== 'drag' && this.isLastPartOfEvent() ?
-          <EventResizerContainer
-            event={this.props.event}
-            targetKey={this.props.targetKey}
-          />
+      <div onMouseDown={onMouseDown}>
+        { curAction !== DRAG && this.isLastPartOfEvent()
+          ? (
+            <EventResizerContainer
+              event={event}
+              targetKey={targetKey}
+            />
+          )
           : null
         }
-        { this.props.curAction !== 'resize' ?
-          <EventDraggerContainer
-            event={this.props.event}
-            targetKey={this.props.targetKey}
-          />
+        { curAction !== RESIZE
+          ? (
+            <EventDraggerContainer
+              event={event}
+              targetKey={targetKey}
+            />
+          )
           : null
         }
       </div>
@@ -34,10 +50,9 @@ class EventTransformerContainer extends React.Component {
   }
 }
 
-const mapStateToProps = store => ({
-  curTarget: store.eventInfoField.curTarget,
-  events: store.calendar.events,
-  curAction: store.eventTransformer.curAction
+const mapStateToProps = state => ({
+  events: state.calendar.events,
+  curAction: state.eventTransformer.curAction,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -47,5 +62,5 @@ const mapDispatchToProps = dispatch => ({
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(EventTransformerContainer);

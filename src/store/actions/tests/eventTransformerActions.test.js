@@ -6,8 +6,8 @@ describe('EventTransformation', () => {
     const action = '';
     const expectedAction = {
       type: CHANGE_CURRENT_ACTION,
-      payload: action
-    }
+      payload: action,
+    };
     expect(changeCurAction(action)).toEqual(expectedAction);
-  })
-})
+  });
+});

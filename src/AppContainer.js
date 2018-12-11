@@ -1,16 +1,28 @@
 import React, { Component } from 'react';
-import App from './App';
-import moment from "moment";
-
+import moment from 'moment';
 import { connect } from 'react-redux';
+import App from './App';
 import {
-  changeTimePeriod,
-  toggleTimeSegment
-} from './store/actions/calendar';
-import { openAddEventField } from './store/actions/addEventField';
-import { changeStyle } from './store/actions/style';
+  STYLE1,
+  STYLE2,
+  MONTH,
+  WEEK,
+  DAY,
+  LEFT_BUTTON,
+  RIGHT_BUTTON,
+  ADD_EVENT,
+} from './constants/constants';
+
+import { changeTimePeriod, toggleTimeSegment } from './store/actions/calendar';
+import { openEditEventField } from './store/actions/editEventField';
 
 class AppContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      style: STYLE2,
+    };
+  }
 
   setCurrentPeriod = () => moment();
 
@@ -19,64 +31,72 @@ class AppContainer extends Component {
   getCurrentMonth = () => this.props.period.getMonth();
 
   shouldComponentUpdate = (nextProps, nextState) => {
-    if(
-      this.props.table === nextProps.table && this.props.period === nextProps.period
-      && this.props.isActive === nextProps.isActive && this.props.style === nextProps.style
-    ){
+    const {
+      table,
+      period,
+      isActive,
+      style,
+    } = this.props;
+
+    if (
+      table === nextProps.table
+      && period === nextProps.period
+      && isActive === nextProps.isActive
+      && style === nextState.style
+    ) {
       return false;
     }
-    return true
-  }
+    return true;
+  };
 
-  handlePeriodChange = (e) => {
-    this.props.toggleTimeSegment(e.target.value);
-  }
+  handlePeriodChange = e => this.props.toggleTimeSegment(e.target.value);
 
   handlePeriodTogglerClick = (e) => {
     const { table, period, changeTimePeriod } = this.props;
-    let curYear = moment(period).year();
-    let curMonth = moment(period).month();
-    let curDate = moment(period).date();
+    const curYear = moment(period).year();
+    const curMonth = moment(period).month();
+    const curDate = moment(period).date();
 
-    if(e.target.id === 'left-button') {
-      if(table === 'Month')
-        changeTimePeriod(new Date(curYear, curMonth - 1));
-      if(table === 'Week')
-        changeTimePeriod(new Date(curYear, curMonth, curDate - 7));
-      if(table === 'Day')
-        changeTimePeriod(new Date(curYear, curMonth, curDate - 1));
+    if (e.target.id === LEFT_BUTTON) {
+      if (table === MONTH) changeTimePeriod(new Date(curYear, curMonth - 1));
+      if (table === WEEK) changeTimePeriod(new Date(curYear, curMonth, curDate - 7));
+      if (table === DAY) changeTimePeriod(new Date(curYear, curMonth, curDate - 1));
     }
-    if(e.target.id === 'right-button') {
-      if(table === 'Month')
+    if (e.target.id === RIGHT_BUTTON) {
+      if (table === MONTH) {
         changeTimePeriod(new Date(curYear, curMonth + 1));
-      if(table === 'Week')
+      }
+      if (table === WEEK) {
         changeTimePeriod(new Date(curYear, curMonth, curDate + 7));
-      if(table === 'Day')
+      }
+      if (table === DAY) {
         changeTimePeriod(new Date(curYear, curMonth, curDate + 1));
+      }
     }
-  }
+  };
 
-  handleNewEventClick = e => {
-    if(this.props.isActive === true)
-      return this.props.openAddEventField(false);
-    else
-      return this.props.openAddEventField(true);
-  }
+  handleNewEventClick = () => {
+    const { isActive, openEditEventField } = this.props;
 
-  handleStyleTogglerClick = e => {
-    if(e.target.value === 'style1')
-      this.props.changeStyle('style1');
-    if(e.target.value === 'style2')
-      this.props.changeStyle('style2');
-  }
+    if (isActive === true) return openEditEventField(false, '');
+    return openEditEventField(true, ADD_EVENT);
+  };
+
+  handleStyleTogglerClick = (e) => {
+    if (e.target.value === STYLE1) this.setState({ style: STYLE1 });
+
+    if (e.target.value === STYLE2) this.setState({ style: STYLE2 });
+  };
 
   render() {
-    const { table, period, isActive } = this.props;
+    const { table, isActive } = this.props;
+    const { style } = this.state;
 
     return (
       <App
-        curStyle={this.props.style}
-        table={table} period={period} isActive={isActive}
+        curStyle={style}
+        table={table}
+        isActive={isActive}
         onPeriodTogglerClick={this.handlePeriodTogglerClick}
         onNewEventClick={this.handleNewEventClick}
         onPeriodChange={this.handlePeriodChange}
@@ -86,22 +106,19 @@ class AppContainer extends Component {
   }
 }
 
-const mapStateToProps = store => ({
-  table: store.calendar.table,
-  period: store.calendar.period,
-  isActive: store.eventField.isActive,
-  events: store.calendar.events,
-  style: store.style.style
+const mapStateToProps = state => ({
+  table: state.calendar.table,
+  period: state.calendar.period,
+  isActive: state.eventField.isActive,
 });
 
 const mapDispatchToProps = dispatch => ({
   toggleTimeSegment: table => dispatch(toggleTimeSegment(table)),
   changeTimePeriod: period => dispatch(changeTimePeriod(period)),
-  openAddEventField: isActive => dispatch(openAddEventField(isActive)),
-  changeStyle: style => dispatch(changeStyle(style))
+  openEditEventField: (isActive, usage) => dispatch(openEditEventField(isActive, usage)),
 });
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(AppContainer);

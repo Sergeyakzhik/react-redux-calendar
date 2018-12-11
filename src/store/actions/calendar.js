@@ -3,33 +3,33 @@ import {
   CHANGE_PERIOD,
   ADD_EVENT,
   DELETE_EVENT,
-  UPDATE_EVENT
+  UPDATE_EVENT,
 } from '../../constants/action-types';
 
-export let addEvent = event => ({
+export const addEvent = event => ({
   type: ADD_EVENT,
-  payload: event
+  payload: event,
 });
 
-export let deleteEvent = curTarget => ({
+export const deleteEvent = curTarget => ({
   type: DELETE_EVENT,
-  payload: curTarget
+  payload: curTarget,
 });
 
-export let updateEvent = (targetKey, newEvent) => ({
+export const updateEvent = (targetKey, newEvent) => ({
   type: UPDATE_EVENT,
   payload: {
     targetKey,
-    newEvent
-  }
+    newEvent,
+  },
 });
 
-export let changeTimePeriod = period => ({
+export const changeTimePeriod = period => ({
   type: CHANGE_PERIOD,
-  payload: period
+  payload: period,
 });
 
-export let toggleTimeSegment = table => ({
+export const toggleTimeSegment = table => ({
   type: TOGGLE_TIME_SEGMENT,
-  payload: table
+  payload: table,
 });

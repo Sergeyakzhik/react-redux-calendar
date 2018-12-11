@@ -1,25 +1,26 @@
-import ShowMoreField from '../components/ShowMoreField';
 import React from 'react';
 
 import { connect } from 'react-redux';
+import ShowMoreField from '../components/ShowMoreField';
 import { toggleShowMoreField } from '../store/actions/showMoreField';
 
 class ShowMoreFieldContainer extends React.Component {
-
   handleCloseButtonClick = e => this.props.toggleShowMoreField(false, []);
 
   render() {
+    const { events } = this.props;
+
     return (
       <ShowMoreField
-        events={this.props.events}
+        events={events}
         onCloseButtonClick={this.handleCloseButtonClick}
       />
     );
   }
 }
 
-const mapStateToProps = store => ({
-  events: store.showMoreField.events
+const mapStateToProps = state => ({
+  events: state.showMoreField.events,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -28,5 +29,5 @@ const mapDispatchToProps = dispatch => ({
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(ShowMoreFieldContainer);

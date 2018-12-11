@@ -9,9 +9,9 @@ describe('EventTransformation', () => {
       type: TOGGLE_SHOW_MORE_FIELD,
       payload: {
         isActive,
-        events
-      }
-    }
+        events,
+      },
+    };
     expect(toggleShowMoreField(isActive, events)).toEqual(expectedAction);
-  })
-})
+  });
+});

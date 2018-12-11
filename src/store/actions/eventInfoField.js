@@ -1,17 +1,17 @@
 import {
   TOGGLE_EVENT_INFO_FIELD,
-  CHANGE_POSITION
-} from '../../constants/action-types.js';
+  CHANGE_POSITION,
+} from '../../constants/action-types';
 
-export let toggleEventInfoField = curTarget => ({
+export const toggleEventInfoField = curTarget => ({
   type: TOGGLE_EVENT_INFO_FIELD,
-  payload: curTarget
+  payload: curTarget,
 });
 
-export let changeEventInfoPosition = (posX, posY) => ({
+export const changeEventInfoPosition = (posX, posY) => ({
   type: CHANGE_POSITION,
   payload: {
     posX,
-    posY
-  }
+    posY,
+  },
 });

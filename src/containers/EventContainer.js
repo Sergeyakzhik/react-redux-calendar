@@ -1,39 +1,42 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Event from '../components/Event';
 import EventTransformerContainer from './EventTransformerContainer';
 import EventInfoFieldContainer from './EventInfoFieldContainer';
 
-import { connect } from 'react-redux';
-import { toggleEventInfoField } from '../store/actions/eventInfoField';
+import { toggleEventInfoField, changeEventInfoPosition } from '../store/actions/eventInfoField';
 import { deleteEvent } from '../store/actions/calendar';
-import { changeEventInfoPosition } from '../store/actions/eventInfoField';
 
 class EventContainer extends React.Component {
+  handleMouseLeave = e => this.props.toggleEventInfoField('');
 
-  handleMouseEnter = e => {
-    this.props.toggleEventInfoField(e.target.attributes.targetKey.value || '');
-  }
-
-  handleMouseLeave = e => {
+  handleMouseDown = (e) => {
     this.props.toggleEventInfoField('');
   }
 
-  handleMouseDown = e => {
-    this.props.toggleEventInfoField('');
+  handleMouseMove = (e) => {
+    const { toggleEventInfoField, changeEventInfoPosition } = this.props;
+    const rect = e.target.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    if (e.target.className !== 'dragger') toggleEventInfoField('');
+    else toggleEventInfoField(e.target.attributes.eventPartKey.value || '');
+
+    changeEventInfoPosition(x, y);
   }
 
-  handleMouseMove = e => {
-    this.props.changeEventInfoPosition(e.pageX, e.pageY);
-  }
-
-  handleDeleteButtonClick = e => {
+  handleDeleteButtonClick = (e) => {
     e.stopPropagation();
 
-    this.props.deleteEvent(e.target.attributes.targetKey.value)
+    this.props.deleteEvent(e.target.attributes.targetKey.value);
   }
 
   render() {
-    let isActive = this.props.curTarget === this.props.targetKey;
+    const {
+      curTarget, targetKey, style, event,
+    } = this.props;
+    const isActive = curTarget === (event.eventPartKey || targetKey);
 
     return (
       <div
@@ -42,35 +45,34 @@ class EventContainer extends React.Component {
         onMouseMove={this.handleMouseMove}
       >
         <Event
-          style={this.props.style}
+          style={style}
           onDeleteButtonClick={this.handleDeleteButtonClick}
-          event={this.props.event}
-          targetKey={this.props.targetKey}
+          event={event}
+          targetKey={targetKey}
           isActive={isActive}
         />
         <EventTransformerContainer
           onMouseDown={this.handleMouseDown}
-          event={this.props.event}
-          targetKey={this.props.targetKey}
+          event={event}
+          targetKey={targetKey}
         />
-        {isActive ? <EventInfoFieldContainer event={this.props.event} /> : null}
+        {isActive ? <EventInfoFieldContainer event={event} /> : null}
       </div>
     );
   }
 }
 
-const mapStateToProps = store => ({
-  curTarget: store.eventInfoField.curTarget,
-  events: store.calendar.events
+const mapStateToProps = state => ({
+  curTarget: state.eventInfoField.curTarget,
 });
 
 const mapDispatchToProps = dispatch => ({
   toggleEventInfoField: curTarget => dispatch(toggleEventInfoField(curTarget)),
   deleteEvent: curTarget => dispatch(deleteEvent(curTarget)),
-  changeEventInfoPosition: (posX, posY) => dispatch(changeEventInfoPosition(posX, posY))
+  changeEventInfoPosition: (posX, posY) => dispatch(changeEventInfoPosition(posX, posY)),
 });
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(EventContainer);

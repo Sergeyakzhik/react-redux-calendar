@@ -1,10 +1,10 @@
 import React from 'react';
 import './style.css';
 
-let TableMonth = props => (
+const TableMonth = props => (
   <div>
     <h2>{props.date}</h2>
-    <table className='table-month'>
+    <table className="table-month">
       <thead>
         {props.tableHeader}
       </thead>

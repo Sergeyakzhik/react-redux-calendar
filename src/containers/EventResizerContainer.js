@@ -1,95 +1,108 @@
 import React from 'react';
-import EventResizer from '../components/EventResizer';
-import moment from "moment";
-
+import moment from 'moment';
 import { connect } from 'react-redux';
+import EventResizer from '../components/EventResizer';
+import {
+  MONTH,
+  WEEK,
+  DAY,
+  RESIZE,
+} from '../constants/constants';
+
+
 import { updateEvent } from '../store/actions/calendar';
 import { changeCurAction } from '../store/actions/eventTransformer';
 
-let startX, startY;
+let startX; let
+  startY;
 
 class EventResizerContainer extends React.Component {
+  handleMouseDown = (e) => {
+    const { changeCurAction } = this.props;
 
-  handleMouseDown = e => {
+    if (e.button === 0) {
+      const elem = e.target;
 
-    if(e.button === 0) {
-      let elem = e.target;
-
-      this.props.changeCurAction('resize');
+      changeCurAction(RESIZE);
 
       startX = e.clientX;
       startY = e.clientY;
 
-      elem.style.right = -elem.offsetWidth / 2.5 + 'px';
-      elem.style.top = -elem.offsetHeight / 2.5 + 'px';
+      elem.style.right = `${-elem.offsetWidth / 2.5}px`;
+      elem.style.top = `${-elem.offsetHeight / 2.5}px`;
 
       e.target.addEventListener('mousemove', this.handleMouseMove);
     }
   }
 
-  handleMouseUp = e => {
-    let elem = e.target;
+  handleMouseUp = (e) => {
+    const {
+      changeCurAction, table, events, targetKey, updateEvent,
+    } = this.props;
+    const elem = e.target;
 
-    this.props.changeCurAction('');
+    changeCurAction('');
 
-    let curTable = this.props.table;
-    let diffX = e.clientX - startX;
-    let diffY = e.clientY - startY;
+    const curTable = table;
+    const diffX = e.clientX - startX;
+    const diffY = e.clientY - startY;
 
-    let curEvent = this.props.events[this.props.targetKey];
-    let endDate = curEvent.endDate;
+    const curEvent = events[targetKey];
+    const { endDate } = curEvent;
 
     elem.style.right = '';
     elem.style.top = '';
 
     let newEndDate;
 
-    if(curTable === 'Month') {
-      let cellsDiffX = Math.round(diffX / 157);
-      let cellsDiffY = Math.round(diffY / 100) * 7;
+    if (curTable === MONTH) {
+      const cellsDiffX = Math.round(diffX / 157);
+      const cellsDiffY = Math.round(diffY / 100) * 7;
 
-      console.log(cellsDiffX)
-      console.log(curEvent.length)
-
-      if(curEvent.length + cellsDiffX + cellsDiffY > 0) {
+      if (curEvent.length + cellsDiffX + cellsDiffY > 0) {
         newEndDate = moment().year(endDate.year()).month(endDate.month()).date(endDate.date() + cellsDiffX + cellsDiffY);
-        this.props.updateEvent(this.props.targetKey, Object.assign({}, { ...curEvent, endDate: newEndDate }));
+        updateEvent(targetKey, Object.assign({}, { ...curEvent, endDate: newEndDate }));
       }
     }
 
-    if(curTable === 'Week') {
-      let cellsDiffX = Math.round(diffX / 67) * 48;
-      let cellsDiffY = Math.round(diffY / 17);
+    if (curTable === WEEK) {
+      const cellsDiffX = Math.round(diffX / 67) * 48;
+      const cellsDiffY = Math.round(diffY / 17);
 
-      if(curEvent.timeDiff / 15 + cellsDiffX + cellsDiffY > 0) {
-        newEndDate = moment().year(endDate.year()).month(endDate.month()).date(endDate.date()).hours(endDate.hours()).minutes(endDate.minutes() + 15 * (cellsDiffX + cellsDiffY));
-        this.props.updateEvent(this.props.targetKey, Object.assign({}, { ...curEvent, endDate: newEndDate }));
+      if (curEvent.timeDiff / 15 + cellsDiffX + cellsDiffY > 0) {
+        newEndDate = moment().year(endDate.year()).month(endDate.month()).date(endDate.date())
+          .hours(endDate.hours())
+          .minutes(endDate.minutes() + 15 * (cellsDiffX + cellsDiffY));
+        updateEvent(targetKey, Object.assign({}, { ...curEvent, endDate: newEndDate }));
       }
     }
 
-    if(curTable === 'Day') {
-      let cellsDiffY = Math.round(diffY / 17);
+    if (curTable === DAY) {
+      const cellsDiffY = Math.round(diffY / 17);
 
-      if(curEvent.timeDiff / 15 + cellsDiffY > 0) {
-        newEndDate = moment().year(endDate.year()).month(endDate.month()).date(endDate.date()).hours(endDate.hours()).minutes(endDate.minutes() + 15 * cellsDiffY);
-        this.props.updateEvent(this.props.targetKey, Object.assign({}, { ...curEvent, endDate: newEndDate }));
+      if (curEvent.timeDiff / 15 + cellsDiffY > 0) {
+        newEndDate = moment().year(endDate.year()).month(endDate.month()).date(endDate.date())
+          .hours(endDate.hours())
+          .minutes(endDate.minutes() + 15 * cellsDiffY);
+        updateEvent(targetKey, Object.assign({}, { ...curEvent, endDate: newEndDate }));
       }
     }
 
     e.target.removeEventListener('mousemove', this.handleMouseMove);
   }
 
-  handleMouseMove = e => {
-    let elem = e.target;
-
-    elem.style.right = -e.clientX + startX - elem.offsetWidth / 2.5 + 'px';
-    elem.style.top = e.clientY - startY - elem.offsetHeight / 2.5 + 'px';
-  }
-
-  handleMouseLeave = e => {
+  handleMouseMove = (e) => {
     const elem = e.target;
 
-    this.props.changeCurAction('');
+    elem.style.right = `${-e.clientX + startX - elem.offsetWidth / 2.5}px`;
+    elem.style.top = `${e.clientY - startY - elem.offsetHeight / 2.5}px`;
+  }
+
+  handleMouseLeave = (e) => {
+    const { changeCurAction } = this.props;
+    const elem = e.target;
+
+    changeCurAction('');
 
     elem.style.right = '';
     elem.style.top = '';
@@ -98,33 +111,36 @@ class EventResizerContainer extends React.Component {
   }
 
   render() {
-    let style = {
-      marginTop: this.props.event.timeDiff / 15 * 17 - 10 + 'px'
-    }
+    const {
+      event, targetKey, table,
+    } = this.props;
+    const style = {
+      marginTop: `${event.timeDiff / 15 * 17 - 10}px`,
+    };
 
     return (
       <EventResizer
         onMouseDown={this.handleMouseDown}
         onMouseUp={this.handleMouseUp}
         onMouseLeave={this.handleMouseLeave}
-        targetKey={this.props.targetKey}
-        style={this.props.table !== 'Month' ? style : null}
+        targetKey={targetKey}
+        style={table !== MONTH ? style : null}
       />
     );
   }
 }
 
-const mapStateToProps = store => ({
-  table: store.calendar.table,
-  events: store.calendar.events
+const mapStateToProps = state => ({
+  table: state.calendar.table,
+  events: state.calendar.events,
 });
 
 const mapDispatchToProps = dispatch => ({
   updateEvent: (targetKey, newEvent) => dispatch(updateEvent(targetKey, newEvent)),
-  changeCurAction: action => dispatch(changeCurAction(action))
+  changeCurAction: action => dispatch(changeCurAction(action)),
 });
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(EventResizerContainer);

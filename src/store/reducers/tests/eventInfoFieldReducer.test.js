@@ -1,6 +1,6 @@
 import {
   TOGGLE_EVENT_INFO_FIELD,
-  CHANGE_POSITION
+  CHANGE_POSITION,
 } from '../../../constants/action-types';
 import { eventInfoFieldReducer, initialState } from '../eventInfoField';
 
@@ -8,35 +8,35 @@ describe('EventInfoFieldReducer', () => {
   it('toggles EventInfoField', () => {
     const action = {
       type: TOGGLE_EVENT_INFO_FIELD,
-      payload: 'true'
-    }
+      payload: 'true',
+    };
     expect(eventInfoFieldReducer(initialState, action)).toEqual({
       ...initialState,
-      curTarget: action.payload
+      curTarget: action.payload,
     });
-  })
+  });
 
   it('changes position', () => {
     const action = {
       type: CHANGE_POSITION,
       payload: {
         posX: 20,
-        posY: 30
-      }
-    }
+        posY: 30,
+      },
+    };
     expect(eventInfoFieldReducer(initialState, action)).toEqual({
       ...initialState,
       posX: action.payload.posX,
-      posY: action.payload.posY
+      posY: action.payload.posY,
     });
-  })
+  });
 
   it('default', () => {
-    const action = {}
+    const action = {};
     expect(eventInfoFieldReducer(initialState, action)).toEqual({
       curTarget: '',
       posX: '',
-      posY: ''
+      posY: '',
     });
-  })
-})
+  });
+});

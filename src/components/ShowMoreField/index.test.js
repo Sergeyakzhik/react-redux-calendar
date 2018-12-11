@@ -1,40 +1,40 @@
 import React from 'react';
 import Enzyme, { shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16'
+import Adapter from 'enzyme-adapter-react-16';
 
+import moment from 'moment';
 import ShowMoreField from './index';
 
-import moment from "moment";
 
-Enzyme.configure({ adapter: new Adapter() })
+Enzyme.configure({ adapter: new Adapter() });
 
-describe('ShowMoreField', () => {    //FIX: ShowMoreField component
+describe('ShowMoreField', () => { // FIX: ShowMoreField component
   const date = moment();
-  let props = {
+  const props = {
     events: {
-      'event1': {
+      event1: {
         name: 'new Event',
         startDate: date,
-        endDate: date
+        endDate: date,
       },
-      'event2': {
+      event2: {
         name: 'new Event2',
         startDate: date,
-        endDate: date
-      }
-    }
-  }
+        endDate: date,
+      },
+    },
+  };
   let component;
 
-  beforeEach(()=>{
-    component = shallow(<ShowMoreField {...props} />)
-  })
+  beforeEach(() => {
+    component = shallow(<ShowMoreField {...props} />);
+  });
 
   it('renders ShowMoreField component', () => {
     expect(component).toMatchSnapshot();
-  })
+  });
 
   it('checks ShowMoreField name', () => {
     expect(component.find('h1').text()).toEqual(date.format('MMMM Do YYYY'));
-  })
-})
+  });
+});

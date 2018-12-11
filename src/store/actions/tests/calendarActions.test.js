@@ -3,14 +3,14 @@ import {
   DELETE_EVENT,
   UPDATE_EVENT,
   CHANGE_PERIOD,
-  TOGGLE_TIME_SEGMENT
+  TOGGLE_TIME_SEGMENT,
 } from '../../../constants/action-types';
 import {
   addEvent,
   deleteEvent,
   updateEvent,
   changeTimePeriod,
-  toggleTimeSegment
+  toggleTimeSegment,
 } from '../calendar';
 
 describe('CalendarActions', () => {
@@ -18,19 +18,19 @@ describe('CalendarActions', () => {
     const event = {};
     const expectedAction = {
       type: ADD_EVENT,
-      payload: event
-    }
+      payload: event,
+    };
     expect(addEvent(event)).toEqual(expectedAction);
-  })
+  });
 
   it('deletes event', () => {
     const target = '';
     const expectedAction = {
       type: DELETE_EVENT,
-      payload: target
-    }
+      payload: target,
+    };
     expect(deleteEvent(target)).toEqual(expectedAction);
-  })
+  });
 
   it('updates event', () => {
     const targetKey = '';
@@ -39,27 +39,27 @@ describe('CalendarActions', () => {
       type: UPDATE_EVENT,
       payload: {
         targetKey,
-        newEvent
-      }
-    }
+        newEvent,
+      },
+    };
     expect(updateEvent(targetKey, newEvent)).toEqual(expectedAction);
-  })
+  });
 
   it('changes time period', () => {
     const period = '';
     const expectedAction = {
       type: CHANGE_PERIOD,
-      payload: period
-    }
+      payload: period,
+    };
     expect(changeTimePeriod(period)).toEqual(expectedAction);
-  })
+  });
 
   it('toggles time segment', () => {
     const segment = '';
     const expectedAction = {
       type: TOGGLE_TIME_SEGMENT,
-      payload: segment
-    }
+      payload: segment,
+    };
     expect(toggleTimeSegment(segment)).toEqual(expectedAction);
-  })
-})
+  });
+});

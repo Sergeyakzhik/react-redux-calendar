@@ -1,57 +1,61 @@
 import React from 'react';
-import moment from "moment";
+import moment from 'moment';
 import { Field, Fields, reduxForm } from 'redux-form';
-import DatePicker from "react-datepicker";
-import './AddEventForm.css';
+import DatePicker from 'react-datepicker';
+import './EditEventForm.css';
 
 import { connect } from 'react-redux';
-import { setInitialDate } from '../../store/actions/addEventField';
+import { setInitialDate } from '../../store/actions/editEventField';
 
 let now = moment();
-let mins = now.minutes() < 15 ? 0 : now.minutes() < 30 ? 15 : now.minutes() < 45 ? 30 : 45;
+const mins = now.minutes() < 15 ? 0 : now.minutes() < 30 ? 15 : now.minutes() < 45 ? 30 : 45;
 
 now = now.minutes(mins);
 
 const initialDates = {
   startDate: now,
-  endDate: moment(now).minutes(now.minutes() + 15)
-}
+  endDate: moment(now).minutes(now.minutes() + 15),
+  name: '',
+  place: '',
+  description: '',
+};
 
-const required = value => value ? undefined : 'Required';
+const required = value => (value ? undefined : 'Required');
 
-const eventNameInput = ({ input, type, id, placeholder, meta: { error, touched } }) => (
+const eventNameInput = ({
+  input, type, id, placeholder, meta: { error, touched },
+}) => (
   <div>
-    <input {...input} placeholder={placeholder} type={type} id={id} className="form-control"/>
+    <input {...input} placeholder={placeholder} type={type} id={id} className="form-control" />
   </div>
 );
 
-class AddEventForm extends React.Component {
-
-  renderDateFields = fields => {
+class EditEventForm extends React.Component {
+  renderDateFields = (fields) => {
     const { startDate, endDate } = fields;
+    const {
+      change, setInitialDate, initialDate,
+    } = this.props;
     const startDateValue = startDate.input.value;
     const endDateValue = endDate.input.value;
-    const initialDate = this.props.initialDate;
 
-    if(initialDate) {
-      this.props.change('startDate', initialDate);
-      this.props.change('endDate', moment(initialDate).minutes(initialDate.minutes() + 15));
-      this.props.setInitialDate(null);
+    if (initialDate) {
+      change('startDate', initialDate);
+      change('endDate', moment(initialDate).minutes(initialDate.minutes() + 15));
+      setInitialDate(null);
     }
 
-    let handleStartDateChange = date => {
+    const handleStartDateChange = (date) => {
       startDate.input.onChange(date);
 
-      if(date >= endDateValue)
-        endDate.input.onChange(moment(date).minutes(date.minutes() + 15));
-    }
+      if (date >= endDateValue) endDate.input.onChange(moment(date).minutes(date.minutes() + 15));
+    };
 
-    let handleEndDateChange = date => {
+    const handleEndDateChange = (date) => {
       endDate.input.onChange(date);
 
-      if(date <= startDateValue)
-        startDate.input.onChange(moment(date).minutes(date.minutes() - 15));
-    }
+      if (date <= startDateValue) startDate.input.onChange(moment(date).minutes(date.minutes() - 15));
+    };
 
     return (
       <>
@@ -79,11 +83,26 @@ class AddEventForm extends React.Component {
           />
         </div>
       </>
-    )
+    );
   };
 
   render() {
-    const { onSubmit, submitting, valid } = this.props;
+    const {
+      onSubmit, submitting, valid, event, change,
+    } = this.props;
+
+    if (event) {
+      const {
+        startDate, endDate, name, place, description,
+      } = event;
+
+      change('startDate', startDate);
+      change('endDate', endDate);
+      change('name', name);
+      change('place', place);
+      change('description', description);
+      setInitialDate(null);
+    }
 
     return (
       <form onSubmit={onSubmit}>
@@ -96,7 +115,7 @@ class AddEventForm extends React.Component {
             <label htmlFor="place">Place</label>
             <Field name="place" component="input" type="text" className="form-control" id="place" placeholder="Place" />
           </div>
-          <Fields names={[ 'startDate', 'endDate' ]} component={this.renderDateFields} />
+          <Fields names={['startDate', 'endDate']} component={this.renderDateFields} />
           <div className="form-group col-sm-12 text-center">
             <label htmlFor="comment">Description</label>
             <Field name="description" component="textarea" type="text" rows="5" className="form-control" id="description" placeholder="Description" />
@@ -110,25 +129,21 @@ class AddEventForm extends React.Component {
   }
 }
 
-const mapStateToProps = store => ({
-  initialDate: store.eventField.event.initialDate
+const mapStateToProps = state => ({
+  initialDate: state.eventField.initialDate,
+  initialValues: initialDates,
+  event: state.eventField.event,
 });
 
 const mapDispatchToProps = dispatch => ({
-  setInitialDate: initialDate => dispatch(setInitialDate(initialDate))
+  setInitialDate: initialDate => dispatch(setInitialDate(initialDate)),
 });
 
-AddEventForm = reduxForm({
-  form: 'addEvent'
-})(AddEventForm);
-
-AddEventForm = connect(
-  state => ({
-    initialValues: initialDates
-  })
-)(AddEventForm);
+EditEventForm = reduxForm({
+  form: 'editEvent',
+})(EditEventForm);
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
-)(AddEventForm);
+  mapDispatchToProps,
+)(EditEventForm);

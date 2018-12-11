@@ -1,10 +1,10 @@
 import {
   TOGGLE_EVENT_INFO_FIELD,
-  CHANGE_POSITION
+  CHANGE_POSITION,
 } from '../../../constants/action-types';
 import {
   toggleEventInfoField,
-  changeEventInfoPosition
+  changeEventInfoPosition,
 } from '../eventInfoField';
 
 describe('InfoFieldActions', () => {
@@ -12,10 +12,10 @@ describe('InfoFieldActions', () => {
     const curTarget = '';
     const expectedAction = {
       type: TOGGLE_EVENT_INFO_FIELD,
-      payload: curTarget
-    }
+      payload: curTarget,
+    };
     expect(toggleEventInfoField(curTarget)).toEqual(expectedAction);
-  })
+  });
 
   it('changes EventInfoField position', () => {
     const posX = '';
@@ -24,9 +24,9 @@ describe('InfoFieldActions', () => {
       type: CHANGE_POSITION,
       payload: {
         posX,
-        posY
-      }
-    }
+        posY,
+      },
+    };
     expect(changeEventInfoPosition(posX, posY)).toEqual(expectedAction);
-  })
-})
+  });
+});

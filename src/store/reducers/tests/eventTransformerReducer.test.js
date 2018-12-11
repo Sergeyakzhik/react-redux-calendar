@@ -5,18 +5,18 @@ describe('EventTransformerReducer', () => {
   it('changes current action', () => {
     const action = {
       type: CHANGE_CURRENT_ACTION,
-      payload: 'drag'
-    }
+      payload: 'drag',
+    };
     expect(eventTransformerReducer(initialState, action)).toEqual({
       ...initialState,
-      curAction: action.payload
+      curAction: action.payload,
     });
-  })
+  });
 
   it('default', () => {
-    const action = {}
+    const action = {};
     expect(eventTransformerReducer(initialState, action)).toEqual({
-      curAction: ''
+      curAction: '',
     });
-  })
-})
+  });
+});
