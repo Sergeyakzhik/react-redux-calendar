@@ -3,6 +3,7 @@ export const CHANGE_PERIOD = 'CHANGE_PERIOD';
 export const OPEN_EVENT_FIELD = 'OPEN_EVENT_FIELD';
 export const CLOSE_EVENT_FIELD = 'CLOSE_EVENT_FIELD';
 export const SET_INITIAL_DATE = 'SET_INITIAL_DATE';
+export const CLEAR_EVENT_DATA = 'CLEAR_EVENT_DATA';
 export const ADD_EVENT = 'ADD_EVENT';
 export const DELETE_EVENT = 'DELETE_EVENT';
 export const UPDATE_EVENT = 'UPDATE_EVENT';

@@ -62,6 +62,7 @@ export function calendarReducer(state = initialState, action) {
       const events = state.events;
       const oldTargetKey = action.payload.targetKey;
       const updatedEvent = action.payload.newEvent;
+      console.log(updatedEvent);
       const newTargetKey = updatedEvent.name + updatedEvent.startDate.toString() + updatedEvent.endDate.toString();
 
       if (action.payload.targetKey !== newTargetKey) {

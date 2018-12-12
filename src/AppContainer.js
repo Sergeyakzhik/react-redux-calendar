@@ -78,8 +78,8 @@ class AppContainer extends Component {
   handleNewEventClick = () => {
     const { isActive, openEditEventField } = this.props;
 
-    if (isActive === true) return openEditEventField(false, '');
-    return openEditEventField(true, ADD_EVENT);
+    if (isActive === true) openEditEventField(false, '');
+    else openEditEventField(true, ADD_EVENT);
   };
 
   handleStyleTogglerClick = (e) => {

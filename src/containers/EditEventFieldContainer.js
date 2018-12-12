@@ -3,8 +3,8 @@ import { formValueSelector } from 'redux-form';
 
 import { connect } from 'react-redux';
 import EditEventForm from './EditEventForm/EditEventForm';
-import { closeEditEventField } from '../store/actions/editEventField';
-import { addEvent } from '../store/actions/calendar';
+import { closeEditEventField, clearEventData } from '../store/actions/editEventField';
+import { addEvent, updateEvent } from '../store/actions/calendar';
 
 import { ADD_EVENT } from '../constants/constants';
 
@@ -12,10 +12,18 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 class EditEventFieldContainer extends React.Component {
   submit = () => {
-    const { addEvent } = this.props;
+    const {
+      addEvent, updateEvent, usage, event, clearEventData,
+    } = this.props;
+    const newEvent = this.fillEventData();
 
     this.handleEndButtonClick();
-    addEvent(this.fillEventData());
+
+    if (usage === ADD_EVENT) addEvent(newEvent);
+    else {
+      updateEvent(event.targetKey, newEvent);
+      clearEventData();
+    }
   };
 
   fillEventData = () => {
@@ -39,7 +47,7 @@ class EditEventFieldContainer extends React.Component {
   handleEndButtonClick = e => this.props.closeEditEventField(false);
 
   render() {
-    const { usage, event } = this.props;
+    const { usage } = this.props;
 
     return (
       <div className="input-form">
@@ -77,6 +85,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   closeEditEventField: isActive => dispatch(closeEditEventField(isActive)),
   addEvent: event => dispatch(addEvent(event)),
+  updateEvent: (targetKey, event) => dispatch(updateEvent(targetKey, event)),
+  clearEventData: () => dispatch(clearEventData()),
 });
 
 export default connect(

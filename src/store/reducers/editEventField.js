@@ -2,6 +2,7 @@ import {
   OPEN_EVENT_FIELD,
   CLOSE_EVENT_FIELD,
   SET_INITIAL_DATE,
+  CLEAR_EVENT_DATA,
 } from '../../constants/action-types';
 
 export const initialState = {
@@ -31,6 +32,12 @@ export function eventFieldReducer(state = initialState, action) {
       return {
         ...state,
         initialDate: action.payload,
+      };
+    }
+    case CLEAR_EVENT_DATA: {
+      return {
+        ...state,
+        event: {},
       };
     }
     default:

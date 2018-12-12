@@ -138,13 +138,9 @@ class EventDraggerContainer extends React.Component {
   }
 
   handleEventClick = (event) => {
-    const {
-      targetKey, openEditEventField, updateEvent,
-    } = this.props;
+    const { openEditEventField } = this.props;
 
-    console.log(event);
-
-    openEditEventField(true, EDIT_EVENT, event);
+    openEditEventField(true, EDIT_EVENT, Object.assign({}, event));
   }
 
   render() {

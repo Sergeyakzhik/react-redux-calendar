@@ -7,12 +7,17 @@ import './EditEventForm.css';
 import { connect } from 'react-redux';
 import { setInitialDate } from '../../store/actions/editEventField';
 
+import {
+  ADD_EVENT,
+  EDIT_EVENT,
+} from '../../constants/constants';
+
 let now = moment();
 const mins = now.minutes() < 15 ? 0 : now.minutes() < 30 ? 15 : now.minutes() < 45 ? 30 : 45;
 
 now = now.minutes(mins);
 
-const initialDates = {
+const initialData = {
   startDate: now,
   endDate: moment(now).minutes(now.minutes() + 15),
   name: '',
@@ -23,7 +28,7 @@ const initialDates = {
 const required = value => (value ? undefined : 'Required');
 
 const eventNameInput = ({
-  input, type, id, placeholder, meta: { error, touched },
+  input, type, id, placeholder,
 }) => (
   <div>
     <input {...input} placeholder={placeholder} type={type} id={id} className="form-control" />
@@ -31,17 +36,44 @@ const eventNameInput = ({
 );
 
 class EditEventForm extends React.Component {
+  componentWillMount = () => {
+    const { usage } = this.props;
+
+    if (usage === EDIT_EVENT) {
+      const { event } = this.props;
+
+      Object.keys(initialData).forEach((key) => {
+        if (initialData[key].toString() !== event[key].toString()) {
+          initialData[key] = event[key];
+        }
+      });
+    }
+
+    if (usage === ADD_EVENT) {
+      const { event, initialDate } = this.props;
+
+      if (!initialDate) {
+        initialData.startDate = now;
+        initialData.endDate = moment(now).minutes(now.minutes() + 15);
+      }
+
+      if (initialData.name !== '') initialData.name = '';
+      if (initialData.place !== '') initialData.place = '';
+      if (initialData.description !== '') initialData.description = '';
+    }
+  }
+
   renderDateFields = (fields) => {
     const { startDate, endDate } = fields;
     const {
-      change, setInitialDate, initialDate,
+      setInitialDate, initialDate,
     } = this.props;
     const startDateValue = startDate.input.value;
     const endDateValue = endDate.input.value;
 
     if (initialDate) {
-      change('startDate', initialDate);
-      change('endDate', moment(initialDate).minutes(initialDate.minutes() + 15));
+      initialData.startDate = initialDate;
+      initialData.endDate = moment(initialDate).minutes(initialDate.minutes() + 15);
       setInitialDate(null);
     }
 
@@ -88,21 +120,8 @@ class EditEventForm extends React.Component {
 
   render() {
     const {
-      onSubmit, submitting, valid, event, change,
+      onSubmit, submitting, valid,
     } = this.props;
-
-    if (event) {
-      const {
-        startDate, endDate, name, place, description,
-      } = event;
-
-      change('startDate', startDate);
-      change('endDate', endDate);
-      change('name', name);
-      change('place', place);
-      change('description', description);
-      setInitialDate(null);
-    }
 
     return (
       <form onSubmit={onSubmit}>
@@ -131,8 +150,9 @@ class EditEventForm extends React.Component {
 
 const mapStateToProps = state => ({
   initialDate: state.eventField.initialDate,
-  initialValues: initialDates,
+  initialValues: initialData,
   event: state.eventField.event,
+  usage: state.eventField.usage,
 });
 
 const mapDispatchToProps = dispatch => ({
