@@ -5,7 +5,7 @@ import DatePicker from 'react-datepicker';
 import './EditEventForm.css';
 
 import { connect } from 'react-redux';
-import { setInitialDate } from '../../store/actions/editEventField';
+import { setInitialDate } from '../../store/actions/calendar';
 
 import {
   ADD_EVENT,
@@ -50,7 +50,7 @@ class EditEventForm extends React.Component {
     }
 
     if (usage === ADD_EVENT) {
-      const { event, initialDate } = this.props;
+      const { initialDate } = this.props;
 
       if (!initialDate) {
         initialData.startDate = now;
@@ -120,11 +120,11 @@ class EditEventForm extends React.Component {
 
   render() {
     const {
-      onSubmit, submitting, valid,
+      onSubmit, handleSubmit, submitting, valid,
     } = this.props;
 
     return (
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-row">
           <div className="form-group col-sm-6 text-center">
             <label htmlFor="name">Title</label>
@@ -149,15 +149,15 @@ class EditEventForm extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  initialDate: state.eventField.initialDate,
+  initialDate: state.calendar.initialDate,
   initialValues: initialData,
-  event: state.eventField.event,
-  usage: state.eventField.usage,
+  event: state.calendar.event,
+  usage: state.calendar.usage,
 });
 
-const mapDispatchToProps = dispatch => ({
-  setInitialDate: initialDate => dispatch(setInitialDate(initialDate)),
-});
+const mapDispatchToProps = {
+  setInitialDate,
+};
 
 EditEventForm = reduxForm({
   form: 'editEvent',

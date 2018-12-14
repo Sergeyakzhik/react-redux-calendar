@@ -5,42 +5,25 @@ import TableMonth from '../components/TableMonth';
 import EventContainer from './EventContainer';
 import ShowMoreFieldContainer from './ShowMoreFieldContainer';
 import {
-  weekdays,
   ADD_EVENT,
+  MONTH,
 } from '../constants/constants';
+import {
+  getListOfEvents, fillDatesArrayMonth, createTableHeader, sortEvents,
+} from '../utils/utils';
 
 import {
   openEditEventField,
   setInitialDate,
-} from '../store/actions/editEventField';
+} from '../store/actions/calendar';
 import { toggleShowMoreField } from '../store/actions/showMoreField';
 
 class TableMonthContainer extends React.Component {
-  getListOfEvents = (events, date) => {
-    const eventsList = [];
-
-    events.forEach((event) => {
-      if (moment(event.startDate).startOf('day').toString() === moment(date).startOf('day').toString()) {
-        eventsList.push(event);
-      }
-    });
-
-    return eventsList;
-  }
-
-  createTableHeader = () => {
-    const thead = [];
-
-    for (let i = 0; i < 7; i += 1) {
-      thead.push(<th key={`THMonth${i}`}>{weekdays[i]}</th>);
-    }
-    return <tr>{thead}</tr>;
-  }
-
   createRows = () => {
+    const { period } = this.props;
     const tbody = [];
     const momentDate = moment().startOf('day');
-    const datesArray = this.fillDatesArray();
+    const datesArray = fillDatesArrayMonth(period);
 
     for (let i = 0; i < 6; i += 1) {
       const cells = [];
@@ -48,7 +31,7 @@ class TableMonthContainer extends React.Component {
       const skeletonBody = this.createSkeletonBody(i);
 
       for (let j = 0; j < 7; j += 1) {
-        const eventsOfDay = this.getListOfEvents(this.splitEventsByDay(), datesArray[j + 7 * i]);
+        const eventsOfDay = getListOfEvents(this.splitEventsByDay(), datesArray[j + 7 * i]);
 
         cells.push(
           <td
@@ -110,7 +93,7 @@ class TableMonthContainer extends React.Component {
   }
 
   createSkeletonBody = (weekIndex) => {
-    const datesArray = this.fillDatesArray();
+    const datesArray = fillDatesArrayMonth();
     const skeletonBody = [];
     const rows = [[], [], []];
     const splitEvents = this.splitEventsByWeek();
@@ -118,9 +101,9 @@ class TableMonthContainer extends React.Component {
     rows.forEach((arr) => { arr.numberOfCells = 0; });
 
     for (let i = 0; i < 7; i += 1) {
-      const events = this.getListOfEvents(splitEvents, datesArray[i + 7 * weekIndex]);
+      const events = getListOfEvents(splitEvents, datesArray[i + 7 * weekIndex]);
 
-      events.sort(this.sortEvents('length'));
+      events.sort(sortEvents('length'));
 
       for (let j = 0; j < 3; j += 1) {
         if (rows[j].numberOfCells !== 7 && rows[j].numberOfCells < i + 1) {
@@ -220,37 +203,7 @@ class TableMonthContainer extends React.Component {
     return startDate.toString() !== endDate.toString();
   }
 
-  sortEvents = property => function s(a, b) {
-    const result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
-    return -result;
-  }
-
-  fillDatesArray = () => {
-    const array = [];
-    const { period } = this.props;
-    const now = moment(period);
-    const startOfMonth = now.startOf('month');
-    const firstCell = startOfMonth.startOf('week');
-    const firstCellDate = startOfMonth.startOf('week').date();
-    const curYear = moment(period).year();
-    let month = firstCell.month();
-    let daysInCurMonth = firstCell.daysInMonth();
-    const daysInNextMonth = now.year(curYear).month(month + 1).daysInMonth();
-
-    for (let i = firstCellDate; array.length < 42; i += 1) {
-      if (i > daysInCurMonth) {
-        i = 1;
-        daysInCurMonth = daysInNextMonth;
-        month += 1;
-      }
-      array.push(now.year(curYear).month(month).date(i).startOf('day')
-        .toDate());
-    }
-
-    return array;
-  }
-
-  handleShowMoreClick = e => this.props.toggleShowMoreField(true, this.getListOfEvents(this.splitEventsByDay(), e.target.attributes.date.value));
+  handleShowMoreClick = e => this.props.toggleShowMoreField(true, getListOfEvents(this.splitEventsByDay(), e.target.attributes.date.value));
 
   render() {
     const { period, isActive } = this.props;
@@ -259,7 +212,7 @@ class TableMonthContainer extends React.Component {
       <>
         <TableMonth
           date={`${moment(period).month() + 1}/${moment(period).year()}`}
-          tableHeader={this.createTableHeader()}
+          tableHeader={createTableHeader(MONTH)}
           tableRows={this.createRows()}
         />
         {isActive ? <ShowMoreFieldContainer /> : null}
@@ -274,11 +227,11 @@ const mapStateToProps = state => ({
   period: state.calendar.period,
 });
 
-const mapDispatchToProps = dispatch => ({
-  openEditEventField: (isActive, usage) => dispatch(openEditEventField(isActive, usage)),
-  setInitialDate: initialDate => dispatch(setInitialDate(initialDate)),
-  toggleShowMoreField: (isActive, events) => dispatch(toggleShowMoreField(isActive, events)),
-});
+const mapDispatchToProps = {
+  openEditEventField,
+  setInitialDate,
+  toggleShowMoreField,
+};
 
 export default connect(
   mapStateToProps,

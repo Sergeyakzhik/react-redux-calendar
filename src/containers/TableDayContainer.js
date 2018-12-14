@@ -7,25 +7,14 @@ import {
   dayHours,
   ADD_EVENT,
 } from '../constants/constants';
+import { getListOfEvents, sortEvents } from '../utils/utils';
 
 import {
   openEditEventField,
   setInitialDate,
-} from '../store/actions/editEventField';
+} from '../store/actions/calendar';
 
 class TableDayContainer extends React.Component {
-  getListOfEvents = (events, date) => {
-    const eventsList = [];
-
-    events.forEach((event) => {
-      if (moment(event.startDate).startOf('day').toString() === moment(date).startOf('day').toString()) {
-        eventsList.push(event);
-      }
-    });
-
-    return eventsList;
-  }
-
   roundMinutes = minutes => (minutes <= 30 ? 0 : 30);
 
   createRows = () => {
@@ -86,15 +75,15 @@ class TableDayContainer extends React.Component {
     const splitEvents = this.splitEventsByDays();
     const date = moment(period).startOf('day').toDate();
 
-    const events = this.getListOfEvents(splitEvents, date);
+    const events = getListOfEvents(splitEvents, date);
 
-    events.sort(this.sortEvents('timeDiff'));
+    events.sort(sortEvents('timeDiff'));
 
     for (let i = 0; i < 96; i += 1) {
       const min = i % 4 === 0 ? 0 : i % 4 === 1 ? 15 : i % 4 === 2 ? 30 : 45;
       const curCellEvents = [];
       let numberOfEvents = 0;
-      const eventsList = [];
+      let eventsList = [];
 
       events.forEach((event) => {
         if (moment(event.startDate).startOf('minute').toString() === moment(date).hours(i / 4).minutes(min).toString()) curCellEvents.push(event);
@@ -181,11 +170,6 @@ class TableDayContainer extends React.Component {
     return splitEvents;
   }
 
-  sortEvents = property => function s(a, b) {
-    const result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
-    return result;
-  }
-
   isLongerThanDay = (event) => {
     const { startDate, endDate } = event;
     const eventLengthHrs = endDate.diff(startDate, 'hours');
@@ -206,10 +190,10 @@ class TableDayContainer extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  openEditEventField: (isActive, usage) => dispatch(openEditEventField(isActive, usage)),
-  setInitialDate: initialDate => dispatch(setInitialDate(initialDate)),
-});
+const mapDispatchToProps = {
+  openEditEventField,
+  setInitialDate,
+};
 
 const mapStateToProps = state => ({
   events: state.calendar.events,

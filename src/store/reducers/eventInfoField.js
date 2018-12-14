@@ -5,8 +5,8 @@ import {
 
 export const initialState = {
   curTarget: '',
-  posX: '',
-  posY: '',
+  posX: null,
+  posY: null,
 };
 
 export function eventInfoFieldReducer(state = initialState, action) {

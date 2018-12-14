@@ -22,7 +22,7 @@ class EventTransformerContainer extends React.Component {
 
   render() {
     const {
-      curAction, event, targetKey, onMouseDown, eventPartKey,
+      curAction, event, targetKey, onMouseDown,
     } = this.props;
 
     return (
@@ -55,10 +55,10 @@ const mapStateToProps = state => ({
   curAction: state.eventTransformer.curAction,
 });
 
-const mapDispatchToProps = dispatch => ({
-  deleteEvent: curTarget => dispatch(deleteEvent(curTarget)),
-  updateEvent: (targetKey, newEvent) => dispatch(updateEvent(targetKey, newEvent)),
-});
+const mapDispatchToProps = {
+  deleteEvent,
+  updateEvent,
+};
 
 export default connect(
   mapStateToProps,

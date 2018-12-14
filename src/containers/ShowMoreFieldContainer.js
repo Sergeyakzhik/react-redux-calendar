@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { connect } from 'react-redux';
 import ShowMoreField from '../components/ShowMoreField';
 import { toggleShowMoreField } from '../store/actions/showMoreField';
@@ -23,9 +22,9 @@ const mapStateToProps = state => ({
   events: state.showMoreField.events,
 });
 
-const mapDispatchToProps = dispatch => ({
-  toggleShowMoreField: (isActive, events) => dispatch(toggleShowMoreField(isActive, events)),
-});
+const mapDispatchToProps = {
+  toggleShowMoreField,
+};
 
 export default connect(
   mapStateToProps,

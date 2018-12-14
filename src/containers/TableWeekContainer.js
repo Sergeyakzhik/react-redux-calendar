@@ -4,82 +4,24 @@ import moment from 'moment';
 import TableWeek from '../components/TableWeek';
 import EventContainer from './EventContainer';
 import {
-  weekdays,
   dayHours,
   ADD_EVENT,
+  WEEK,
 } from '../constants/constants';
+import {
+  getListOfEvents, sortEvents, fillDatesArrayWeek, createTableHeader,
+} from '../utils/utils';
 
 import {
   openEditEventField,
   setInitialDate,
-} from '../store/actions/editEventField';
+} from '../store/actions/calendar';
 
 class TableWeekContainer extends React.Component {
-  getListOfEvents = (events, date) => {
-    const eventsList = [];
-
-    events.forEach((event) => {
-      if (moment(event.startDate).startOf('day').toString() === moment(date).startOf('day').toString()) {
-        eventsList.push(event);
-      }
-    });
-
-    return eventsList;
-  }
-
-  createTableHeader = () => {
-    const thead = [];
-    const datesArray = this.fillDatesArray();
-
-    for (let i = 0; i < datesArray.length; i += 1) {
-      thead.push(<th key={`THWeek${i}`}>
-        {weekdays[i]}
-        {' '}
-        {moment(datesArray[i]).date()}
-      </th>);
-    }
-    thead.unshift(<th key="THWeekEmpty" />);
-
-    return <tr>{thead}</tr>;
-  }
-
-  fillDatesArray = () => {
-    const { period } = this.props;
-    const array = [];
-    const now = moment(period);
-    const startOfWeek = moment(period).startOf('week');
-    const startOfWeekDate = startOfWeek.date();
-    const endOfWeek = moment(period).endOf('week');
-    const endOfWeekDate = endOfWeek.date();
-    const curYear = moment(period).year();
-    let month = startOfWeek.month();
-    const daysInCurMonth = moment(period).startOf('week').daysInMonth();
-
-    if (startOfWeekDate > endOfWeekDate) {
-      for (let i = startOfWeekDate; i <= daysInCurMonth; i += 1) {
-        array.push(now.year(curYear).month(month).date(i).startOf('day')
-          .toDate());
-      }
-
-      month += 1;
-
-      for (let i = 1; array.length < 7; i += 1) {
-        array.push(now.year(curYear).month(month).date(i).startOf('day')
-          .toDate());
-      }
-    } else {
-      for (let i = startOfWeekDate; i <= endOfWeekDate; i += 1) {
-        array.push(now.year(curYear).month(month).date(i).startOf('day')
-          .toDate());
-      }
-    }
-    return array;
-  }
-
   createRows = () => {
     const tbody = [];
     const momentDate = moment().startOf('day');
-    const datesArray = this.fillDatesArray();
+    const datesArray = fillDatesArrayWeek();
     const skeletonBody = this.createSkeletonBody();
 
     for (let i = 0; i < 48; i += 1) {
@@ -129,7 +71,7 @@ class TableWeekContainer extends React.Component {
   }
 
   createSkeletonBody = () => {
-    const datesArray = this.fillDatesArray();
+    const datesArray = fillDatesArrayWeek();
     const rows = [];
     const tbody = [];
     const splitEvents = this.splitEventsByDays();
@@ -139,9 +81,9 @@ class TableWeekContainer extends React.Component {
     }
 
     for (let i = 0; i < 7; i += 1) {
-      const events = this.getListOfEvents(splitEvents, datesArray[i]);
+      const events = getListOfEvents(splitEvents, datesArray[i]);
 
-      events.sort(this.sortEvents('timeDiff'));
+      events.sort(sortEvents('timeDiff'));
 
       for (let j = 0; j < 96; j += 1) {
         const min = j % 4 === 0 ? 0 : j % 4 === 1 ? 15 : j % 4 === 2 ? 30 : 45;
@@ -234,11 +176,6 @@ class TableWeekContainer extends React.Component {
     return splitEvents;
   }
 
-  sortEvents = property => function s(a, b) {
-    const result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
-    return result;
-  }
-
   isLongerThanDay = (event) => {
     const { startDate, endDate } = event;
     const eventLengthHrs = endDate.diff(startDate, 'hours');
@@ -263,17 +200,17 @@ class TableWeekContainer extends React.Component {
       <TableWeek
         date={`${this.setHeaderFirstMonth()}/${moment(period).startOf('week').date()}/${this.setHeaderFirstYear()} -
         ${this.setHeaderSecondMonth()}/${moment(period).endOf('week').date()}/${this.setHeaderSecondYear()}`}
-        tableHeader={this.createTableHeader()}
+        tableHeader={createTableHeader(WEEK)}
         tableRows={this.createRows()}
       />
     );
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  openEditEventField: (isActive, usage) => dispatch(openEditEventField(isActive, usage)),
-  setInitialDate: initialDate => dispatch(setInitialDate(initialDate)),
-});
+const mapDispatchToProps = {
+  openEditEventField,
+  setInitialDate,
+};
 
 const mapStateToProps = state => ({
   events: state.calendar.events,

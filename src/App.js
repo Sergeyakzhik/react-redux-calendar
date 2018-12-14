@@ -50,9 +50,9 @@ const App = (props) => {
         <main>
           {isActive ? <EditEventFieldContainer /> : null}
           <div className="main-table">
-            { table === MONTH ? <TableMonthContainer /> : null }
-            { table === WEEK ? <TableWeekContainer /> : null }
-            { table === DAY ? <TableDayContainer /> : null }
+            { table === MONTH && <TableMonthContainer /> }
+            { table === WEEK && <TableWeekContainer /> }
+            { table === DAY && <TableDayContainer /> }
           </div>
         </main>
       </div>

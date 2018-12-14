@@ -135,10 +135,10 @@ const mapStateToProps = state => ({
   events: state.calendar.events,
 });
 
-const mapDispatchToProps = dispatch => ({
-  updateEvent: (targetKey, newEvent) => dispatch(updateEvent(targetKey, newEvent)),
-  changeCurAction: action => dispatch(changeCurAction(action)),
-});
+const mapDispatchToProps = {
+  updateEvent,
+  changeCurAction,
+};
 
 export default connect(
   mapStateToProps,

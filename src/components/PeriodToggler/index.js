@@ -1,10 +1,11 @@
 import React from 'react';
 import './style.css';
+import { LEFT_BUTTON, RIGHT_BUTTON } from '../../constants/constants';
 
 const PeriodToggler = props => (
   <div className="btn-group" role="group">
     <button
-      onClick={props.onPeriodTogglerClick}
+      onClick={() => props.onPeriodTogglerClick(LEFT_BUTTON)}
       type="button"
       className="btn btn-secondary left-button"
       id="left-button"
@@ -12,7 +13,7 @@ const PeriodToggler = props => (
       <i className="fas fa-chevron-left" />
     </button>
     <button
-      onClick={props.onPeriodTogglerClick}
+      onClick={() => props.onPeriodTogglerClick(RIGHT_BUTTON)}
       type="button"
       className="btn btn-secondary right-button"
       id="right-button"

@@ -1,5 +1,5 @@
 import { CHANGE_CURRENT_ACTION } from '../../../constants/action-types';
-import { eventTransformerReducer, initialState } from '../eventTransformer';
+import { eventTransformerReducer } from '../eventTransformer';
 
 describe('EventTransformerReducer', () => {
   it('changes current action', () => {

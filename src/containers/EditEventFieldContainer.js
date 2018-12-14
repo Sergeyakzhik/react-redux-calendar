@@ -1,50 +1,31 @@
 import React from 'react';
 import { formValueSelector } from 'redux-form';
-
 import { connect } from 'react-redux';
 import EditEventForm from './EditEventForm/EditEventForm';
-import { closeEditEventField, clearEventData } from '../store/actions/editEventField';
-import { addEvent, updateEvent } from '../store/actions/calendar';
+import {
+  closeEditEventField, clearEventData, addEvent, updateEvent,
+} from '../store/actions/calendar';
 
 import { ADD_EVENT } from '../constants/constants';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
 class EditEventFieldContainer extends React.Component {
-  submit = () => {
+  submit = (data) => {
     const {
       addEvent, updateEvent, usage, event, clearEventData,
     } = this.props;
-    const newEvent = this.fillEventData();
 
     this.handleEndButtonClick();
 
-    if (usage === ADD_EVENT) addEvent(newEvent);
+    if (usage === ADD_EVENT) addEvent(data);
     else {
-      updateEvent(event.targetKey, newEvent);
+      updateEvent(event.targetKey, data);
       clearEventData();
     }
   };
 
-  fillEventData = () => {
-    const {
-      startDate,
-      endDate,
-      name,
-      place,
-      description,
-    } = this.props.formValues;
-
-    return {
-      startDate,
-      endDate,
-      name,
-      place,
-      description,
-    };
-  };
-
-  handleEndButtonClick = e => this.props.closeEditEventField(false);
+  handleEndButtonClick = () => this.props.closeEditEventField(false);
 
   render() {
     const { usage } = this.props;
@@ -53,7 +34,7 @@ class EditEventFieldContainer extends React.Component {
       <div className="input-form">
         <h1>
           {usage === ADD_EVENT ? 'New' : 'Edit'}
-          {' '}
+          &nbsp;
           event
         </h1>
         <div className="close-button" onClick={this.handleEndButtonClick}>
@@ -78,16 +59,16 @@ const mapStateToProps = state => ({
     'place',
     'description',
   ),
-  usage: state.eventField.usage,
-  event: state.eventField.event,
+  usage: state.calendar.usage,
+  event: state.calendar.event,
 });
 
-const mapDispatchToProps = dispatch => ({
-  closeEditEventField: isActive => dispatch(closeEditEventField(isActive)),
-  addEvent: event => dispatch(addEvent(event)),
-  updateEvent: (targetKey, event) => dispatch(updateEvent(targetKey, event)),
-  clearEventData: () => dispatch(clearEventData()),
-});
+const mapDispatchToProps = {
+  closeEditEventField,
+  addEvent,
+  updateEvent,
+  clearEventData,
+};
 
 export default connect(
   mapStateToProps,

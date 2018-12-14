@@ -5,6 +5,10 @@ import {
   ADD_EVENT,
   DELETE_EVENT,
   UPDATE_EVENT,
+  OPEN_EVENT_FIELD,
+  CLOSE_EVENT_FIELD,
+  SET_INITIAL_DATE,
+  CLEAR_EVENT_DATA,
 } from '../../constants/action-types';
 import {
   MONTH,
@@ -15,6 +19,10 @@ export const initialState = {
   table: MONTH,
   period: moment(),
   events: {},
+  isActive: false,
+  initialDate: null,
+  usage: '',
+  event: null,
 };
 
 export function calendarReducer(state = initialState, action) {
@@ -29,10 +37,10 @@ export function calendarReducer(state = initialState, action) {
         ...state,
         period: action.payload,
       };
-    case ADD_EVENT:
+    case ADD_EVENT: {
       const newEvent = action.payload;
-      const startDate = newEvent.startDate;
-      const endDate = newEvent.endDate;
+      const { startDate, endDate, name } = newEvent;
+
       const length = endDate.diff(moment(startDate).startOf('day'), 'days') + 1;
       const timeDiff = moment(endDate).diff(moment(startDate), 'minutes');
       const targetKey = newEvent.name + newEvent.startDate.toString() + newEvent.endDate.toString();
@@ -41,46 +49,76 @@ export function calendarReducer(state = initialState, action) {
       newEvent.timeDiff = timeDiff;
       newEvent.targetKey = targetKey;
 
+      const eventKey = `${name}${startDate.toString()}${endDate.toString()}`;
+
       return {
         ...state,
         events: {
           ...state.events,
-          [
-          newEvent.name
-            + newEvent.startDate.toString()
-            + newEvent.endDate.toString()
-          ]: newEvent,
+          [eventKey]: newEvent,
         },
       };
+    }
     case DELETE_EVENT:
-      delete state.events[action.payload];
       return {
         ...state,
-        events: Object.assign({}, state.events),
+        events: {
+          ...state.events,
+          [action.payload]: null,
+        },
       };
-    case UPDATE_EVENT:
-      const events = state.events;
-      const oldTargetKey = action.payload.targetKey;
-      const updatedEvent = action.payload.newEvent;
-      console.log(updatedEvent);
-      const newTargetKey = updatedEvent.name + updatedEvent.startDate.toString() + updatedEvent.endDate.toString();
+    case UPDATE_EVENT: {
+      const { events } = state;
+      const { targetKey, newEvent } = action.payload;
+      const { name, startDate, endDate } = newEvent;
+      const newTargetKey = name + startDate.toString() + endDate.toString();
 
-      if (action.payload.targetKey !== newTargetKey) {
+      if (targetKey !== newTargetKey) {
         Object.defineProperty(events, newTargetKey,
-          Object.getOwnPropertyDescriptor(events, oldTargetKey));
-        delete events[oldTargetKey];
+          Object.getOwnPropertyDescriptor(events, targetKey));
+        delete events[targetKey];
       }
 
-      updatedEvent.length = moment(updatedEvent.endDate).diff(moment(updatedEvent.startDate).startOf('day'), 'days') + 1;
-      updatedEvent.timeDiff = moment(updatedEvent.endDate).diff(moment(updatedEvent.startDate), 'minutes');
-      updatedEvent.targetKey = newTargetKey;
+      const length = moment(newEvent.endDate).diff(moment(newEvent.startDate).startOf('day'), 'days') + 1;
+      const timeDiff = moment(newEvent.endDate).diff(moment(newEvent.startDate), 'minutes');
 
-      events[newTargetKey] = Object.assign({}, updatedEvent);
+      newEvent.length = length;
+      newEvent.timeDiff = timeDiff;
+      newEvent.targetKey = newTargetKey;
+
+      events[newTargetKey] = Object.assign({}, newEvent);
 
       return {
         ...state,
         events: Object.assign({}, state.events),
       };
+    }
+    case OPEN_EVENT_FIELD:
+      return {
+        ...state,
+        isActive: action.payload.isActive,
+        usage: action.payload.usage,
+        event: action.payload.event,
+      };
+    case CLOSE_EVENT_FIELD:
+      return {
+        ...state,
+        isActive: action.payload,
+        usage: '',
+        event: null,
+      };
+    case SET_INITIAL_DATE: {
+      return {
+        ...state,
+        initialDate: action.payload,
+      };
+    }
+    case CLEAR_EVENT_DATA: {
+      return {
+        ...state,
+        event: null,
+      };
+    }
     default:
       return state;
   }

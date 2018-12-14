@@ -11,12 +11,11 @@ import {
 } from '../constants/constants';
 
 
-import { updateEvent } from '../store/actions/calendar';
+import { updateEvent, openEditEventField } from '../store/actions/calendar';
 import { changeCurAction } from '../store/actions/eventTransformer';
-import { openEditEventField } from '../store/actions/editEventField';
 
-let startX; let
-  startY;
+let startX;
+let startY;
 
 class EventDraggerContainer extends React.Component {
   handleMouseDown = (e) => {
@@ -140,7 +139,7 @@ class EventDraggerContainer extends React.Component {
   handleEventClick = (event) => {
     const { openEditEventField } = this.props;
 
-    openEditEventField(true, EDIT_EVENT, Object.assign({}, event));
+    openEditEventField(true, EDIT_EVENT, { ...event });
   }
 
   render() {
@@ -169,11 +168,11 @@ const mapStateToProps = state => ({
   events: state.calendar.events,
 });
 
-const mapDispatchToProps = dispatch => ({
-  updateEvent: (targetKey, newEvent) => dispatch(updateEvent(targetKey, newEvent)),
-  changeCurAction: action => dispatch(changeCurAction(action)),
-  openEditEventField: (isActive, usage, event) => dispatch(openEditEventField(isActive, usage, event)),
-});
+const mapDispatchToProps = {
+  updateEvent,
+  changeCurAction,
+  openEditEventField,
+};
 
 export default connect(
   mapStateToProps,

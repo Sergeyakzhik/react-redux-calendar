@@ -66,11 +66,11 @@ const mapStateToProps = state => ({
   curTarget: state.eventInfoField.curTarget,
 });
 
-const mapDispatchToProps = dispatch => ({
-  toggleEventInfoField: curTarget => dispatch(toggleEventInfoField(curTarget)),
-  deleteEvent: curTarget => dispatch(deleteEvent(curTarget)),
-  changeEventInfoPosition: (posX, posY) => dispatch(changeEventInfoPosition(posX, posY)),
-});
+const mapDispatchToProps = {
+  toggleEventInfoField,
+  deleteEvent,
+  changeEventInfoPosition,
+};
 
 export default connect(
   mapStateToProps,
